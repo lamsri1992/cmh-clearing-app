@@ -109,7 +109,7 @@
                         <i class="fa-solid fa-rotate fa-spin"></i>
                         อัพเดตข้อมูลใหม่
                     </button>
-                    <button class="btn btn-danger" type="button">
+                    <button id="btnCancel" class="btn btn-danger" type="button">
                         <i class="fa-solid fa-ban"></i>
                         ยกเลิกการเรียกเก็บ
                     </button>
@@ -126,6 +126,7 @@
         if(pstatus != 1) {
             document.getElementById("btnConfirm").disabled = true;
             document.getElementById("btnUpdate").disabled = true;
+            document.getElementById("btnCancel").disabled = true;
         }
     });
 </script>

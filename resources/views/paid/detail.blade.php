@@ -5,21 +5,11 @@
         <div class="card z-index-2 h-100">
             <div class="card-header pb-0 pt-3 bg-transparent">
                 <h6 class="text-capitalize">
-                    <i class="fa-solid fa-file-circle-plus"></i>
-                    Transaction - สร้างใบเรียกเก็บ
+                    <i class="fa-solid fa-file-invoice"></i>
+                    Transaction Code : {{ $id }}
                 </h6>
             </div>
             <div class="card-body">
-                <div style="margin-bottom: 1rem;">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <input type="text" id="min" name="min" class="form-control" placeholder="เลือกช่วงวันที่เริ่มต้น">
-                        </div>
-                        <div class="col-md-6">
-                            <input type="text" id="max" name="max" class="form-control" placeholder="เลือกช่วงวันที่สิ้นสุด">
-                        </div>
-                    </div>
-                </div>
                 <table id="listData" class="display nowrap" style="width:100%">
                     <thead>
                         <tr>
@@ -32,7 +22,6 @@
                             <th class="text-end">ค่าใช้จ่าย Refer</th>
                             <th class="text-end">ยอดรวม</th>
                             <th class="text-center">สถานะ</th>
-                            <th class="text-center" hidden>HCODE</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,26 +40,49 @@
                                 <td class="text-end text-danger fw-bold">{{ number_format($res->paid_am,2) }}</td>
                                 <td class="text-end fw-bold" style="text-decoration-line: underline">{{ number_format($res->total,2) }}</td>
                                 <td class="text-center text-white {{ $res->p_color }}">{{ $res->p_name }}</td>
-                                <td class="text-center" hidden>{{ $res->hospmain }}</td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+                @foreach ($check as $item)
+                @if ($item->progress >= 1)
                 <p>
-                    <button id="btnCreate" class="btn btn-success">
-                        <i class="fa-solid fa-check-circle"></i>
-                        Create Select
-                    </button>
-                    <button id="btnCreate_all" class="btn btn-danger">
-                        <i class="fa-solid fa-check-double"></i>
-                        Create All
+                    <div class="alert alert-danger" role="alert">
+                        ค้างดำเนินการตรวจสอบข้อมูลตามจ่าย :: <b>{{ $item->progress }} รายการ</b>
+                    </div>
+                </p>
+                @else
+                <p class="text-center">
+                    <button class="btn btn-primary btn-lg"
+                        onclick="Swal.fire({
+                            icon: 'warning',
+                            title: 'ยืนยันการดำเนินการ',
+                            text: 'Transaction Code :: '+ {{ $id }},
+                            footer: '<small>หากยืนยันแล้ว จะไม่สามารถยกเลิกได้</small>'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'ดำเนินการเสร็จสิ้น',
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                });
+                                window.setTimeout(function () {
+                                    location.replace('/paid')
+                                }, 3500);
+                            } 
+                        });">
+                        <i class="fa-solid fa-clipboard-check"></i>
+                        ดำเนินการตามจ่าย Transaction นี้
                     </button>
                 </p>
+                @endif
+                @endforeach
             </div>
         </div>
     </div>
 </div>
 @endsection
 @section('script')
-<script src="{{ asset('js/listTableTransaction.js') }}"></script>
+<script src="{{ asset('js/listTableTransactionPaid.js') }}"></script>
 @endsection

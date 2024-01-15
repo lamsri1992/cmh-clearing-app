@@ -1,52 +1,113 @@
 @extends('layouts.app')
 @section('content')
+@foreach ($count as $res)
+@php
+    $charge = $res->charge;
+    $success = $res->success;
+    $deny = $res->deny;
+@endphp
+<div class="row">
+    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+            <div class="card-body p-3">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="numbers">
+                            <p class="text-sm mb-0 font-weight-bold">รายการรอตามจ่าย</p>
+                            <a href="#" class="font-weight-bolder">
+                                {{ number_format($charge) }} รายการ
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-4 text-end">
+                        <div class="icon icon-shape bg-secondary text-center rounded-circle">
+                            <i class="fa-solid fa-spinner fa-spin text-lg opacity-10" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-sm-6">
+        <div class="card">
+            <div class="card-body p-3">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="numbers">
+                            <p class="text-sm mb-0 font-weight-bold">ดำเนินการตามจ่ายแล้ว</p>
+                            <a href="#" class="font-weight-bolder">
+                                {{ number_format($success) }} รายการ
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-4 text-end">
+                        <div class="icon icon-shape bg-success text-center rounded-circle">
+                            <i class="fa-solid fa-check-to-slot text-lg opacity-10" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+            <div class="card-body p-3">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="numbers">
+                            <p class="text-sm mb-0 font-weight-bold">ปฏิเสธจ่าย</p>
+                            <a href="#" class="font-weight-bolder">
+                                {{ number_format($deny) }} รายการ
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-4 text-end">
+                        <div class="icon icon-shape bg-danger text-center rounded-circle">
+                            <i class="fa-solid fa-rectangle-xmark text-lg opacity-10" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row mt-4">
     <div class="col-lg-12 mb-lg-0 mb-4">
         <div class="card z-index-2 h-100">
             <div class="card-header pb-0 pt-3 bg-transparent">
                 <h6 class="text-capitalize">
-                    <i class="fa-solid fa-list-check"></i>
-                    {{ Request::route()->getName() }}
+                    <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                    Transaction - ใบแจ้งตามจ่าย
                 </h6>
             </div>
             <div class="card-body">
-                <table id="listData" class="display nowrap" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>REC_NO::</th>
-                            <th>วันที่รับบริการ</th>
-                            <th>หน่วยบริการ</th>
-                            <th>HN</th>
-                            <th class="text-end">ค่าใช้จ่ายจริง</th>
-                            <th class="text-end">ยอดที่เรียกเก็บได้</th>
-                            <th class="text-end">ค่าใช้จ่าย Refer</th>
-                            <th class="text-end">ยอดรวม</th>
-                            <th>สถานะ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($data as $res)
-                            <tr>
-                                <td>{{ $res->rec_no }}</td>
-                                <td>{{ $res->date_rx }}</td>
-                                <td>{{ $res->h_name }}</td>
-                                <td>{{ $res->hn }}</td>
-                                <td class="text-end">{{ number_format($res->amount,2) }}</td>
-                                <td class="text-end">{{ number_format($res->paid,2) }}</td>
-                                <td class="text-end">{{ number_format($res->paid_am,2) }}</td>
-                                <td class="text-end fw-bold">{{ number_format($res->total,2) }}</td>
-                                <td>
-                                    <span class="badge {{ $res->p_color }}">{{ $res->p_name }}</span>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <ol class="list-group">
+                    @foreach ($data as $res)
+                    <a href="{{ route('paid.detail',$res->trans_code) }}">
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">
+                                    {{ "Code : ". $res->trans_code }}
+                                </div>
+                                {{ "เรียกเก็บจาก ".$res->h_name }} <br>
+                                <small>
+                                    <i class="fa-regular fa-calendar-check"></i>
+                                    {{ "วันที่เรียกเก็บ ".date("Y-m-d", strtotime($res->create_date)) }}
+                                </small>
+                            </div>
+                            <span class="badge bg-primary rounded-pill" style="width: 20%;font-size:14px;">
+                                ยอด {{ number_format($res->total,2) }} บาท
+                            </span>
+                        </li>
+                    </a>
+                    @endforeach
+                </ol>
             </div>
         </div>
     </div>
 </div>
+@endforeach
 @endsection
 @section('script')
-<script src="{{ asset('js/listTablePaid.js') }}"></script>
+
 @endsection

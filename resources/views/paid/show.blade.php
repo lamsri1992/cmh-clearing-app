@@ -13,9 +13,10 @@
                         <p><b>ผู้บันทึก</b> : {{ $data->reporter }}</p>
                         <p><b>REC_NO</b> : {{ $data->rec_no }}</p>
                         <p><b>HN</b> : {{ $data->hn }}</p>
+                        {{-- <p><b>PID</b> : {{ substr($data->pid,0,4)."XXXXXX".substr($data->pid,10,13) }}</p> --}}
                         <p><b>PID</b> : {{ $data->pid }}</p>
-                        <p><b>วันที่รับบริการ</b> : {{ $data->date_rx }}</p>
-                        <p><b>วันที่เรียกเก็บ</b> : {{ $data->date_rec }}</p>
+                        <p><b>วันที่รับบริการ</b> : {{ date("Y-m-d", strtotime($data->date_rx)); }}</p>
+                        <p><b>วันที่เรียกเก็บ</b> : {{ date("Y-m-d", strtotime($data->date_rec)); }}</p>
                     </div>
                     <div class="col-md-6">
                         <p><b>ตามจ่ายไปยัง</b> : {{ $data->h_name }}</p>
@@ -69,11 +70,43 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-grid gap-2">
-                    <button class="btn btn-success" type="button">
-                        <i class="fa-regular fa-circle-check"></i>
-                        ยืนยันข้อมูลตามจ่าย
+                    <button id="btnConfirm" type="button" class="btn btn-success"
+                        onclick="
+                        var recno = {{ $data->rec_no }}
+                        Swal.fire({
+                            title: 'ยืนยันข้อมูลการตามจ่าย',
+                            text: 'กรุณาตรวจสอบข้อมูลก่อนดำเนินการ',
+                            icon: 'info',
+                            showCancelButton: true,
+                            confirmButtonText: 'ยืนยัน',
+                            cancelButtonText: 'ยกเลิก',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                            $.ajax({
+                                url: '{{ route('paid.confirm') }}',
+                                method: 'GET',
+                                data: {
+                                    recno: recno,
+                                },
+                                success: function (data) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'ยืนยันตามจ่าย',
+                                        text: 'บันทึกการดำเนินการเสร็จสิ้น',
+                                        showConfirmButton: false,
+                                        timer: 3000
+                                    })
+                                    window.setTimeout(function () {
+                                        location.replace('/paid/transaction/{{ $data->trans_id }}')
+                                    }, 1500);
+                                }
+                            });
+                        }
+                    })">
+                    <i class="fa-regular fa-check-circle"></i>
+                        ยืนยันการตามจ่าย
                     </button>
-                    <button class="btn btn-danger" type="button">
+                    <button id="btnDeny" class="btn btn-danger" type="button">
                         <i class="fa-regular fa-circle-xmark"></i>
                         ปฏิเสธการจ่าย
                     </button>
@@ -84,5 +117,21 @@
 </div>
 @endsection
 @section('script')
-
+<script>
+    $(document).ready(function() {
+        var pstatus = {{ $data->p_status }};
+        if(pstatus == 3) {
+            Swal.fire({
+                title: "REC_NO : " + {{ $data->rec_no }},
+                text: "รายการถูกยืนยันแล้ว",
+                icon: "success"
+            }).then(function() {
+                location.replace('/paid/transaction/{{ $data->trans_id }}')
+            });
+            
+            document.getElementById("btnConfirm").disabled = true;
+            document.getElementById("btnDeny").disabled = true;
+        }
+    });
+</script>
 @endsection

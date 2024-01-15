@@ -58,9 +58,9 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 font-weight-bold">เรียกเก็บแล้ว / จ่ายแล้ว</p>
+                            <p class="text-sm mb-0 font-weight-bold">เรียกเก็บแล้ว</p>
                             <a href="{{ route('charge.sent') }}" class="font-weight-bolder">
-                                {{ number_format($charge)." / ".number_format($success) }} รายการ
+                                {{ number_format($charge) }} รายการ
                             </a>
                         </div>
                     </div>
@@ -79,9 +79,9 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 font-weight-bold">ยกเลิก / ปฏิเสธจ่าย</p>
+                            <p class="text-sm mb-0 font-weight-bold">ปฏิเสธจ่าย</p>
                             <a href="#" class="font-weight-bolder">
-                                {{ number_format($deny)." / ". number_format($cancel) }} รายการ
+                                {{ number_format($deny) }} รายการ
                             </a>
                         </div>
                     </div>

@@ -36,7 +36,7 @@ class charge extends Controller
 
     public function show($id){
         $data = DB::table('claim_er')
-                ->select('rec_no','hn','pid','date_rx','date_rec','icd9','icd10','refer','drug','lab','proc','ambulanc','h_name','p_status','p_name','reporter',
+                ->select('rec_no','hn','pid','date_rx','date_rec','icd9','icd10','refer','drug','lab','proc','ambulanc','h_name','p_status','p_name','reporter','hospmain',
                 DB::raw('drug + lab + proc AS amount,
                 IF((drug + lab + proc) > 700, 700, (drug + lab + proc)) AS paid,
                 IF(ambulanc > "0", "600", ambulanc) AS paid_amb,
@@ -45,6 +45,7 @@ class charge extends Controller
                 ->join('p_status','p_status.id','claim_er.p_status')
                 ->where('rec_no',base64_decode($id))
                 ->first();
+        // dd($data);
         return view('charge.show', ['data' => $data]);
     }
 
@@ -75,7 +76,7 @@ class charge extends Controller
                 DB::raw('drug + lab + proc AS amount,
                 IF((drug + lab + proc) > 700, 700, (drug + lab + proc)) AS paid,
                 IF(ambulanc > "0", "600", ambulanc) AS paid_am,
-                IF((drug + lab + proc) > 700, 700, (drug + lab + proc)) + IF(ambulanc > "0", "600", ambulanc) AS total'))
+                IF((drug + lab + proc) > 700, 700, (drug + lab + proc)) + IF(ambulanc > "0", "600", ambulanc) AS total'),'hospmain')
                 ->join('hospital','h_code','claim_er.hospmain')
                 ->join('p_status','id','claim_er.p_status')
                 ->where('hospmain','=',base64_decode($id))
@@ -89,7 +90,8 @@ class charge extends Controller
     public function bill(Request $request)
     {
         $data = $request->get('formData');
-        $transCode = Auth::user()->hcode."".date('Ym').substr(rand(),1,5);
+        $hcode = Auth::user()->hcode;
+        $transCode = $hcode."".date('Ym').substr(rand(),1,5);
         foreach($data as $array){
             $id = DB::table('transaction')->insertGetId(
                 [
@@ -97,7 +99,9 @@ class charge extends Controller
                     'trans_vstdate' => $array['1'],
                     'trans_total' => $array['7'],
                     'trans_code' => $transCode,
-                    'create_date' => date('Y-m-d')
+                    'create_date' => date('Y-m-d'),
+                    'trans_hcode' => $hcode,
+                    'trans_hmain' => $array['9']
                 ]
             );
 
