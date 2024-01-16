@@ -12,8 +12,7 @@ class charge extends Controller
         $hcode = Auth::user()->hcode;
         $query_count = "SELECT
         (SELECT COUNT(rec_no) FROM claim_er WHERE p_status = '1' AND hcode = $hcode) AS wait,
-        (SELECT COUNT(rec_no) FROM claim_er WHERE p_status = '2' AND hcode = $hcode) AS charge,
-        (SELECT COUNT(rec_no) FROM claim_er WHERE p_status = '3' AND hcode = $hcode) AS success,
+        (SELECT COUNT(rec_no) FROM claim_er WHERE p_status IN('2','3','7','8') AND hcode = $hcode) AS charge,
         (SELECT COUNT(rec_no) FROM claim_er WHERE p_status = '4' AND hcode = $hcode) AS deny,
         (SELECT COUNT(rec_no) FROM claim_er WHERE p_status = '5' AND hcode = $hcode) AS confirm,
         (SELECT COUNT(rec_no) FROM claim_er WHERE p_status = '6' AND hcode = $hcode) AS cancel";
@@ -117,11 +116,12 @@ class charge extends Controller
     public function sent(){
         $hcode = Auth::user()->hcode;
         $data = DB::table('claim_er')
-                ->select('hospmain','h_name',DB::raw('COUNT(DISTINCT trans_id) AS number,SUM(IF((drug + lab + proc) > 700, 700, (drug + lab + proc)) + IF(ambulanc > "0", "600", ambulanc)) AS total'))
+                ->select('hospmain','h_name','h_code',
+                DB::raw('COUNT(DISTINCT trans_id) AS number,SUM(IF((drug + lab + proc) > 700, 700, (drug + lab + proc)) + IF(ambulanc > "0", "600", ambulanc)) AS total'))
                 ->join('hospital','h_code','claim_er.hospmain')
                 ->where('hospmain','!=',$hcode)
                 ->where('hcode','=',$hcode)
-                ->where('p_status','=',2)
+                ->whereIn('p_status',[2,3,5,7,8])
                 ->groupBy('h_code')
                 ->get();
         // dd($data);

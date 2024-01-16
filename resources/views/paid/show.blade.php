@@ -13,7 +13,6 @@
                         <p><b>ผู้บันทึก</b> : {{ $data->reporter }}</p>
                         <p><b>REC_NO</b> : {{ $data->rec_no }}</p>
                         <p><b>HN</b> : {{ $data->hn }}</p>
-                        {{-- <p><b>PID</b> : {{ substr($data->pid,0,4)."XXXXXX".substr($data->pid,10,13) }}</p> --}}
                         <p><b>PID</b> : {{ $data->pid }}</p>
                         <p><b>วันที่รับบริการ</b> : {{ date("Y-m-d", strtotime($data->date_rx)); }}</p>
                         <p><b>วันที่เรียกเก็บ</b> : {{ date("Y-m-d", strtotime($data->date_rec)); }}</p>
@@ -120,11 +119,23 @@
 <script>
     $(document).ready(function() {
         var pstatus = {{ $data->p_status }};
-        if(pstatus == 3) {
+        if(pstatus == 3 || pstatus == 7) {
             Swal.fire({
                 title: "REC_NO : " + {{ $data->rec_no }},
                 text: "รายการถูกยืนยันแล้ว",
                 icon: "success"
+            }).then(function() {
+                location.replace('/paid/transaction/{{ $data->trans_id }}')
+            });
+            
+            document.getElementById("btnConfirm").disabled = true;
+            document.getElementById("btnDeny").disabled = true;
+        }
+        if(pstatus == 4) {
+            Swal.fire({
+                title: "REC_NO : " + {{ $data->rec_no }},
+                text: "รายการถูกปฏิเสธจ่าย",
+                icon: "error"
             }).then(function() {
                 location.replace('/paid/transaction/{{ $data->trans_id }}')
             });

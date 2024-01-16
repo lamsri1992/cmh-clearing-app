@@ -20110,7 +20110,7 @@ fieldset:disabled .btn {
 }
 
 .alert-success {
-  background-image: linear-gradient(310deg, #2dce89 0%, #26adab 100%);
+  /* background-image: linear-gradient(310deg, #2dce89 0%, #26adab 100%); */
 }
 
 .alert-info {

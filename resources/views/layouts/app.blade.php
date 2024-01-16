@@ -60,6 +60,17 @@
             $('.basic-single').select2();
         });
     </script>
+    @if ($message = Session::get('success'))
+    <script>
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: {{ $message }},
+            showConfirmButton: false,
+            timer: 1500
+        });
+    </script>
+    @endif 
 </body>
 @section('script')
 @show

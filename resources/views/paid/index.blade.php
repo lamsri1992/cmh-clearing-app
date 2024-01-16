@@ -74,11 +74,27 @@
 <div class="row mt-4">
     <div class="col-lg-12 mb-lg-0 mb-4">
         <div class="card z-index-2 h-100">
-            <div class="card-header pb-0 pt-3 bg-transparent">
-                <h6 class="text-capitalize">
-                    <i class="fa-solid fa-circle-dollar-to-slot"></i>
-                    Transaction - ใบแจ้งตามจ่าย
-                </h6>
+            <div class="card-header pb-0 bg-transparent">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-capitalize">
+                            <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                            Transaction - ใบแจ้งตามจ่าย 
+                            <span class="badge bg-danger">
+                                <i class="fa-regular fa-bell"></i>
+                                New
+                            </span>
+                        </h6>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <h6 class="text-capitalize">
+                            <a href="{{ route('paid.list') }}" class="btn btn-info btn-sm">
+                                <i class="fa-solid fa-clipboard-check"></i>
+                                รายการทั้งหมด
+                            </a>
+                        </h6>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <ol class="list-group">
@@ -87,12 +103,12 @@
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <div class="ms-2 me-auto">
                                 <div class="fw-bold">
-                                    {{ "Code : ". $res->trans_code }}
+                                    {{ $res->trans_code }}
                                 </div>
-                                {{ "เรียกเก็บจาก ".$res->h_name }} <br>
+                                    {{ "เรียกเก็บจาก ".$res->h_name }} <br>
                                 <small>
-                                    <i class="fa-regular fa-calendar-check"></i>
-                                    {{ "วันที่เรียกเก็บ ".date("Y-m-d", strtotime($res->create_date)) }}
+                                    <i class="fa-regular fa-calendar"></i>
+                                    {{ "วันที่เรียกเก็บ ".date("Y-m-d", strtotime($res->create_date)) }} <br>
                                 </small>
                             </div>
                             <span class="badge bg-primary rounded-pill" style="width: 20%;font-size:14px;">

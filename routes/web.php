@@ -44,9 +44,12 @@ Route::prefix('charge')->group(function () {
 });
 
 Route::prefix('paid')->group(function () {
+    Route::get('/', [paid::class, 'index'])->name('paid.index');
     Route::get('/confirm', [paid::class, 'confirm'])->name('paid.confirm');
+    Route::get('/list', [paid::class, 'list'])->name('paid.list');
     Route::get('{id}', [paid::class, 'show'])->name('ระบบการตามจ่าย');
     Route::get('/transaction/{id}', [paid::class, 'detail'])->name('paid.detail');
+    Route::get('/transaction/confirm/{id}', [paid::class, 'transConfirm'])->name('paid.transConfirm');
 });
 
 require __DIR__.'/auth.php';

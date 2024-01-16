@@ -4,7 +4,6 @@
 @php
     $wait = $res->wait;
     $charge = $res->charge;
-    $success = $res->success;
     $deny = $res->deny;
     $confirm = $res->confirm;
     $cancel = $res->cancel;

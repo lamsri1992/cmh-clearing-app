@@ -14,7 +14,8 @@
                     @php $total = 0 @endphp
                     @foreach ($data as $res)
                     @php $total += $res->total @endphp
-                    <a href="#" id="transClick" name="transClick" class="transClick" data-id="{{ $res->hospmain }}">
+                    <a href="#" id="transClick" name="transClick" class="transClick" 
+                        data-hcode="{{ Auth::user()->hcode }}" data-hospmain="{{ $res->h_code }}">
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <div class="ms-2 me-auto">
                                 <div class="fw-bold">
@@ -73,10 +74,13 @@
 @section('script')
 <script>
     $('.transClick').click(function () {
-        let hcode = $(this).attr("data-id");
+        var hcode = $(this).attr("data-hcode");
+        var hospmain = $(this).attr("data-hospmain");
+        var id = hcode + "," + hospmain;
+
         $('#show').modal('show');
         $.ajax({
-            url: "/api/sent/" + hcode,
+            url: "/api/sent/" + id,
             success: function (data) {
                 // console.log(data)
                 $('tbody').html("");

@@ -44,6 +44,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                @if ($trans->trans_status != 7)
                 @foreach ($check as $item)
                 @if ($item->progress >= 1)
                 <p>
@@ -68,7 +69,7 @@
                                     timer: 3000
                                 });
                                 window.setTimeout(function () {
-                                    location.replace('/paid')
+                                    location.replace('/paid/transaction/confirm/'+{{ $id }})
                                 }, 3500);
                             } 
                         });">
@@ -78,6 +79,16 @@
                 </p>
                 @endif
                 @endforeach
+                @else
+                <div class="text-center">
+                    <p>
+                        <div class="alert alert-success" role="alert">
+                            <i class="fa-solid fa-spinner fa-spin"></i>
+                            อยู่ระหว่างรอดำเนินการจ่าย
+                        </div>
+                    </p>
+                </div>
+                @endif
             </div>
         </div>
     </div>
