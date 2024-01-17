@@ -43,7 +43,10 @@ class paid extends Controller
         (SELECT COUNT(*) FROM claim_er WHERE p_status = '3' AND TRANS_ID = $id) AS confirm,
         (SELECT COUNT(*) FROM claim_er WHERE p_status = '4' AND TRANS_ID = $id) AS deny,
         (SELECT COUNT(*) FROM claim_er WHERE p_status = '2' AND TRANS_ID = $id) AS progress");
-        $trans = DB::table('transaction')->where('trans_code',$id)->first();
+        $trans = DB::table('transaction')
+                ->join('paid','paid.trans_code','transaction.trans_code')
+                ->where('transaction.trans_code',$id)
+                ->first();
         // echo($data);
         return view('paid.detail', ['data' => $data,'id'=>$id,'check'=>$check,'trans'=>$trans]);
     }
@@ -102,4 +105,37 @@ class paid extends Controller
         return view('paid.list', ['data' => $data]);
     }
 
+    public function upload(Request $request)
+    {
+        $hcode = Auth::user()->hcode;
+        $date = date('Y-m-d');
+        $request->validate([
+            'file' => 'required|mimes:pdf|max:2048',
+        ]);
+      
+        $fileName = $hcode.time().'.'.$request->file->extension();  
+        $request->file->move(public_path('uploads'), $fileName);
+
+        DB::table('paid')->insert([
+            'trans_code'=>$request->transId,
+            'balance'=>$request->balance,
+            'balance_type'=>$request->balance_type,
+            'paid_date'=>$request->paid_date,
+            'create_date'=>$date,
+            'file'=>$fileName,
+        ]);
+       
+        DB::table('transaction')->where('trans_code',$request->transId)->update([
+            'trans_status' => 8,
+            'trans_paiddate' => $date
+        ]);
+
+        DB::table('claim_er')->where('trans_id',$request->transId)->update([
+            'p_status' => 8,
+        ]);
+
+        return back()
+            ->with('success','Upload ไฟล์เอกสารสำเร็จ')
+            ->with('file', $fileName);
+    }
 }

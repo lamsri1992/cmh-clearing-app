@@ -50,6 +50,7 @@ Route::prefix('paid')->group(function () {
     Route::get('{id}', [paid::class, 'show'])->name('ระบบการตามจ่าย');
     Route::get('/transaction/{id}', [paid::class, 'detail'])->name('paid.detail');
     Route::get('/transaction/confirm/{id}', [paid::class, 'transConfirm'])->name('paid.transConfirm');
+    Route::post('file-upload', [paid::class, 'upload'])->name('paid.upload');
 });
 
 require __DIR__.'/auth.php';

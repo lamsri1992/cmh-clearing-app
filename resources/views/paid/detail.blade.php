@@ -45,6 +45,7 @@
                     </tbody>
                 </table>
                 @if ($trans->trans_status != 7)
+                @if ($trans->trans_status != 8)                    
                 @foreach ($check as $item)
                 @if ($item->progress >= 1)
                 <p>
@@ -79,8 +80,9 @@
                 </p>
                 @endif
                 @endforeach
-                @else
-                <div class="text-center">
+                @endif
+                @if ($trans->trans_status == 7)
+                    <div class="text-center">
                     <p>
                         <div class="alert alert-success" role="alert">
                             <i class="fa-solid fa-spinner fa-spin"></i>
@@ -95,6 +97,21 @@
                     </p>
                 </div>
                 @endif
+                @if ($trans->trans_status == 8)
+                    <div class="text-center">
+                    <p>
+                        <div class="alert alert-success" role="alert">
+                            <i class="fa-solid fa-check-circle"></i>
+                            ดำเนินการเสร็จสิ้น
+                        </div>
+                    </p>
+                    <a href="{{ asset('uploads/'.$trans->file) }}" target="_blank">
+                        <i class="fa-regular fa-file-pdf text-danger"></i>
+                        File - {{ $trans->file }}
+                    </a>
+                </div>
+                @endif
+                @endif
             </div>
         </div>
     </div>
@@ -102,7 +119,7 @@
 <!-- Modal -->
 <div class="modal fade" id="attachModal" tabindex="-1" aria-labelledby="attachModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <form action="" method="POST">
+        <form action="{{ route('paid.upload') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
@@ -112,17 +129,22 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <input type="text" id="transId" name="transId" hidden>
                     <div class="mb-3">
                         <label for="formFile" class="form-label">แนบเอกสารการจ่ายเงิน</label>
-                        <input class="form-control" type="file" id="formFile">
+                        <input class="form-control @error('file') is-invalid @enderror"
+                        type="file" id="formFile" name="file">
+                        @error('file')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">ยอดเงินโอน</label>
-                        <input class="form-control" type="text" placeholder="ระบุจำนวนเงินเป็นตัวเลขและจุดทศนิยมเท่านั้น">
+                        <input name="balance" class="form-control" type="text" placeholder="ระบุจำนวนเงินเป็นตัวเลขและจุดทศนิยมเท่านั้น">
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">วิธีชำระเงิน</label>
-                        <select class="form-select" aria-label="">
+                        <select name="balance_type" class="form-select" aria-label="">
                             <option selected>--- กรุณาเลือก ---</option>
                             <option value="1">เงินโอน</option>
                             <option value="2">เช็ค</option>
@@ -130,16 +152,16 @@
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">วันที่</label>
-                        <input class="form-control" type="text" placeholder="ระบุวันที่ชำระเงิน">
+                        <input name="paid_date" class="form-control" type="text" placeholder="ระบุวันที่ชำระเงิน">
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">หมายเลขอ้างอิง</label>
-                        <input class="form-control" type="text" placeholder="ระบุหมายเลขอ้างอิง">
+                        <input name="paid_no" class="form-control" type="text" placeholder="ระบุหมายเลขอ้างอิง">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">ปิดหน้าต่าง</button>
-                    <button type="button" class="btn btn-success btn-sm">
+                    <button type="submit" class="btn btn-success btn-sm">
                         <i class="fa-solid fa-save"></i>
                         บันทึกข้อมูล
                     </button>
@@ -150,11 +172,24 @@
 </div>
 @endsection
 @section('script')
+@if ($message = Session::get('success'))
+<script>
+    Swal.fire({
+        icon: "success",
+        title: {{ $message }},
+        showConfirmButton: false,
+        timer: 1500
+});
+</script>
+<strong>{{ $message }}</strong>
+@endif
 <script src="{{ asset('js/listTableTransactionPaid.js') }}"></script>
 <script>
     $('[data-bs-target="#attachModal"').on('click', function () {
         var id = "<i class='fa-regular fa-clipboard'></i> Transaction Code : " + $(this).data('id');
+        var trans_id = $(this).data('id');
         document.getElementById('dataId').innerHTML = id;
+        document.getElementById('transId').value = trans_id;
     });
 </script>
 @endsection
