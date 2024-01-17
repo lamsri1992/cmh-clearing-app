@@ -86,6 +86,12 @@
                             <i class="fa-solid fa-spinner fa-spin"></i>
                             อยู่ระหว่างรอดำเนินการจ่าย
                         </div>
+                        <a href="#" id="attach" class="badge bg-warning" 
+                            data-id="{{ $id }}"
+                            data-bs-toggle="modal" data-bs-target="#attachModal">
+                            <i class="fa-solid fa-check-circle"></i>
+                            ยืนยัน/แนบเอกสาร
+                        </a>
                     </p>
                 </div>
                 @endif
@@ -93,7 +99,62 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="attachModal" tabindex="-1" aria-labelledby="attachModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <form action="" method="POST">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="attachModalLabel">
+                        <span id="dataId"></span>
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">แนบเอกสารการจ่ายเงิน</label>
+                        <input class="form-control" type="file" id="formFile">
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">ยอดเงินโอน</label>
+                        <input class="form-control" type="text" placeholder="ระบุจำนวนเงินเป็นตัวเลขและจุดทศนิยมเท่านั้น">
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">วิธีชำระเงิน</label>
+                        <select class="form-select" aria-label="">
+                            <option selected>--- กรุณาเลือก ---</option>
+                            <option value="1">เงินโอน</option>
+                            <option value="2">เช็ค</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">วันที่</label>
+                        <input class="form-control" type="text" placeholder="ระบุวันที่ชำระเงิน">
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">หมายเลขอ้างอิง</label>
+                        <input class="form-control" type="text" placeholder="ระบุหมายเลขอ้างอิง">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">ปิดหน้าต่าง</button>
+                    <button type="button" class="btn btn-success btn-sm">
+                        <i class="fa-solid fa-save"></i>
+                        บันทึกข้อมูล
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection
 @section('script')
 <script src="{{ asset('js/listTableTransactionPaid.js') }}"></script>
+<script>
+    $('[data-bs-target="#attachModal"').on('click', function () {
+        var id = "<i class='fa-regular fa-clipboard'></i> Transaction Code : " + $(this).data('id');
+        document.getElementById('dataId').innerHTML = id;
+    });
+</script>
 @endsection
