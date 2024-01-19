@@ -105,9 +105,9 @@
                             ดำเนินการเสร็จสิ้น
                         </div>
                     </p>
-                    <a href="{{ asset('uploads/'.$trans->file) }}" target="_blank">
+                    <a href="{{ asset('uploads/'.$paid->file) }}" target="_blank">
                         <i class="fa-regular fa-file-pdf text-danger"></i>
-                        File - {{ $trans->file }}
+                        File - {{ $paid->file }}
                     </a>
                 </div>
                 @endif

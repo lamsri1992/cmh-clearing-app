@@ -43,12 +43,10 @@ class paid extends Controller
         (SELECT COUNT(*) FROM claim_er WHERE p_status = '3' AND TRANS_ID = $id) AS confirm,
         (SELECT COUNT(*) FROM claim_er WHERE p_status = '4' AND TRANS_ID = $id) AS deny,
         (SELECT COUNT(*) FROM claim_er WHERE p_status = '2' AND TRANS_ID = $id) AS progress");
-        $trans = DB::table('transaction')
-                ->join('paid','paid.trans_code','transaction.trans_code')
-                ->where('transaction.trans_code',$id)
-                ->first();
-        // echo($data);
-        return view('paid.detail', ['data' => $data,'id'=>$id,'check'=>$check,'trans'=>$trans]);
+        $trans = DB::table('transaction')->where('transaction.trans_code',$id)->first();
+        $paid = DB::table('paid')->where('paid.trans_code',$id)->first();
+        // dd($trans);
+        return view('paid.detail', ['data' => $data,'id'=>$id,'check'=>$check,'trans'=>$trans,'paid'=>$paid]);
     }
 
     public function show($id){

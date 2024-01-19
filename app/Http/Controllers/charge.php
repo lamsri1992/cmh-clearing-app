@@ -112,7 +112,8 @@ class charge extends Controller
                     'trans_code' => $transCode,
                     'create_date' => date('Y-m-d'),
                     'trans_hcode' => $hcode,
-                    'trans_hmain' => $array['9']
+                    'trans_hmain' => $array['9'],
+                    'trans_status' => 2,
                 ]
             );
 
