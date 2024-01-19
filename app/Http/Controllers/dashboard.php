@@ -25,10 +25,10 @@ class dashboard extends Controller
                 ->first();
 
         $query_count = "SELECT
-                (SELECT COUNT(rec_no) FROM claim_er WHERE p_status = '1' AND hcode = $hcode) AS wait,
-                (SELECT COUNT(rec_no) FROM claim_er WHERE p_status = '2' AND hcode = $hcode) AS charge,
-                (SELECT COUNT(rec_no) FROM claim_er WHERE p_status = '3' AND hcode = $hcode) AS success,
-                (SELECT COUNT(rec_no) FROM claim_er WHERE p_status = '4' AND hcode = $hcode) AS deny";
+                (SELECT COUNT(vn) FROM claim_er WHERE p_status = '1' AND hcode = $hcode) AS wait,
+                (SELECT COUNT(vn) FROM claim_er WHERE p_status = '2' AND hcode = $hcode) AS charge,
+                (SELECT COUNT(vn) FROM claim_er WHERE p_status = '3' AND hcode = $hcode) AS success,
+                (SELECT COUNT(vn) FROM claim_er WHERE p_status = '4' AND hcode = $hcode) AS deny";
     
         $paid = DB::table('claim_er')
                 ->select('hcode','h_name',DB::raw('SUM(drug + lab + proc) AS paid'))

@@ -34,6 +34,7 @@ Route::prefix('/')->group(function () {
 });
 
 Route::prefix('charge')->group(function () {
+    Route::get('/filter', [charge::class, 'filter'])->name('charge.filter');
     Route::get('/confirm', [charge::class, 'confirm'])->name('charge.confirm');
     Route::get('/list', [charge::class, 'list'])->name('charge.list');
     Route::get('/sent', [charge::class, 'sent'])->name('charge.sent');

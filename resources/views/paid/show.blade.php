@@ -11,7 +11,7 @@
                 <div class="d-flex justify-content-between flex-xl-row flex-md-column flex-sm-row flex-column p-sm-3 p-0">
                     <div class="col-md-6">
                         <p><b>ผู้บันทึก</b> : {{ $data->reporter }}</p>
-                        <p><b>REC_NO</b> : {{ $data->rec_no }}</p>
+                        <p><b>VN</b> : {{ $data->vn }}</p>
                         <p><b>HN</b> : {{ $data->hn }}</p>
                         <p><b>PID</b> : {{ $data->pid }}</p>
                         <p><b>วันที่รับบริการ</b> : {{ date("Y-m-d", strtotime($data->date_rx)); }}</p>
@@ -71,7 +71,7 @@
                 <div class="d-grid gap-2">
                     <button id="btnConfirm" type="button" class="btn btn-success"
                         onclick="
-                        var recno = {{ $data->rec_no }}
+                        var recno = {{ $data->vn }}
                         Swal.fire({
                             title: 'ยืนยันข้อมูลการตามจ่าย',
                             text: 'กรุณาตรวจสอบข้อมูลก่อนดำเนินการ',
@@ -121,7 +121,7 @@
         var pstatus = {{ $data->p_status }};
         if(pstatus == 3 || pstatus == 7 || pstatus == 8) {
             Swal.fire({
-                title: "REC_NO : " + {{ $data->rec_no }},
+                title: "VN : " + {{ $data->vn }},
                 text: "รายการถูกยืนยันแล้ว",
                 icon: "success"
             }).then(function() {
@@ -133,7 +133,7 @@
         }
         if(pstatus == 4) {
             Swal.fire({
-                title: "REC_NO : " + {{ $data->rec_no }},
+                title: "VN : " + {{ $data->vn }},
                 text: "รายการถูกปฏิเสธจ่าย",
                 icon: "error"
             }).then(function() {

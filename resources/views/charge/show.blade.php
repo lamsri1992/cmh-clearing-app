@@ -11,7 +11,7 @@
                 <div class="d-flex justify-content-between flex-xl-row flex-md-column flex-sm-row flex-column p-sm-3 p-0">
                     <div class="col-md-6">
                         <p><b>ผู้บันทึก</b> : {{ $data->reporter }}</p>
-                        <p><b>REC_NO</b> : {{ $data->rec_no }}</p>
+                        <p><b>VN</b> : {{ $data->vn }}</p>
                         <p><b>HN</b> : {{ $data->hn }}</p>
                         <p><b>PID</b> : {{ $data->pid }}</p>
                         <p><b>วันที่รับบริการ</b> : {{ date("Y-m-d", strtotime($data->date_rx)); }}</p>
@@ -71,7 +71,7 @@
                 <div class="d-grid gap-2">
                     <button id="btnConfirm" type="button" class="btn btn-success"
                         onclick="
-                        var recno = {{ $data->rec_no }}
+                        var recno = {{ $data->vn }}
                         Swal.fire({
                             title: 'ยืนยันข้อมูลการเรียกเก็บ',
                             text: 'กรุณาตรวจสอบข้อมูลก่อนดำเนินการ',
@@ -96,7 +96,7 @@
                                         timer: 3000
                                     })
                                     window.setTimeout(function () {
-                                        location.replace('/charge')
+                                        location.replace('/charge/filter?d_start=&d_end=&hospital=11120&menuChoose=OPAE')
                                     }, 1500);
                                 }
                             });

@@ -102,7 +102,7 @@
             <div class="card-header pb-0 pt-3 bg-transparent">
                 <h6 class="text-capitalize">
                     <i class="fa-solid fa-chart-pie"></i>
-                    แผนภูมิแสดงรายการต่ามจ่าย
+                    แผนภูมิแสดงรายการตามจ่าย
                 </h6>
             </div>
             <div class="card-body">

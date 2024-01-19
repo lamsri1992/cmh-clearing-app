@@ -90,6 +90,6 @@ table.on('click', 'tbody tr', (e) => {
 
     var obj = table.row('.selected').data();
     var id = obj[Object.keys(obj)[0]];
-    var url = 'charge/' + btoa(id);
+    var url = '/charge/' + btoa(id);
     window.location.href = url;
 });

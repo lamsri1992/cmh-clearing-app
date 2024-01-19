@@ -23,7 +23,7 @@
                 <table id="listData" class="display nowrap" style="width:100%">
                     <thead>
                         <tr>
-                            <th class="text-center">REC_NO::</th>
+                            <th class="text-center">VN::</th>
                             <th class="text-center">วันที่รับบริการ</th>
                             <th>หน่วยบริการ</th>
                             <th class="text-center">HN</th>
@@ -42,7 +42,7 @@
                             $newDate = date("Y-m-d", strtotime($orgDate));  
                         @endphp
                             <tr>
-                                <td class="text-center">{{ $res->rec_no }}</td>
+                                <td class="text-center">{{ $res->vn }}</td>
                                 <td class="text-center">{{ $newDate }}</td>
                                 <td>{{ $res->h_name }}</td>
                                 <td class="text-center">{{ $res->hn }}</td>

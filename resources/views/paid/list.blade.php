@@ -38,12 +38,22 @@
                                 <td class="text-center">{{ $res->h_name }}</td>
                                 <td class="text-center fw-bold">{{ number_format($res->total,2) }}</td>
                                 <td class="text-center">
+                                    @if ($res->trans_status == 8)
+                                        <div class="text-center">
+                                        <a href="{{ asset('uploads/'.$res->file) }}" target="_blank">
+                                            <i class="fa-regular fa-file-pdf text-danger"></i>
+                                            File - {{ $res->file }}
+                                        </a>
+                                    </div>
+                                    @endif
+                                    @if ($res->trans_status == 7)
                                     <a href="#" id="attach" class="badge bg-warning" 
                                         data-id="{{ $res->trans_code }}"
                                         data-bs-toggle="modal" data-bs-target="#attachModal">
                                         <i class="fa-solid fa-check-circle"></i>
                                         ยืนยัน/แนบเอกสาร
                                     </a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

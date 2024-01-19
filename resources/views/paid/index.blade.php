@@ -97,6 +97,11 @@
                 </div>
             </div>
             <div class="card-body">
+                @if (COUNT($data) == 0)
+                <div class="alert alert-warning text-center" role="alert">
+                    ไม่มีรายการที่ต้องตามจ่าย
+                </div>
+                @else
                 <ol class="list-group">
                     @foreach ($data as $res)
                     <a href="{{ route('paid.detail',$res->trans_code) }}">
@@ -118,6 +123,7 @@
                     </a>
                     @endforeach
                 </ol>
+                @endif
             </div>
         </div>
     </div>

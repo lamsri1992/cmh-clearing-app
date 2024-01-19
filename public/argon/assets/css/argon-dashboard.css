@@ -20102,11 +20102,11 @@ fieldset:disabled .btn {
 
 */
 .alert-primary {
-  background-image: linear-gradient(310deg, #5e72e4 0%, #673bde 100%);
+  /* background-image: linear-gradient(310deg, #5e72e4 0%, #673bde 100%); */
 }
 
 .alert-secondary {
-  background-image: linear-gradient(310deg, #627594 0%, #8ca1cb 100%);
+  /* background-image: linear-gradient(310deg, #627594 0%, #8ca1cb 100%); */
 }
 
 .alert-success {
@@ -20114,11 +20114,11 @@ fieldset:disabled .btn {
 }
 
 .alert-info {
-  background-image: linear-gradient(310deg, #1171ef 0%, #0eadca 100%);
+  /* background-image: linear-gradient(310deg, #1171ef 0%, #0eadca 100%); */
 }
 
 .alert-warning {
-  background-image: linear-gradient(310deg, #fb6340 0%, #faa118 100%);
+  /* background-image: linear-gradient(310deg, #fb6340 0%, #faa118 100%); */
 }
 
 .alert-danger {
@@ -20126,11 +20126,11 @@ fieldset:disabled .btn {
 }
 
 .alert-light {
-  background-image: linear-gradient(310deg, #CED4DA 0%, #d1dae6 100%);
+  /* background-image: linear-gradient(310deg, #CED4DA 0%, #d1dae6 100%); */
 }
 
 .alert-dark {
-  background-image: linear-gradient(310deg, #212229 0%, #0f1112 100%);
+  /* background-image: linear-gradient(310deg, #212229 0%, #0f1112 100%); */
 }
 
 .btn-close:focus {
