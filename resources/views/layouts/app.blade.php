@@ -66,11 +66,10 @@
     @if ($message = Session::get('success'))
     <script>
         Swal.fire({
-            position: "top-end",
             icon: "success",
-            title: {{ $message }},
+            title: "{{ $message }}",
             showConfirmButton: false,
-            timer: 1500
+            timer: 3000
         });
     </script>
     @endif 

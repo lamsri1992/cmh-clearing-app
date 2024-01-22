@@ -36,7 +36,10 @@
                                     <select class="select-basic" name="hospital">
                                         <option value="">เลือกโรงพยาบาล</option>
                                         @foreach ($hos as $res)
-                                        <option value="{{ $res->H_CODE }}">{{ $res->H_NAME }}</option>
+                                        <option value="{{ $res->H_CODE }}"
+                                            {{ ($res->H_CODE == $_REQUEST['hospital']) ? 'SELECTED' : '' }}>
+                                            {{ $res->H_NAME }}
+                                        </option>
                                         @endforeach
                                     </select>
                                 </div>

@@ -25,8 +25,8 @@ class charge extends Controller
     public function filter(Request $request){
         $hcode = Auth::user()->hcode;
         $hospmain = $request->hospital;
-        $d_start = $request->d_start;
-        $d_end = $request->d_end;
+        $d_start = date('j-n-Y',strtotime($request->d_start));
+        $d_end = date('j-n-Y',strtotime($request->d_end));
 
         $data = DB::table('claim_er')
                 ->select('vn','date_rx','hcode','hn','h_name','icd10','ambulanc','drug','lab','proc','p_name','p_color',
@@ -41,7 +41,7 @@ class charge extends Controller
                 // ->whereBetween('date_rx', [$d_start, $d_end])
                 ->get();
         $hos = DB::table('hospital')->where('H_CODE','!=',$hcode)->get();
-
+        // dd($data,$d_start,$d_end);
         return view('charge.filter',['data'=>$data,'hos'=>$hos]);
     }
 

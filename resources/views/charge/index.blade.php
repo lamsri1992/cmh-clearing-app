@@ -108,7 +108,7 @@
                         </div>
                     </div>
                     <div class="col-4 text-end">
-                        <div class="icon icon-shape bg-warning text-center rounded-circle">
+                        <div class="icon icon-shape bg-secondary text-center rounded-circle">
                             <i class="fa-solid fa-house-medical text-lg opacity-10" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -129,7 +129,7 @@
                         </div>
                     </div>
                     <div class="col-4 text-end">
-                        <div class="icon icon-shape bg-primary text-center rounded-circle">
+                        <div class="icon icon-shape bg-secondary text-center rounded-circle">
                             <i class="fa-solid fa-address-card text-lg opacity-10" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -151,7 +151,7 @@
                         </div>
                     </div>
                     <div class="col-4 text-end">
-                        <div class="icon icon-shape bg-success text-center rounded-circle">
+                        <div class="icon icon-shape bg-secondary text-center rounded-circle">
                             <i class="fa-solid fa-x-ray text-lg opacity-10" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -172,7 +172,7 @@
                         </div>
                     </div>
                     <div class="col-4 text-end">
-                        <div class="icon icon-shape bg-danger text-center rounded-circle">
+                        <div class="icon icon-shape bg-secondary text-center rounded-circle">
                             <i class="fa-solid fa-chalkboard text-lg opacity-10" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -193,15 +193,15 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="" class="form-label">วันที่เริ่มต้น</label>
-                        <input type="text" class="form-control datepicker" name="d_start" placeholder="กรุณาเลือกวันที่">
+                        <input type="text" class="form-control datepicker" name="d_start" placeholder="กรุณาเลือกวันที่" required>
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">วันที่สิ้นสุด</label>
-                        <input type="text" class="form-control datepicker" name="d_end" placeholder="กรุณาเลือกวันที่">
+                        <input type="text" class="form-control datepicker" name="d_end" placeholder="กรุณาเลือกวันที่" required>
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">โรงพยาบาล</label>
-                        <select class="select-basic" name="hospital">
+                        <select class="select-basic" name="hospital" required>
                             <option value="">เลือกโรงพยาบาล</option>
                             @foreach ($hos as $res)
                             <option value="{{ $res->H_CODE }}">{{ $res->H_NAME }}</option>

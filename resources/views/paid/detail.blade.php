@@ -81,6 +81,7 @@
                 @endif
                 @endforeach
                 @endif
+                @endif
                 @if ($trans->trans_status == 7)
                     <div class="text-center">
                     <p>
@@ -110,7 +111,6 @@
                         File - {{ $paid->file }}
                     </a>
                 </div>
-                @endif
                 @endif
             </div>
         </div>
@@ -172,17 +172,6 @@
 </div>
 @endsection
 @section('script')
-@if ($message = Session::get('success'))
-<script>
-    Swal.fire({
-        icon: "success",
-        title: {{ $message }},
-        showConfirmButton: false,
-        timer: 1500
-});
-</script>
-<strong>{{ $message }}</strong>
-@endif
 <script src="{{ asset('js/listTableTransactionPaid.js') }}"></script>
 <script>
     $('[data-bs-target="#attachModal"').on('click', function () {

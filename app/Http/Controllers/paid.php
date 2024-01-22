@@ -113,7 +113,7 @@ class paid extends Controller
             'file' => 'required|mimes:pdf|max:2048',
         ]);
       
-        $fileName = $hcode.time().'.'.$request->file->extension();  
+        $fileName = $request->transId.'.'.$request->file->extension();  
         $request->file->move(public_path('uploads'), $fileName);
 
         DB::table('paid')->insert([
@@ -135,7 +135,6 @@ class paid extends Controller
         ]);
 
         return back()
-            ->with('success','Upload ไฟล์เอกสารสำเร็จ')
-            ->with('file', $fileName);
+            ->with('success','Upload ไฟล์เอกสารสำเร็จ '.$fileName);
     }
 }
