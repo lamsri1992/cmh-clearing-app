@@ -26,19 +26,16 @@
                     </thead>
                     <tbody>
                         @foreach ($data as $res)
-                        @php
-                            $orgDate = $res->date_rx;  
-                            $newDate = date("Y-m-d", strtotime($orgDate));  
-                        @endphp
+                        @php $total = $res->paid + $res->ambulance; @endphp
                             <tr>
                                 <td class="text-center">{{ $res->vn }}</td>
-                                <td class="text-center">{{ $newDate }}</td>
+                                <td class="text-center">{{ $res->date_rx }}</td>
                                 <td>{{ $res->h_name }}</td>
                                 <td class="text-center">{{ $res->hn }}</td>
                                 <td class="text-end text-primary fw-bold">{{ number_format($res->amount,2) }}</td>
                                 <td class="text-end text-success fw-bold">{{ number_format($res->paid,2) }}</td>
-                                <td class="text-end text-danger fw-bold">{{ number_format($res->paid_am,2) }}</td>
-                                <td class="text-end fw-bold" style="text-decoration-line: underline">{{ number_format($res->total,2) }}</td>
+                                <td class="text-end text-danger fw-bold">{{ number_format($res->ambulance,2) }}</td>
+                                <td class="text-end fw-bold" style="text-decoration-line: underline">{{ number_format($total,2) }}</td>
                                 <td class="text-center text-white {{ $res->p_color }}">{{ $res->p_name }}</td>
                             </tr>
                         @endforeach

@@ -33,7 +33,11 @@
                     <tbody>
                         @foreach ($data as $res)
                             <tr>
-                                <td class="text-center">{{ $res->trans_code }}</td>
+                                <td class="text-center">
+                                    <a href="{{ route('paid.detail',$res->trans_code) }}">
+                                        {{ $res->trans_code }}
+                                    </a>
+                                </td>
                                 <td class="text-center">{{ $res->trans_paiddate }}</td>
                                 <td class="text-center">{{ $res->h_name }}</td>
                                 <td class="text-center fw-bold">{{ number_format($res->total,2) }}</td>

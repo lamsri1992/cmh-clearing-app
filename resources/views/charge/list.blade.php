@@ -11,9 +11,9 @@
             </div>
             <div class="card-body">
                 <ol class="list-group">
-                    @php $total = 0 @endphp
+                    @if (count($data) > 0)
                     @foreach ($data as $res)
-                    @php $total += $res->total @endphp
+                    @php $total = $res->total + $res->ambulance; @endphp
                     <a href="{{ route('charge.transaction',base64_encode($res->hospmain)) }}">
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <div class="ms-2 me-auto">
@@ -29,14 +29,9 @@
                         </li>
                     </a>
                     @endforeach
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                        <div class="ms-2 me-auto">
-                            <div class="fw-bold">
-                                รวมยอดเรียกเก็บ
-                            </div>
-                            ทั้งหมด {{ number_format($total,2) }} บาท
-                        </div>
-                    </li>
+                    @else
+                    <span><i>ไม่มีข้อมูล</i></span>
+                    @endif
                 </ol>
             </div>
         </div>

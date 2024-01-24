@@ -45,20 +45,24 @@
                             <td class="text-end">{{ number_format($data->proc,2) }}</td>
                         </tr>
                         <tr>
+                            <th>ค่าบริการ</th>
+                            <td class="text-end">{{ number_format($data->service_charge,2) }}</td>
+                        </tr>
+                        <tr>
                             <th>รวมทั้งหมด</th>
                             <td class="text-end">{{ number_format($data->amount,2) }}</td>
                         </tr>
                         <tr>
                             <th>ยอดจ่ายจริง <small class="fw-light text-danger">(จ่ายตามเกณฑ์ไม่เกิน 700 บาท)</small></th>
-                            <td class="text-end">{{ number_format($data->total,2) }}</td>
+                            <td class="text-end">{{ number_format($data->paid,2) }}</td>
                         </tr>
                         <tr>
                             <th>Ambulance</th>
-                            <td class="text-end">{{ number_format($data->ambulanc,2) }}</td>
+                            <td class="text-end">{{ number_format($data->ambulance,2) }}</td>
                         </tr>
                         <tr>
                             <th>ยอดเรียกเก็บจริง</th>
-                            <td class="text-end fw-bold text-decoration-underline">{{ number_format($data->total,2) }}</td>
+                            <td class="text-end fw-bold text-decoration-underline">{{ number_format($data->paid + $data->ambulance,2) }}</td>
                         </tr>
                     </thead>
                 </table>

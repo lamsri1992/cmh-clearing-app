@@ -25,20 +25,19 @@ class charge extends Controller
     public function filter(Request $request){
         $hcode = Auth::user()->hcode;
         $hospmain = $request->hospital;
-        $d_start = date('j-n-Y',strtotime($request->d_start));
-        $d_end = date('j-n-Y',strtotime($request->d_end));
+        $d_start = $request->d_start;
+        $d_end = $request->d_end;
 
         $data = DB::table('claim_er')
-                ->select('vn','date_rx','hcode','hn','h_name','icd10','ambulanc','drug','lab','proc','p_name','p_color',
-                DB::raw('drug + lab + proc AS amount,
-                IF((drug + lab + proc) > 700, 700, (drug + lab + proc)) AS paid,
-                IF(ambulanc > "0", "600", ambulanc) AS paid_am,
-                IF((drug + lab + proc) > 700, 700, (drug + lab + proc)) + IF(ambulanc > "0", "600", ambulanc) AS total'))
+                ->select('vn','date_rx','hcode','hn','h_name','icd10','with_ambulance','drug','lab','proc','p_name','p_color',
+                DB::raw('drug + lab + proc + service_charge AS amount,
+                IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
+                IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance'))
                 ->join('hospital','h_code','claim_er.hospmain')
-                ->join('p_status','id','claim_er.p_status')
+                ->join('p_status','p_status.id','claim_er.p_status')
                 ->where('hospmain',$hospmain)
                 ->where('hcode',$hcode)
-                // ->whereBetween('date_rx', [$d_start, $d_end])
+                ->whereBetween('date_rx', [$d_start, $d_end])
                 ->get();
         $hos = DB::table('hospital')->where('H_CODE','!=',$hcode)->get();
         // dd($data,$d_start,$d_end);
@@ -47,11 +46,10 @@ class charge extends Controller
 
     public function show($id){
         $data = DB::table('claim_er')
-                ->select('vn','hn','pid','date_rx','date_rec','icd9','icd10','refer','drug','lab','proc','ambulanc','h_name','p_status','p_name','reporter','hospmain',
-                DB::raw('drug + lab + proc AS amount,
-                IF((drug + lab + proc) > 700, 700, (drug + lab + proc)) AS paid,
-                IF(ambulanc > "0", "600", ambulanc) AS paid_amb,
-                IF((drug + lab + proc) > 700, 700, (drug + lab + proc)) + IF(ambulanc > "0", "600", ambulanc) AS total'))
+                ->select('vn','hn','pid','date_rx','date_rec','icd9','icd10','refer','drug','lab','proc','service_charge','with_ambulance','h_name','p_status','p_name','reporter','hospmain',
+                DB::raw('drug + lab + proc + service_charge AS amount,
+                IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
+                IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance'))
                 ->join('hospital','hospital.h_code','claim_er.hospmain')
                 ->join('p_status','p_status.id','claim_er.p_status')
                 ->where('vn',base64_decode($id))
@@ -69,7 +67,8 @@ class charge extends Controller
     public function list(){
         $hcode = Auth::user()->hcode;
         $data = DB::table('claim_er')
-                ->select('hospmain','h_name',DB::raw('COUNT(*) AS number,SUM(IF((drug + lab + proc) > 700, 700, (drug + lab + proc)) + IF(ambulanc > "0", "600", ambulanc)) AS total'))
+                ->select('hospmain','h_name',DB::raw('COUNT(*) AS number,IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance,
+                SUM(IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge))) AS total'))
                 ->join('hospital','h_code','claim_er.hospmain')
                 ->where('hospmain','!=',$hcode)
                 ->where('hcode','=',$hcode)
@@ -83,13 +82,12 @@ class charge extends Controller
     public function transaction($id)
     {
         $data = DB::table('claim_er')
-                ->select('vn','date_rx','hcode','hn','h_name','icd10','ambulanc','drug','lab','proc','p_name','p_color',
-                DB::raw('drug + lab + proc AS amount,
-                IF((drug + lab + proc) > 700, 700, (drug + lab + proc)) AS paid,
-                IF(ambulanc > "0", "600", ambulanc) AS paid_am,
-                IF((drug + lab + proc) > 700, 700, (drug + lab + proc)) + IF(ambulanc > "0", "600", ambulanc) AS total'),'hospmain')
+                ->select('vn','date_rx','hcode','hn','h_name','icd10','with_ambulance','drug','lab','proc','p_name','p_color','hospmain',
+                DB::raw('drug + lab + proc + service_charge AS amount,
+                IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
+                IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance'))
                 ->join('hospital','h_code','claim_er.hospmain')
-                ->join('p_status','id','claim_er.p_status')
+                ->join('p_status','p_status.id','claim_er.p_status')
                 ->where('hospmain','=',base64_decode($id))
                 ->where('hcode','!=',base64_decode($id))
                 ->where('p_status',5)
@@ -130,7 +128,7 @@ class charge extends Controller
         $hcode = Auth::user()->hcode;
         $data = DB::table('claim_er')
                 ->select('hospmain','h_name','h_code',
-                DB::raw('COUNT(DISTINCT trans_id) AS number,SUM(IF((drug + lab + proc) > 700, 700, (drug + lab + proc)) + IF(ambulanc > "0", "600", ambulanc)) AS total'))
+                DB::raw('COUNT(DISTINCT trans_id) AS number,SUM(IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge))) AS total'))
                 ->join('hospital','h_code','claim_er.hospmain')
                 ->where('hospmain','!=',$hcode)
                 ->where('hcode','=',$hcode)
@@ -143,13 +141,12 @@ class charge extends Controller
 
     public function detail(Request $request, $id){
         $data = DB::table('claim_er')
-                ->select('vn','date_rx','hcode','hn','h_name','icd10','ambulanc','drug','lab','proc','p_name','p_color',
-                DB::raw('drug + lab + proc AS amount,
-                IF((drug + lab + proc) > 700, 700, (drug + lab + proc)) AS paid,
-                IF(ambulanc > "0", "600", ambulanc) AS paid_am,
-                IF((drug + lab + proc) > 700, 700, (drug + lab + proc)) + IF(ambulanc > "0", "600", ambulanc) AS total'))
+                ->select('vn','date_rx','hcode','hn','h_name','icd10','with_ambulance','drug','lab','proc','p_name','p_color',
+                DB::raw('drug + lab + proc + service_charge AS amount,
+                IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
+                IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance'))
                 ->join('hospital','h_code','claim_er.hospmain')
-                ->join('p_status','id','claim_er.p_status')
+                ->join('p_status','p_status.id','claim_er.p_status')
                 ->where('trans_id',$id)
                 ->get();
         // echo($data);

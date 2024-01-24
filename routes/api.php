@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\sentController;
+use App\Http\Controllers\API\processController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,5 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/sent', [sentController::class, 'index']);
 Route::get('/sent/{id}', [sentController::class, 'show']);
+Route::get('/process/{id}', [processController::class, 'show']);

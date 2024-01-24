@@ -31,10 +31,11 @@ class sentController extends Controller
     {
         $keys = explode(",",$id);
         $data = DB::table('transaction')
+            ->select(DB::raw('distinct claim_er.trans_id'),'h_name','h_code','p_name','create_date')
             ->select(DB::raw('distinct claim_er.trans_id'),'h_name','h_code','p_name','create_date','hcode')
             ->join('claim_er','claim_er.trans_id','transaction.trans_code')
             ->join('hospital','hospital.h_code','claim_er.hospmain')
-            ->join('p_status','id','claim_er.p_status')
+            ->join('p_status','p_status.id','claim_er.p_status')
             ->where('claim_er.hospmain',$keys[1])
             ->where('claim_er.hcode',$keys[0])
             ->whereIn('p_status',[2,3,5,7,8])

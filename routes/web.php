@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\dashboard;
 use App\Http\Controllers\paid;
 use App\Http\Controllers\charge;
+use App\Http\Controllers\process;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,7 @@ Route::prefix('/')->group(function () {
     Route::get('dashboard', [dashboard::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
     Route::get('paid', [paid::class, 'index'])->name('paid');
     Route::get('charge', [charge::class, 'index'])->name('charge');
+    Route::get('process', [process::class, 'index'])->name('process');
 });
 
 Route::prefix('charge')->group(function () {
