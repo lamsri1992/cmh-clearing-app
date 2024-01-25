@@ -27,9 +27,14 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <link href="{{ asset('vendor/preload/preload.css') }}" rel="stylesheet">
 </head>
 
 <body class="g-sidenav-show   bg-gray-100">
+    <div class="preloader">
+        <div class="spinner"></div>
+        <span id="loading-msg">กำลังดาวน์โหลดข้อมูล</span>
+    </div>
     <div class="min-height-300 bg-primary position-absolute w-100"></div>
     @include('layouts.side')
     <main class="main-content position-relative border-radius-lg ">
@@ -58,6 +63,7 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="{{ asset('argon/assets/js/argon-dashboard.min.js?v=2.0.4') }}"></script>
+    <script type="text/javascript" charset="utf8" src="{{ asset('vendor/preload/preload.js') }}"></script>
     <script>
         $(document).ready(function() {
             $('.basic-single').select2();
