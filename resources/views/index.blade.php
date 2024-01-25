@@ -17,7 +17,7 @@
                             <p class="text-sm mb-0 font-weight-bold">ยอดเรียกเก็บ</p>
                             <h5 class="font-weight-bolder" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                 data-bs-title="ยอดเรียกเก็บจริง">
-                                {{ number_format($creditor->total,2) }}
+                                {{ number_format($creditor->total,2) }} บาท
                             </h5>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                             <p class="text-sm mb-0 font-weight-bold">ยอดตามจ่าย</p>
                             <h5 class="font-weight-bolder" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                 data-bs-title="ยอดตามจ่ายจริง">
-                                {{ number_format($dept->total,2) }}
+                                {{ number_format($dept->total,2) }} บาท
                             </h5>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                         <div class="numbers">
                             <p class="text-sm mb-0 font-weight-bold">รอตรวจสอบ</p>
                             <h5 class="font-weight-bolder">
-                                {{ number_format($wait) }}
+                                {{ number_format($wait) }} รายการ
                             </h5>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                         <div class="numbers">
                             <p class="text-sm mb-0 font-weight-bold">ปฏิเสธจ่าย</p>
                             <h5 class="font-weight-bolder">
-                                {{ number_format($deny) }}
+                                0.00 บาท
                             </h5>
                         </div>
                     </div>

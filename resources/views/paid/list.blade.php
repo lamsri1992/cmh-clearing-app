@@ -4,10 +4,20 @@
     <div class="col-lg-12 mb-lg-0 mb-4">
         <div class="card z-index-2 h-100">
             <div class="card-header pb-0 pt-3 bg-transparent">
-                <h6 class="text-capitalize">
-                    <i class="fa-regular fa-clock"></i>
-                    Transaction : รอดำเนินการตามจ่าย + แนบหลักฐานการจ่าย
-                </h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-capitalize">
+                            <i class="fa-regular fa-clock"></i>
+                            Transaction : รอดำเนินการตามจ่าย + แนบหลักฐานการจ่าย
+                        </h6>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <a href="{{ url()->previous() }}" class="btn btn-outline-primary btn-xs" type="button">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            ย้อนกลับ
+                        </a>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <div style="margin-bottom: 1rem;">
@@ -112,7 +122,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">วันที่</label>
-                        <input name="paid_date" class="form-control" type="text" placeholder="ระบุวันที่ชำระเงิน">
+                        <input type="text" class="form-control datepicker" name="paid_date" placeholder="ระบุวันที่ชำระเงิน" required>
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">หมายเลขอ้างอิง</label>

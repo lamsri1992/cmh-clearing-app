@@ -35,7 +35,7 @@
                     <div class="col-8">
                         <div class="numbers">
                             <p class="text-sm mb-0 font-weight-bold">ดำเนินการตามจ่ายแล้ว</p>
-                            <a href="#" class="font-weight-bolder">
+                            <a href="{{ route('paid.success') }}" class="font-weight-bolder">
                                 {{ number_format($success) }} รายการ
                             </a>
                         </div>
@@ -56,7 +56,7 @@
                     <div class="col-8">
                         <div class="numbers">
                             <p class="text-sm mb-0 font-weight-bold">ปฏิเสธจ่าย</p>
-                            <a href="#" class="font-weight-bolder">
+                            <a href="{{ route('deny') }}" class="font-weight-bolder">
                                 {{ number_format($deny) }} รายการ
                             </a>
                         </div>

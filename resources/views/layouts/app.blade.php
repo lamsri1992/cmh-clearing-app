@@ -62,7 +62,33 @@
         $(document).ready(function() {
             $('.basic-single').select2();
         });
-    </script>
+
+        $(function(){
+            $(".datepicker").datepicker();
+            $(".datepicker").datepicker( "option", "dateFormat", 'yy-mm-dd');
+        });
+
+        new DataTable('#basicTable', {
+            lengthMenu: [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+            responsive: true,
+            scrollX: true,
+            oLanguage: {
+                oPaginate: {
+                    sFirst: '<small>หน้าแรก</small>',
+                    sLast: '<small>หน้าสุดท้าย</small>',
+                    sNext: '<small>ถัดไป</small>',
+                    sPrevious: '<small>กลับ</small>'
+                },
+                sSearch: '<small><i class="fa fa-search"></i> ค้นหา</small>',
+                sInfo: '<small>ทั้งหมด _TOTAL_ รายการ</small>',
+                sLengthMenu: '<small>แสดง _MENU_ รายการ</small>',
+                sInfoEmpty: '<small>ไม่มีข้อมูล</small>'
+            },
+        });
+</script>
     @if ($message = Session::get('success'))
     <script>
         Swal.fire({

@@ -13,7 +13,7 @@ class paid extends Controller
         $hcode = Auth::user()->hcode;
         $query_count = "SELECT
         (SELECT COUNT(vn) FROM claim_er WHERE p_status = '2' AND hospmain = $hcode) AS charge,
-        (SELECT COUNT(vn) FROM claim_er WHERE p_status = '8' AND hospmain = $hcode) AS success,
+        (SELECT COUNT(vn) FROM claim_er WHERE p_status IN ('7','8') AND hospmain = $hcode) AS success,
         (SELECT COUNT(vn) FROM claim_er WHERE p_status = '4' AND hospmain = $hcode) AS deny";
 
         $count = DB::select($query_count);
@@ -21,6 +21,7 @@ class paid extends Controller
                 FROM `transaction`
                 LEFT JOIN hospital ON hospital.H_CODE = trans_hcode
                 WHERE trans_hmain = {$hcode}
+                AND trans_status = 5
                 GROUP BY trans_code,trans_hcode,create_date,trans_paiddate
                 ORDER BY trans_id DESC
                 LIMIT 10");
@@ -51,7 +52,7 @@ class paid extends Controller
     public function show($id){
         $data = DB::table('claim_er')
                 ->select('vn','hn','pid','date_rx','date_rec','icd9','icd10','refer','drug','lab','proc','service_charge','with_ambulance',
-                'h_name','p_name','reporter','p_status','trans_id',
+                'h_name','p_name','reporter','p_status','trans_id','ptname','updated_deny','note',
                 DB::raw('drug + lab + proc + service_charge AS amount,
                 IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
                 IF(with_ambulance = "0", "600", with_ambulance) AS ambulance'))
@@ -73,14 +74,34 @@ class paid extends Controller
         ]);
     }
 
+    public function deny(Request $request)
+    {
+        $date = date('Y-m-d');
+        $id = $request->vn;
+        $note = $request->formData;
+
+        DB::table('claim_er')->where('vn',$id)->update(
+            [
+                "p_status" => 4,
+                "note" => $note,
+                "updated_deny" => $date
+            ]
+        );
+
+        DB::table('transaction')->where('trans_recno',$id)->update([
+            "trans_status" => 4,
+            "trans_confirmdate" => $date
+        ]);
+    }
+
     public function transConfirm(Request $request,$id)
     {
         $date = date('Y-m-d');
-        DB::table('claim_er')->where('trans_id',$id)->update([
+        DB::table('claim_er')->where('trans_id',$id)->where('p_status',3)->update([
             'p_status' => 7
         ]);
 
-        DB::table('transaction')->where('trans_code',$id)->update([
+        DB::table('transaction')->where('trans_code',$id)->where('trans_status',3)->update([
             'trans_status' => 7,
             'trans_paiddate' => $date
         ]);
@@ -97,9 +118,8 @@ class paid extends Controller
                 LEFT JOIN hospital ON hospital.H_CODE = trans_hcode
                 LEFT JOIN paid ON paid.trans_code = `transaction`.trans_code
                 WHERE trans_hmain = {$hcode}
-                AND trans_status IN('7','8')
+                AND trans_status IN('7')
                 GROUP BY `transaction`.trans_code,trans_hcode,`transaction`.create_date,trans_paiddate");
-        // dd($data);
         return view('paid.list', ['data' => $data]);
     }
 
@@ -119,20 +139,34 @@ class paid extends Controller
             'balance'=>$request->balance,
             'balance_type'=>$request->balance_type,
             'paid_date'=>$request->paid_date,
+            'paid_no'=>$request->paid_no,
             'create_date'=>$date,
             'file'=>$fileName,
         ]);
        
-        DB::table('transaction')->where('trans_code',$request->transId)->update([
+        DB::table('transaction')->where('trans_code',$request->transId)->where('trans_status',7)->update([
             'trans_status' => 8,
             'trans_paiddate' => $date
         ]);
 
-        DB::table('claim_er')->where('trans_id',$request->transId)->update([
+        DB::table('claim_er')->where('trans_id',$request->transId)->where('p_status',7)->update([
             'p_status' => 8,
         ]);
 
         return back()
             ->with('success','Upload ไฟล์เอกสารสำเร็จ '.$fileName);
+    }
+
+    public function success(){
+        $hcode = Auth::user()->hcode;
+        $data = DB::select("SELECT DISTINCT `transaction`.trans_code,SUM(trans_total) as total,
+                trans_hcode,h_name,`transaction`.create_date,trans_paiddate,paid.file,trans_status,paid.balance
+                FROM `transaction`
+                LEFT JOIN hospital ON hospital.H_CODE = trans_hcode
+                LEFT JOIN paid ON paid.trans_code = `transaction`.trans_code
+                WHERE trans_hmain = {$hcode}
+                AND trans_status IN('8')
+                GROUP BY `transaction`.trans_code,trans_hcode,`transaction`.create_date,trans_paiddate");
+        return view('paid.success', ['data' => $data]);
     }
 }

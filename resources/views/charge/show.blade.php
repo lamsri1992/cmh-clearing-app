@@ -14,8 +14,9 @@
                         <p><b>VN</b> : {{ $data->vn }}</p>
                         <p><b>HN</b> : {{ $data->hn }}</p>
                         <p><b>PID</b> : {{ $data->pid }}</p>
-                        <p><b>วันที่รับบริการ</b> : {{ date("Y-m-d", strtotime($data->date_rx)); }}</p>
-                        <p><b>วันที่เรียกเก็บ</b> : {{ date("Y-m-d", strtotime($data->date_rec)); }}</p>
+                        <p><b>สิทธิการรักษา</b> : {{ $data->ptname }}</p>
+                        <p><b>วันที่รับบริการ</b> : {{ date("Y-m-d", strtotime($data->date_rx)) }}</p>
+                        <p><b>วันที่เรียกเก็บ</b> : {{ date("Y-m-d", strtotime($data->date_rec)) }}</p>
                     </div>
                     <div class="col-md-6">
                         <p><b>เรียกเก็บไปยัง</b> : {{ $data->h_name }}</p>
@@ -27,7 +28,11 @@
                             '<i class="fa-solid fa-xmark-circle text-danger"></i> ไม่ใช่'
                             !!}
                         </p>
-                        <p><b>สถานะ</b> : {{ $data->p_name }}</p>
+                        <p>
+                            <b>สถานะ</b> : 
+                            {{ $data->p_name." (".date("Y-m-d", strtotime($data->updated)).")" }} <br>
+                            <i>{{ $data->note }}</i>
+                        </p>
                     </div>
                 </div>
                 <table class="table table-bordered">
@@ -117,6 +122,10 @@
                         <i class="fa-solid fa-ban"></i>
                         ยกเลิกการเรียกเก็บ
                     </button>
+                    <a href="{{ url()->previous() }}" class="btn btn-outline-primary" type="button">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        ย้อนกลับ
+                    </a>
                 </div>
             </div>
         </div>
@@ -132,6 +141,52 @@
             document.getElementById("btnUpdate").disabled = true;
             document.getElementById("btnCancel").disabled = true;
         }
+        Swal.fire({
+            title: '{{ $data->p_name }}',
+            text: '{{ $data->note }}',
+            icon: 'info',
+        });
+    });
+
+    $('#btnCancel').on("click", function (event) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'ยกเลิกรายการเรียกเก็บ \n{{ " VN : ".$data->vn }}',
+            text: 'หากยกเลิกรายการแล้ว จะไม่สามารถย้อนกลับรายการได้อีก',
+            showCancelButton: true,
+            confirmButtonText: `ยืนยัน`,
+            cancelButtonText: `ยกเลิก`,
+            icon: 'warning',
+            input: 'text',
+            inputPlaceholder: 'ระบุหมายเหตุการยกเลิกรายการ'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var vn = {{ $data->vn }}
+                var formData = result.value;
+                var token = "{{ csrf_token() }}";
+                console.log(vn,formData);
+                $.ajax({
+                    url: "{{ route('charge.cancel') }}",
+                    data:
+                    {
+                        vn: vn,
+                        formData: formData,
+                        _token: token
+                    },
+                    success: function (data) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'ยกเลิกรายการแล้ว',
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                        window.setTimeout(function () {
+                            location.reload()
+                        }, 1500);
+                    }
+                });
+            }
+        })
     });
 </script>
 @endsection

@@ -33,11 +33,13 @@ Route::prefix('/')->group(function () {
     Route::get('paid', [paid::class, 'index'])->name('paid');
     Route::get('charge', [charge::class, 'index'])->name('charge');
     Route::get('process', [process::class, 'index'])->name('process');
+    Route::get('deny', [dashboard::class, 'deny'])->name('deny');
 });
 
 Route::prefix('charge')->group(function () {
     Route::get('/filter', [charge::class, 'filter'])->name('charge.filter');
     Route::get('/confirm', [charge::class, 'confirm'])->name('charge.confirm');
+    Route::get('/cancel', [charge::class, 'cancel'])->name('charge.cancel');
     Route::get('/list', [charge::class, 'list'])->name('charge.list');
     Route::get('/sent', [charge::class, 'sent'])->name('charge.sent');
     Route::get('/sent/{id}', [charge::class, 'detail'])->name('charge.detail');
@@ -49,7 +51,9 @@ Route::prefix('charge')->group(function () {
 Route::prefix('paid')->group(function () {
     Route::get('/', [paid::class, 'index'])->name('paid.index');
     Route::get('/confirm', [paid::class, 'confirm'])->name('paid.confirm');
+    Route::get('/deny', [paid::class, 'deny'])->name('paid.deny');
     Route::get('/list', [paid::class, 'list'])->name('paid.list');
+    Route::get('/success', [paid::class, 'success'])->name('paid.success');
     Route::get('{id}', [paid::class, 'show'])->name('ระบบการตามจ่าย');
     Route::get('/transaction/{id}', [paid::class, 'detail'])->name('paid.detail');
     Route::get('/transaction/confirm/{id}', [paid::class, 'transConfirm'])->name('paid.transConfirm');

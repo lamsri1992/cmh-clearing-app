@@ -14,11 +14,12 @@
                         <p><b>VN</b> : {{ $data->vn }}</p>
                         <p><b>HN</b> : {{ $data->hn }}</p>
                         <p><b>PID</b> : {{ $data->pid }}</p>
-                        <p><b>วันที่รับบริการ</b> : {{ date("Y-m-d", strtotime($data->date_rx)); }}</p>
-                        <p><b>วันที่เรียกเก็บ</b> : {{ date("Y-m-d", strtotime($data->date_rec)); }}</p>
+                        <p><b>สิทธิการรักษา</b> : {{ $data->ptname }}</p>
+                        <p><b>วันที่รับบริการ</b> : {{ date("Y-m-d", strtotime($data->date_rx)) }}</p>
+                        <p><b>วันที่เรียกเก็บ</b> : {{ date("Y-m-d", strtotime($data->date_rec)) }}</p>
                     </div>
                     <div class="col-md-6">
-                        <p><b>ตามจ่ายไปยัง</b> : {{ $data->h_name }}</p>
+                        <p><b>เรียกเก็บไปยัง</b> : {{ $data->h_name }}</p>
                         <p><b>ICD9</b> : {{ $data->icd9 }}</p>
                         <p><b>ICD10</b> : {{ $data->icd10 }}</p>
                         <p><b>Refer</b> : {!! ($data->refer == 1) ? 
@@ -27,7 +28,11 @@
                             '<i class="fa-solid fa-xmark-circle text-danger"></i> ไม่ใช่'
                             !!}
                         </p>
-                        <p><b>สถานะ</b> : {{ $data->p_name }}</p>
+                        <p>
+                            <b>สถานะ</b> : 
+                            {{ $data->p_name." (".date("Y-m-d", strtotime($data->updated_deny)).")" }} <br>
+                            <i>{{ $data->note }}</i>
+                        </p>
                     </div>
                 </div>
                 <table class="table table-bordered">
@@ -113,6 +118,10 @@
                         <i class="fa-regular fa-circle-xmark"></i>
                         ปฏิเสธการจ่าย
                     </button>
+                    <a href="{{ url()->previous() }}" class="btn btn-outline-primary" type="button">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        ย้อนกลับ
+                    </a>
                 </div>
             </div>
         </div>
@@ -128,8 +137,6 @@
                 title: "VN : " + {{ $data->vn }},
                 text: "รายการถูกยืนยันแล้ว",
                 icon: "success"
-            }).then(function() {
-                location.replace('/paid/transaction/{{ $data->trans_id }}')
             });
             
             document.getElementById("btnConfirm").disabled = true;
@@ -140,13 +147,52 @@
                 title: "VN : " + {{ $data->vn }},
                 text: "รายการถูกปฏิเสธจ่าย",
                 icon: "error"
-            }).then(function() {
-                location.replace('/paid/transaction/{{ $data->trans_id }}')
             });
             
             document.getElementById("btnConfirm").disabled = true;
             document.getElementById("btnDeny").disabled = true;
         }
+    });
+
+    $('#btnDeny').on("click", function (event) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'ปฏิเสธรายการเรียกเก็บ \n{{ " VN : ".$data->vn }}',
+            text: 'หากบันทึกรายการแล้ว จะไม่สามารถย้อนกลับรายการได้อีก',
+            showCancelButton: true,
+            confirmButtonText: `ยืนยัน`,
+            cancelButtonText: `ยกเลิก`,
+            icon: 'warning',
+            input: 'text',
+            inputPlaceholder: 'ระบุหมายเหตุการปฏิเสธจ่าย'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var vn = {{ $data->vn }}
+                var formData = result.value;
+                var token = "{{ csrf_token() }}";
+                console.log(vn,formData);
+                $.ajax({
+                    url: "{{ route('paid.deny') }}",
+                    data:
+                    {
+                        vn: vn,
+                        formData: formData,
+                        _token: token
+                    },
+                    success: function (data) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'ยกเลิกรายการแล้ว',
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                        window.setTimeout(function () {
+                            location.reload()
+                        }, 1500);
+                    }
+                });
+            }
+        })
     });
 </script>
 @endsection

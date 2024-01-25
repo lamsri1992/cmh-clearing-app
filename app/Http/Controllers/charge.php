@@ -13,7 +13,7 @@ class charge extends Controller
         $query_count = "SELECT
         (SELECT COUNT(vn) FROM claim_er WHERE p_status = '1' AND hcode = $hcode) AS wait,
         (SELECT COUNT(vn) FROM claim_er WHERE p_status IN('2','3','7','8') AND hcode = $hcode) AS charge,
-        (SELECT COUNT(vn) FROM claim_er WHERE p_status = '4' AND hcode = $hcode) AS deny,
+        (SELECT COUNT(vn) FROM claim_er WHERE p_status = '4' AND hospmain = $hcode) AS deny,
         (SELECT COUNT(vn) FROM claim_er WHERE p_status = '5' AND hcode = $hcode) AS confirm,
         (SELECT COUNT(vn) FROM claim_er WHERE p_status = '6' AND hcode = $hcode) AS cancel";
 
@@ -46,7 +46,8 @@ class charge extends Controller
 
     public function show($id){
         $data = DB::table('claim_er')
-                ->select('vn','hn','pid','date_rx','date_rec','icd9','icd10','refer','drug','lab','proc','service_charge','with_ambulance','h_name','p_status','p_name','reporter','hospmain',
+                ->select('vn','hn','pid','date_rx','date_rec','icd9','icd10','refer','drug','lab','proc','service_charge','with_ambulance',
+                'h_name','p_status','p_name','reporter','hospmain','ptname','updated','note',
                 DB::raw('drug + lab + proc + service_charge AS amount,
                 IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
                 IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance'))
@@ -61,7 +62,25 @@ class charge extends Controller
     public function confirm(Request $request)
     {
         $id = $request->recno;
-        $query = DB::table('claim_er')->where('vn',$id)->update(["p_status" => 5]);
+        $query = DB::table('claim_er')->where('vn',$id)->update(
+            [
+                "p_status" => 5,
+                "updated" => date('Y-m-d')
+            ]
+        );
+    }
+
+    public function cancel(Request $request)
+    {
+        $id = $request->vn;
+        $note = $request->formData;
+        $query = DB::table('claim_er')->where('vn',$id)->update(
+            [
+                "p_status" => 6,
+                "note" => $note,
+                "updated" => date('Y-m-d')
+            ]
+        );
     }
 
     public function list(){

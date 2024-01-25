@@ -78,9 +78,10 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 font-weight-bold">ปฏิเสธจ่าย</p>
-                            <a href="#" class="font-weight-bolder">
-                                {{ number_format($deny) }} รายการ
+                            <p class="text-sm mb-0 font-weight-bold">ถูกปฏิเสธจ่าย</p>
+                            <a href="{{ route('deny') }}" class="font-weight-bolder">
+                                {{-- {{ number_format($deny) }} รายการ --}}
+                                0 รายการ
                             </a>
                         </div>
                     </div>
@@ -235,10 +236,10 @@
         $("#menu").modal('show')
     });
 
-    $(function(){
-        $(".datepicker").datepicker();
-        $(".datepicker").datepicker( "option", "dateFormat", 'yy-mm-dd');
-    });
+    // $(function(){
+    //     $(".datepicker").datepicker();
+    //     $(".datepicker").datepicker( "option", "dateFormat", 'yy-mm-dd');
+    // });
       
     $(document).ready(function () {
         $('.select-basic').select2({
