@@ -23,7 +23,32 @@
                     <div class="col-md-6">
                         <span class="fw-bold">จำนวนข้อมูล :: </span>
                         {{ $count." รายการ" }}
-                    </div>                    
+                    </div>        
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="fw-bold">
+                            ประมวลผลสิทธิการรักษา
+                        </span>
+                        <table id="basicTable" class="table table-striped table-borderless" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>รหัสสิทธิ</th>
+                                    <th>ชื่อสิทธิ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($bent as $res)
+                                <tr>
+                                    <td>{{ $res->pttype }}</td>
+                                    <td>{{ $res->ptname }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>                  
                 </div>
             </div>
         </div>
