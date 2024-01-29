@@ -13,12 +13,13 @@ class charge extends Controller
         $query_count = "SELECT
         (SELECT COUNT(vn) FROM claim_er WHERE p_status = '1' AND hcode = $hcode) AS wait,
         (SELECT COUNT(vn) FROM claim_er WHERE p_status IN('2','3','7','8') AND hcode = $hcode) AS charge,
-        (SELECT COUNT(vn) FROM claim_er WHERE p_status = '4' AND hospmain = $hcode) AS deny,
+        (SELECT COUNT(vn) FROM claim_er WHERE p_status = '4' AND hcode = $hcode) AS deny,
         (SELECT COUNT(vn) FROM claim_er WHERE p_status = '5' AND hcode = $hcode) AS confirm,
         (SELECT COUNT(vn) FROM claim_er WHERE p_status = '6' AND hcode = $hcode) AS cancel";
 
         $count = DB::select($query_count);
         $hos = DB::table('hospital')->where('H_CODE','!=',$hcode)->get();
+        // dd($count);
         return view('charge.index',['hos'=>$hos,'count'=>$count]);
     }
 

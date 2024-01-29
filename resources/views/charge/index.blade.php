@@ -80,8 +80,8 @@
                         <div class="numbers">
                             <p class="text-sm mb-0 font-weight-bold">ถูกปฏิเสธจ่าย</p>
                             <a href="{{ route('deny') }}" class="font-weight-bolder">
-                                {{-- {{ number_format($deny) }} รายการ --}}
-                                0 รายการ
+                                {{ number_format($deny) }} รายการ
+                                {{-- 0 รายการ --}}
                             </a>
                         </div>
                     </div>

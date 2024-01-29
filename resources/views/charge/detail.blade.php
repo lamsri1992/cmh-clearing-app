@@ -56,10 +56,20 @@
                     </tbody>
                 </table>
                 @if ($paid != NULL)
-                <span class="badge rounded-pill bg-dark">
-                    <i class="fa-solid fa-receipt"></i>
-                    {{ "เลขที่หนังสือ :: ".$paid->paid_no }}
-                </span>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <span class="badge rounded-pill bg-dark">
+                            <i class="fa-solid fa-receipt"></i>
+                            {{ "เลขที่หนังสือ :: ".$paid->paid_no }}
+                        </span>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <a href="{{ asset('uploads/'.$paid->file) }}" target="_blank">
+                            <i class="fa-regular fa-file-pdf text-danger"></i>
+                            File - {{ $paid->file }}
+                        </a>
+                    </div>
+                </div>
                 <div style="margin-top: 1rem;">
                     <table class="table table-striped text-center table-bordered">
                         <thead>
