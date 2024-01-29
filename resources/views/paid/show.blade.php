@@ -19,7 +19,7 @@
                         <p><b>วันที่เรียกเก็บ</b> : {{ date("Y-m-d", strtotime($data->date_rec)) }}</p>
                     </div>
                     <div class="col-md-6">
-                        <p><b>เรียกเก็บไปยัง</b> : {{ $data->h_name }}</p>
+                        <p><b>ตามจ่ายไปยัง</b> : {{ $data->h_name }}</p>
                         <p><b>ICD9</b> : {{ $data->icd9 }}</p>
                         <p><b>ICD10</b> : {{ $data->icd10 }}</p>
                         <p><b>Refer</b> : {!! ($data->refer == 1) ? 
@@ -182,7 +182,8 @@
                     success: function (data) {
                         Swal.fire({
                             icon: 'error',
-                            title: 'ยกเลิกรายการแล้ว',
+                            title: 'ปฏิเสธจ่ายรายการนี้แล้ว',
+                            text: '{{ $data->vn }}',
                             showConfirmButton: false,
                             timer: 3000
                         })

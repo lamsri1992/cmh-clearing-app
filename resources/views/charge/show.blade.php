@@ -81,6 +81,7 @@
                     <button id="btnConfirm" type="button" class="btn btn-success"
                         onclick="
                         var recno = {{ $data->vn }}
+                        var hospmain = {{ $data->hospmain }}
                         Swal.fire({
                             title: 'ยืนยันข้อมูลการเรียกเก็บ',
                             text: 'กรุณาตรวจสอบข้อมูลก่อนดำเนินการ',
@@ -105,7 +106,7 @@
                                         timer: 3000
                                     })
                                     window.setTimeout(function () {
-                                        location.replace('/charge/filter?d_start=&d_end=&hospital=11120&menuChoose=OPAE')
+                                        location.replace('/charge/filter?hospital='+hospmain+'&menuChoose=OPAE')
                                     }, 1500);
                                 }
                             });

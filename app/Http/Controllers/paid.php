@@ -21,7 +21,7 @@ class paid extends Controller
                 FROM `transaction`
                 LEFT JOIN hospital ON hospital.H_CODE = trans_hcode
                 WHERE trans_hmain = {$hcode}
-                AND trans_status = 5
+                AND trans_status = 2
                 GROUP BY trans_code,trans_hcode,create_date,trans_paiddate
                 ORDER BY trans_id DESC
                 LIMIT 10");
