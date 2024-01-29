@@ -168,8 +168,9 @@ class charge extends Controller
                 ->join('p_status','p_status.id','claim_er.p_status')
                 ->where('trans_id',$id)
                 ->get();
+        $paid = DB::table('paid')->where('trans_code',$id)->first();
         // echo($data);
-        return view('charge.detail', ['data' => $data,'id'=>$id]);
+        return view('charge.detail', ['data' => $data,'id'=>$id,'paid'=>$paid]);
     }
 
 }

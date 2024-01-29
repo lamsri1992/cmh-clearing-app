@@ -124,7 +124,7 @@
                     <div class="col-8">
                         <div class="numbers">
                             <p class="text-sm mb-0 font-weight-bold">รายการเรียกเก็บ</p>
-                            <a href="#" class="font-weight-bolder chargeClick" data-id="FWF" data-text="สิทธิต่างด้าว">
+                            <a href="#" class="font-weight-bolder" data-id="FWF" data-text="สิทธิต่างด้าว">
                                 สิทธิต่างด้าว
                             </a>
                         </div>
@@ -146,7 +146,7 @@
                     <div class="col-8">
                         <div class="numbers">
                             <p class="text-sm mb-0 font-weight-bold">รายการเรียกเก็บ</p>
-                            <a href="#" class="font-weight-bolder chargeClick" data-id="CT" data-text="การรับบริการ CT Scan">
+                            <a href="#" class="font-weight-bolder" data-id="CT" data-text="การรับบริการ CT Scan">
                                 การรับบริการ CT Scan
                             </a>
                         </div>
@@ -167,7 +167,7 @@
                     <div class="col-8">
                         <div class="numbers">
                             <p class="text-sm mb-0 font-weight-bold">รายการเรียกเก็บ</p>
-                            <a href="#" class="font-weight-bolder chargeClick" data-id="MRI" data-text="การรับบริการ MRI">
+                            <a href="#" class="font-weight-bolder" data-id="MRI" data-text="การรับบริการ MRI">
                                 การรับบริการ MRI
                             </a>
                         </div>

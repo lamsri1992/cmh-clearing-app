@@ -4,10 +4,20 @@
     <div class="col-lg-12 mb-lg-0 mb-4">
         <div class="card z-index-2 h-100">
             <div class="card-header pb-0 pt-3 bg-transparent">
-                <h6 class="text-capitalize">
-                    <i class="fa-solid fa-file-invoice"></i>
-                    Transaction Code : {{ $id }}
-                </h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-capitalize">
+                            <i class="fa-solid fa-file-invoice"></i>
+                            Transaction Code : {{ $id }}
+                        </h6>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <a href="{{ url()->previous() }}" class="btn btn-outline-primary btn-xs" type="button">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            ย้อนกลับ
+                        </a>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <table id="listData" class="display nowrap" style="width:100%">
@@ -25,8 +35,12 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php $all = 0; @endphp
                         @foreach ($data as $res)
-                        @php $total = $res->paid + $res->ambulance; @endphp
+                        @php 
+                            $total = $res->paid + $res->ambulance;
+                            $all += $total;
+                        @endphp
                             <tr>
                                 <td class="text-center">{{ $res->vn }}</td>
                                 <td class="text-center">{{ date("Y-m-d", strtotime($res->date_rx)) }}</td>
@@ -41,6 +55,30 @@
                         @endforeach
                     </tbody>
                 </table>
+                @if ($paid != NULL)
+                <span class="badge rounded-pill bg-dark">
+                    <i class="fa-solid fa-receipt"></i>
+                    {{ "เลขที่หนังสือ :: ".$paid->paid_no }}
+                </span>
+                <div style="margin-top: 1rem;">
+                    <table class="table table-striped text-center table-bordered">
+                        <thead>
+                          <tr>
+                            <th scope="col" width="30%">จำนวนเรียกเก็บ</th>
+                            <th scope="col" width="30%">จำนวนจ่ายจริง</th>
+                            <th scope="col" width="30%">ส่วนต่าง</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="text-primary fw-bold">{{ number_format($all,2) }}</td>
+                            <td class="text-success fw-bold">{{ number_format($paid->balance,2) }}</td>
+                            <td class="text-danger fw-bold">{{ number_format($paid->balance - $all,2) }}</td>
+                          </tr>
+                        </tbody>
+                    </table>
+                </div>
+                @endif
             </div>
         </div>
     </div>
