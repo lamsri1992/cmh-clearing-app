@@ -6,6 +6,7 @@ use App\Http\Controllers\dashboard;
 use App\Http\Controllers\paid;
 use App\Http\Controllers\charge;
 use App\Http\Controllers\process;
+use App\Http\Controllers\importController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,7 @@ Route::prefix('charge')->group(function () {
     Route::get('/confirm', [charge::class, 'confirm'])->name('charge.confirm');
     Route::get('/cancel', [charge::class, 'cancel'])->name('charge.cancel');
     Route::get('/list', [charge::class, 'list'])->name('charge.list');
+    Route::post('/import', [importController::class, 'import'])->name('charge.import');
     Route::get('/sent', [charge::class, 'sent'])->name('charge.sent');
     Route::get('/sent/{id}', [charge::class, 'detail'])->name('charge.detail');
     Route::post('/bill', [charge::class, 'bill'])->name('charge.bill');

@@ -81,7 +81,6 @@
                             <p class="text-sm mb-0 font-weight-bold">ถูกปฏิเสธจ่าย</p>
                             <a href="{{ route('deny') }}" class="font-weight-bolder">
                                 {{ number_format($deny) }} รายการ
-                                {{-- 0 รายการ --}}
                             </a>
                         </div>
                     </div>
@@ -146,7 +145,7 @@
                     <div class="col-8">
                         <div class="numbers">
                             <p class="text-sm mb-0 font-weight-bold">รายการเรียกเก็บ</p>
-                            <a href="#" class="font-weight-bolder" data-id="CT" data-text="การรับบริการ CT Scan">
+                            <a href="#" class="font-weight-bolder ctClick" data-id="CT" data-text="การรับบริการ CT Scan">
                                 การรับบริการ CT Scan
                             </a>
                         </div>
@@ -224,6 +223,37 @@
         </form>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="import" tabindex="-1" aria-labelledby="importLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="frmImport" method="POST" enctype="multipart/form-data" action="{{ route('charge.import') }}">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="importText"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <input id="select-file" name="select-file" type="file" class="custom-file-input" required>
+                        <small class="text-danger">(ไฟล์นามสกุล .xlsx หรือ .xls เท่านั้น)</small>
+                    </div>
+                    <div class="mb-3" hidden>
+                        <input type="text" class="form-control" name="importChoose" id="importChoose">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-sm btn-success">
+                        <i class="fa-solid fa-cloud-upload"></i>
+                        Import Excel
+                    </button>
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">ปิดหน้าต่าง</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 @endforeach
 @endsection
 @section('script')
@@ -236,16 +266,43 @@
         $("#menu").modal('show')
     });
 
-    // $(function(){
-    //     $(".datepicker").datepicker();
-    //     $(".datepicker").datepicker( "option", "dateFormat", 'yy-mm-dd');
-    // });
+    $('.ctClick').click(function () {
+        var id = $(this).attr("data-id");
+        var text = $(this).attr("data-text");
+        document.getElementById('importText').innerHTML = text;
+        document.getElementById('importChoose').value = id;
+        $("#import").modal('show')
+    });
       
     $(document).ready(function () {
         $('.select-basic').select2({
             width: '100%',
             dropdownParent: $('#menu')
         });
+    });
+
+    $('#frmImport').on("submit", function (event) {
+        let timerInterval
+        Swal.fire({
+        title: 'กำลังทำการ Import',
+        timer: 1000000,
+        timerProgressBar: true,
+        didOpen: () => {
+            Swal.showLoading()
+            const b = Swal.getHtmlContainer().querySelector('b')
+            timerInterval = setInterval(() => {
+            b.textContent = Swal.getTimerLeft()
+            }, 100)
+        },
+        willClose: () => {
+            clearInterval(timerInterval)
+        }
+        }).then((result) => {
+        /* Read more about handling dismissals below */
+        if (result.dismiss === Swal.DismissReason.timer) {
+            console.log('I was closed by the timer')
+        }
+        })
     });
 </script>
 @endsection
