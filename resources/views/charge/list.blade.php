@@ -13,7 +13,6 @@
                 <ol class="list-group">
                     @if (count($data) > 0)
                     @foreach ($data as $res)
-                    @php $total = $res->total + $res->ambulance; @endphp
                     <a href="{{ route('charge.transaction',base64_encode($res->hospmain)) }}">
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                             <div class="ms-2 me-auto">
@@ -21,7 +20,9 @@
                                     {{ $res->h_name }}
                                 </div>
                                 <i class="fa-solid fa-spinner fa-spin text-info"></i>
-                                ยอดเรียกเก็บ {{ number_format($res->total,2) }} บาท
+                                ยอดเรียกเก็บ OPAE / OPER {{ number_format($res->total,2) }} บาท <br>
+                                <i class="fa-solid fa-spinner fa-spin text-info"></i>
+                                ยอดเรียกเก็บ CT / MRI / CONTRAST {{ number_format($res->ct_total,2) }} บาท
                             </div>
                             <span class="badge bg-primary rounded-pill" style="width: 15%;">
                                 {{ number_format($res->number) }} รายการ

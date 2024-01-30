@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\Claim;
 use Maatwebsite\Excel\Concerns\ToModel;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 use File;
 use Auth;
 
@@ -17,12 +18,15 @@ class ClaimImport implements ToModel
     public function model(array $row)
     {
         $hcode = Auth::user()->hcode;
+        $date = Date::excelToDateTimeObject($row['1'])->format('Y-m-d');
+        $vn = date('ymhis').substr(rand(),1,5);
+
         return new Claim([
+            'vn' => $vn,
             'hcode' => $hcode,
             'hn' => $row['4'],
             'pid' => $row['5'],
-            'date_rx' => date('Y-m-d', strtotime($row['1'])),
-            // 'date_rx' => $row['1'],
+            'date_rx' => $date,
             'date_rec' => date('Y-m-d'),
             'icd9' => $row['12'],
             'icd10' => $row['11'],
@@ -39,6 +43,7 @@ class ClaimImport implements ToModel
             'refer_no' => $row['10'],
             'pttype' => 'UC',
             'ptname' => 'OP Anywhere',
+            'p_status' => '5',
         ]);
     }
 }

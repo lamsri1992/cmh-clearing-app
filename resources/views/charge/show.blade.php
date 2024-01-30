@@ -28,9 +28,15 @@
                             '<i class="fa-solid fa-xmark-circle text-danger"></i> ไม่ใช่'
                             !!}
                         </p>
+                        <p><b>CT / MRI</b> : {!! ($data->with_ct_mri = NULL) ? 
+                            '<i class="fa-solid fa-check-circle text-success"></i> ใช่' 
+                            : 
+                            '<i class="fa-solid fa-xmark-circle text-danger"></i> ไม่ใช่'
+                            !!}
+                        </p>
                         <p>
                             <b>สถานะ</b> : 
-                            {{ $data->p_name." (".date("Y-m-d", strtotime($data->updated)).")" }} <br>
+                            {{ $data->p_name }} <br>
                             <i>{{ $data->note }}</i>
                         </p>
                     </div>
@@ -66,8 +72,18 @@
                             <td class="text-end">{{ number_format($data->ambulance,2) }}</td>
                         </tr>
                         <tr>
+                            <th>CT / MRI</th>
+                            <td class="text-end">{{ $data->with_ct_mri." , ".number_format($data->pay_order,2) }}</td>
+                        </tr>
+                        <tr>
+                            <th>Contrast</th>
+                            <td class="text-end">{{ $data->contrast." , ".number_format($data->contrast_pay,2) }}</td>
+                        </tr>
+                        <tr>
                             <th>ยอดเรียกเก็บจริง</th>
-                            <td class="text-end fw-bold text-decoration-underline">{{ number_format($data->paid + $data->ambulance,2) }}</td>
+                            <td class="text-end fw-bold text-decoration-underline">
+                                {{ number_format($data->paid + $data->ambulance + $data->pay_order + $data->contrast_pay,2) }}
+                            </td>
                         </tr>
                     </thead>
                 </table>

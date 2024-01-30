@@ -13,7 +13,7 @@
                 <ol class="list-group">
                     @php $total = 0 @endphp
                     @foreach ($data as $res)
-                    @php $total += $res->total @endphp
+                    @php $total += $res->total + $res->ctmri @endphp
                     <a href="#" id="transClick" name="transClick" class="transClick" 
                         data-hcode="{{ Auth::user()->hcode }}" data-hospmain="{{ $res->h_code }}">
                         <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -22,7 +22,9 @@
                                     {{ $res->h_name }}
                                 </div>
                                 <i class="fa-solid fa-check-circle text-success"></i>
-                                ยอดเรียกเก็บ {{ number_format($res->total,2) }} บาท
+                                ยอดเรียกเก็บ OPAE / OPER {{ number_format($res->total,2) }} บาท <br>
+                                <i class="fa-solid fa-check-circle text-success"></i>
+                                ยอดเรียกเก็บ CT / MRI {{ number_format($res->ctmri,2) }} บาท
                             </div>
                             <span class="badge bg-success rounded-pill" style="width: 15%;">
                                 {{ number_format($res->number) }} รายการ

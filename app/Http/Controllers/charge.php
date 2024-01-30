@@ -48,7 +48,7 @@ class charge extends Controller
     public function show($id){
         $data = DB::table('claim_er')
                 ->select('vn','hn','pid','date_rx','date_rec','icd9','icd10','refer','drug','lab','proc','service_charge','with_ambulance',
-                'h_name','p_status','p_name','reporter','hospmain','ptname','updated','note',
+                'with_ct_mri','pay_order','contrast','contrast_pay','h_name','p_status','p_name','reporter','hospmain','ptname','updated','note',
                 DB::raw('drug + lab + proc + service_charge AS amount,
                 IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
                 IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance'))
@@ -88,7 +88,8 @@ class charge extends Controller
         $hcode = Auth::user()->hcode;
         $data = DB::table('claim_er')
                 ->select('hospmain','h_name',DB::raw('COUNT(*) AS number,IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance,
-                SUM(IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge))) AS total'))
+                SUM(IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge))) AS total,
+                SUM(pay_order + contrast_pay) AS ct_total'))
                 ->join('hospital','h_code','claim_er.hospmain')
                 ->where('hospmain','!=',$hcode)
                 ->where('hcode','=',$hcode)
@@ -102,7 +103,8 @@ class charge extends Controller
     public function transaction($id)
     {
         $data = DB::table('claim_er')
-                ->select('vn','date_rx','hcode','hn','h_name','icd10','with_ambulance','drug','lab','proc','p_name','p_color','hospmain',
+                ->select('vn','date_rx','hcode','hn','h_name','icd10','with_ambulance','drug','lab','proc',
+                'p_name','p_color','hospmain','pay_order','contrast_pay',
                 DB::raw('drug + lab + proc + service_charge AS amount,
                 IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
                 IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance'))
@@ -126,7 +128,7 @@ class charge extends Controller
                 [
                     'trans_recno' => $array['0'],
                     'trans_vstdate' => $array['1'],
-                    'trans_total' => $array['7'],
+                    'trans_total' => $array['8'],
                     'trans_code' => $transCode,
                     'create_date' => date('Y-m-d'),
                     'trans_hcode' => $hcode,
@@ -148,10 +150,13 @@ class charge extends Controller
         $hcode = Auth::user()->hcode;
         $data = DB::table('claim_er')
                 ->select('hospmain','h_name','h_code',
-                DB::raw('COUNT(DISTINCT trans_id) AS number,SUM(IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge))) AS total'))
+                DB::raw('COUNT(DISTINCT trans_id) AS number,
+                SUM(IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge))) AS total,
+                SUM(pay_order + contrast_pay) AS ctmri'))
                 ->join('hospital','h_code','claim_er.hospmain')
                 ->where('hospmain','!=',$hcode)
                 ->where('hcode','=',$hcode)
+                ->where('trans_id','!=',NULL)
                 ->whereIn('p_status',[2,3,5,7,8])
                 ->groupBy('h_code')
                 ->get();
@@ -162,6 +167,7 @@ class charge extends Controller
     public function detail(Request $request, $id){
         $data = DB::table('claim_er')
                 ->select('vn','date_rx','hcode','hn','h_name','icd10','with_ambulance','drug','lab','proc','p_name','p_color',
+                'pay_order','with_ct_mri','contrast_pay',
                 DB::raw('drug + lab + proc + service_charge AS amount,
                 IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
                 IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance'))

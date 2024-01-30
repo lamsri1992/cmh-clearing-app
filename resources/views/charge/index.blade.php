@@ -95,14 +95,14 @@
     </div>
 </div>
 <div class="row mt-4">
-    <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
+    <div class="col-xl-12 col-sm-6 mb-xl-0 mb-4">
         <div class="card">
             <div class="card-body p-4">
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
                             <p class="text-sm mb-0 font-weight-bold">รายการเรียกเก็บ</p>
-                            <a href="#" class="font-weight-bolder chargeClick" data-id="OPAE" data-text="เรียกเก็บ รพ. ภายในจังหวัด">
+                            <a href="#" class="font-weight-bolder chargeClick" data-id="OPAE" data-text="เรียกเก็บ รพ. ภายในจังหวัด" style="font-size: 20px;">
                                 เรียกเก็บ รพ. ภายในจังหวัด
                             </a>
                         </div>
@@ -116,14 +116,15 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
+    <hr>
+    <div class="col-xl-12 col-sm-6">
         <div class="card">
             <div class="card-body p-4">
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
                             <p class="text-sm mb-0 font-weight-bold">รายการเรียกเก็บ</p>
-                            <a href="#" class="font-weight-bolder" data-id="FWF" data-text="สิทธิต่างด้าว">
+                            <a href="#" class="font-weight-bolder" data-id="FWF" data-text="สิทธิต่างด้าว" style="font-size: 20px;">
                                 สิทธิต่างด้าว
                             </a>
                         </div>
@@ -138,14 +139,15 @@
         </div>
     </div>
     <hr>
-    <div class="col-xl-6 col-sm-6">
+    <div class="col-xl-12 col-sm-6">
         <div class="card">
             <div class="card-body p-4">
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
                             <p class="text-sm mb-0 font-weight-bold">รายการเรียกเก็บ</p>
-                            <a href="#" class="font-weight-bolder ctClick" data-id="CT" data-text="การรับบริการ CT Scan">
+                            <a href="#" class="font-weight-bolder ctClick" data-id="CT" data-text="การรับบริการ CT Scan" 
+                            style="font-size: 20px;">
                                 การรับบริการ CT Scan
                             </a>
                         </div>
@@ -159,14 +161,16 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
+    <hr>
+    <div class="col-xl-12 col-sm-6">
         <div class="card">
             <div class="card-body p-4">
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
                             <p class="text-sm mb-0 font-weight-bold">รายการเรียกเก็บ</p>
-                            <a href="#" class="font-weight-bolder" data-id="MRI" data-text="การรับบริการ MRI">
+                            <a href="#" class="font-weight-bolder" data-id="MRI" data-text="การรับบริการ MRI"
+                            style="font-size: 20px;">
                                 การรับบริการ MRI
                             </a>
                         </div>
