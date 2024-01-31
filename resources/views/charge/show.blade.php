@@ -28,7 +28,7 @@
                             '<i class="fa-solid fa-xmark-circle text-danger"></i> ไม่ใช่'
                             !!}
                         </p>
-                        <p><b>CT / MRI</b> : {!! ($data->with_ct_mri = NULL) ? 
+                        <p><b>CT / MRI</b> : {!! ($data->with_ct_mri) ? 
                             '<i class="fa-solid fa-check-circle text-success"></i> ใช่' 
                             : 
                             '<i class="fa-solid fa-xmark-circle text-danger"></i> ไม่ใช่'
@@ -73,11 +73,15 @@
                         </tr>
                         <tr>
                             <th>CT / MRI</th>
-                            <td class="text-end">{{ $data->with_ct_mri." , ".number_format($data->pay_order,2) }}</td>
+                            <td class="text-end">{{ $data->with_ct_mri }} <br>
+                                {{ number_format($data->pay_order,2) }}
+                            </td>
                         </tr>
                         <tr>
                             <th>Contrast</th>
-                            <td class="text-end">{{ $data->contrast." , ".number_format($data->contrast_pay,2) }}</td>
+                            <td class="text-end">{{ $data->contrast }} <br>
+                                {{ number_format($data->contrast_pay,2) }}
+                            </td>
                         </tr>
                         <tr>
                             <th>ยอดเรียกเก็บจริง</th>

@@ -25,13 +25,15 @@ class paid extends Controller
                 GROUP BY trans_code,trans_hcode,create_date,trans_paiddate
                 ORDER BY trans_id DESC
                 LIMIT 10");
+        // dd($data);
         return view('paid.index', ['data' => $data,'count'=>$count]);
 
     }
 
     public function detail(Request $request, $id){
         $data = DB::table('claim_er')
-                ->select('vn','date_rx','hcode','hn','h_name','icd10','with_ambulance','drug','lab','proc','p_name','p_color',
+                ->select('vn','date_rx','hcode','hn','h_name','icd10','with_ambulance','drug','lab','proc',
+                'p_name','p_color','pay_order','contrast_pay',
                 DB::raw('drug + lab + proc + service_charge AS amount,
                 IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
                 IF(with_ambulance > "0", "600", with_ambulance) AS ambulance'))

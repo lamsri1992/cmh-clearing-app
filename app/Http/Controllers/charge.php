@@ -124,15 +124,18 @@ class charge extends Controller
         $hcode = Auth::user()->hcode;
         $transCode = $hcode."".date('Ym').substr(rand(),1,5);
         foreach($data as $array){
+            $arr = explode(',',$array[9]);
+            $total = $arr[0].$arr[1];
+            // dd($total);
             $id = DB::table('transaction')->insertGetId(
                 [
                     'trans_recno' => $array['0'],
                     'trans_vstdate' => $array['1'],
-                    'trans_total' => $array['8'],
+                    'trans_total' => $total,
                     'trans_code' => $transCode,
                     'create_date' => date('Y-m-d'),
                     'trans_hcode' => $hcode,
-                    'trans_hmain' => $array['9'],
+                    'trans_hmain' => $array['11'],
                     'trans_status' => 2,
                 ]
             );

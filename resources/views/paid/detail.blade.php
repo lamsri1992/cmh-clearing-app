@@ -27,27 +27,31 @@
                             <th class="text-center">วันที่รับบริการ</th>
                             <th>หน่วยบริการ</th>
                             <th class="text-center">HN</th>
-                            <th class="text-end">ค่าใช้จ่ายจริง</th>
-                            <th class="text-end">ยอดที่เรียกเก็บได้</th>
-                            <th class="text-end">ค่าใช้จ่าย Refer</th>
+                            <th class="text-end">ค่าใช้จ่าย</th>
+                            <th class="text-end">ยอดเรียกเก็บ</th>
+                            <th class="text-end">Refer</th>
+                            <th class="text-end">CT / MRI</th>
+                            <th class="text-end">CONTRAST</th>
                             <th class="text-end">ยอดรวม</th>
                             <th class="text-center">สถานะ</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($data as $res)
-                        @php $total = $res->paid + $res->ambulance; @endphp
-                            <tr>
-                                <td class="text-center">{{ $res->vn }}</td>
-                                <td class="text-center">{{ date("Y-m-d", strtotime($res->date_rx)) }}</td>
-                                <td>{{ $res->h_name }}</td>
-                                <td class="text-center">{{ $res->hn }}</td>
-                                <td class="text-end text-primary fw-bold">{{ number_format($res->amount,2) }}</td>
-                                <td class="text-end text-success fw-bold">{{ number_format($res->paid,2) }}</td>
-                                <td class="text-end text-danger fw-bold">{{ number_format($res->ambulance,2) }}</td>
-                                <td class="text-end fw-bold" style="text-decoration-line: underline">{{ number_format($total,2) }}</td>
-                                <td class="text-center text-white {{ $res->p_color }}">{{ $res->p_name }}</td>
-                            </tr>
+                        @php $total = $res->paid + $res->ambulance + $res->pay_order + $res->contrast_pay; @endphp
+                        <tr>
+                            <td class="text-center">{{ $res->vn }}</td>
+                            <td class="text-center">{{ date("Y-m-d", strtotime($res->date_rx)) }}</td>
+                            <td>{{ $res->h_name }}</td>
+                            <td class="text-center">{{ $res->hn }}</td>
+                            <td class="text-end text-primary fw-bold">{{ number_format($res->amount,2) }}</td>
+                            <td class="text-end text-success fw-bold">{{ number_format($res->paid,2) }}</td>
+                            <td class="text-end text-danger fw-bold">{{ number_format($res->ambulance,2) }}</td>
+                            <td class="text-end text-dark fw-bold">{{ number_format($res->pay_order,2) }}</td>
+                            <td class="text-end text-warning fw-bold">{{ number_format($res->contrast_pay,2) }}</td>
+                            <td class="text-end fw-bold" style="text-decoration-line: underline">{{ number_format($total,2) }}</td>
+                            <td class="text-center text-white {{ $res->p_color }}">{{ $res->p_name }}</td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
