@@ -53,11 +53,11 @@ class paid extends Controller
 
     public function show($id){
         $data = DB::table('claim_er')
-                ->select('vn','hn','pid','date_rx','date_rec','icd9','icd10','refer','drug','lab','proc','service_charge','with_ambulance',
-                'h_name','p_name','reporter','p_status','trans_id','ptname','updated_deny','note',
+                ->select('vn','hn','pid','date_rx','date_rec','icd9','icd10','refer','drug','lab','proc','service_charge','with_ambulance','trans_id',
+                'with_ct_mri','pay_order','contrast','contrast_pay','h_name','p_status','p_name','reporter','hospmain','ptname','updated','note',
                 DB::raw('drug + lab + proc + service_charge AS amount,
                 IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
-                IF(with_ambulance = "0", "600", with_ambulance) AS ambulance'))
+                IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance'))
                 ->join('hospital','hospital.h_code','claim_er.hcode')
                 ->join('p_status','p_status.id','claim_er.p_status')
                 ->where('vn',base64_decode($id))

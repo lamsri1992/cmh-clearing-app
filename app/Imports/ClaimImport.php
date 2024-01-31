@@ -19,7 +19,7 @@ class ClaimImport implements ToModel
     {
         $hcode = Auth::user()->hcode;
         $date = Date::excelToDateTimeObject($row['1'])->format('Y-m-d');
-        $vn = "CTMRI".date('y').substr(rand(),1,7);
+        $vn = date('ymd').substr(rand(),1,7);
 
         return new Claim([
             'vn' => $vn,
