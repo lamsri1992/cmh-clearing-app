@@ -19,7 +19,7 @@ new DataTable('#listData', {
     },
     initComplete: function () {
         this.api()
-            .columns([2,8])
+            .columns([8,9])
             .every(function () {
                 var column = this;
                 var select = $('<select class="form-select" style="width:100%;"><option value="">ทั้งหมด</option></select>')

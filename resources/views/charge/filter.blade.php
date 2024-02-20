@@ -65,6 +65,7 @@
                             <th class="text-end">ยอดที่เรียกเก็บได้</th>
                             <th class="text-end">ค่าใช้จ่าย Refer</th>
                             <th class="text-end">ยอดรวม</th>
+                            <th class="">สิทธิการรักษา</th>
                             <th class="text-center">สถานะ</th>
                         </tr>
                     </thead>
@@ -80,6 +81,7 @@
                                 <td class="text-end text-success fw-bold">{{ number_format($res->paid,2) }}</td>
                                 <td class="text-end text-danger fw-bold">{{ number_format($res->ambulance,2) }}</td>
                                 <td class="text-end fw-bold" style="text-decoration-line: underline">{{ number_format($total,2) }}</td>
+                                <td class="">{{ $res->ptname }}</td>
                                 <td class="text-center text-white {{ $res->p_color }}">{{ $res->p_name }}</td>
                             </tr>
                         @endforeach
@@ -88,12 +90,14 @@
                         <tr>
                             <th></th>
                             <th></th>
-                            <th>หน่วยบริการ</th>
                             <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
-                            <th colspan="2">สถานะ</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </tfoot>
                 </table>
