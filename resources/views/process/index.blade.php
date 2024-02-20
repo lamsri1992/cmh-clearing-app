@@ -23,10 +23,18 @@
                     <div class="col-md-6">
                         <span class="fw-bold">จำนวนข้อมูล :: </span>
                         {{ $count." รายการ" }}
-                    </div>        
+                    </div>
+                    <div class="col-md-12" style="margin-top: 1rem;">
+                        <span class="fw-bold">Mapping สิทธิเรียกเก็บ :: </span>
+                        <ul class="">
+                            @foreach ($map as $res)
+                            <li class="">{{ $res->ben_ptname }}</li>
+                            @endforeach
+                          </ul>
+                    </div>
                 </div>
             </div>
-            <div class="card-body">
+            {{-- <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">
                         <span class="fw-bold">
@@ -35,22 +43,62 @@
                         <table id="basicTable" class="table table-striped table-borderless" width="100%">
                             <thead>
                                 <tr>
-                                    <th>รหัสสิทธิ</th>
+                                    <th class="text-center">รหัสสิทธิ</th>
                                     <th>ชื่อสิทธิ</th>
+                                    <th class="text-center">
+                                        <i class="fa-solid fa-bars"></i>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($bent as $res)
                                 <tr>
-                                    <td>{{ $res->pttype }}</td>
+                                    <td class="text-center">{{ $res->pttype }}</td>
                                     <td>{{ $res->ptname }}</td>
+                                    <td class="text-center">
+                                        <a href="#" class="btn btn-success btn-xs"
+                                            onclick="
+                                                var pttype = {{ $res->pttype }};
+                                                Swal.fire({
+                                                    title: 'ยืนยันการ Map สิทธิการรักษา',
+                                                    text: '{{ $res->ptname }}',
+                                                    icon: 'info',
+                                                    showCancelButton: true,
+                                                    confirmButtonText: 'ยืนยัน',
+                                                    cancelButtonText: 'ยกเลิก',
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                    $.ajax({
+                                                        url: '{{ route('process.map') }}',
+                                                        method: 'GET',
+                                                        data: {
+                                                            pttype: pttype,
+                                                        },
+                                                        success: function (data) {
+                                                            Swal.fire({
+                                                                icon: 'success',
+                                                                title: 'Map สิทธิสำเร็จ',
+                                                                showConfirmButton: false,
+                                                                timer: 3000
+                                                            })
+                                                            window.setTimeout(function () {
+                                                                location.reload()
+                                                            }, 1500);
+                                                        }
+                                                    });
+                                                }
+                                            })">
+                                            <i class="fa-solid fa-circle-check"></i>
+                                            Map สิทธิ
+                                        </a>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>                  
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>

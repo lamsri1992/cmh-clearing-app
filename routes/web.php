@@ -62,4 +62,8 @@ Route::prefix('paid')->group(function () {
     Route::post('file-upload', [paid::class, 'upload'])->name('paid.upload');
 });
 
+Route::prefix('process')->group(function () {
+    Route::get('/benefit/map', [process::class, 'mapping'])->name('process.map');
+});
+
 require __DIR__.'/auth.php';

@@ -125,13 +125,13 @@ class charge extends Controller
         $transCode = $hcode."".date('Ym').substr(rand(),1,5);
         foreach($data as $array){
             $arr = explode(',',$array[9]);
-            $total = $arr[0].$arr[1];
-            // dd($total);
+            // $total = $arr[0].$arr[1];
+            // dd($arr);
             $id = DB::table('transaction')->insertGetId(
                 [
                     'trans_recno' => $array['0'],
                     'trans_vstdate' => $array['1'],
-                    'trans_total' => $total,
+                    'trans_total' => $arr[0],
                     'trans_code' => $transCode,
                     'create_date' => date('Y-m-d'),
                     'trans_hcode' => $hcode,

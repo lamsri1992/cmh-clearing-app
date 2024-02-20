@@ -15,6 +15,20 @@ class process extends Controller
         $bent = DB::select("SELECT DISTINCT pttype , ptname
                 FROM claim_er
                 WHERE hcode = {$hcode}");
-        return view('process.index',['data'=>$data,'count'=>$count,'bent'=>$bent]);
+        $map = DB::table('benefit')->where('ben_hcode',$hcode)->get();
+        return view('process.index',['data'=>$data,'count'=>$count,'bent'=>$bent,'map'=>$map]);
+    }
+
+    public function mapping(Request $request)
+    {
+        $hcode = Auth::user()->hcode;
+        $pttype = $request->pttype;
+        $data = DB::table('claim_er')->where('pttype',$pttype)->where('hcode',$hcode)->first();
+        // dd($pttype,$data);
+        DB::table('benefit')->insert([
+            'ben_pttype' => $data->pttype,
+            'ben_ptname' => $data->ptname,
+            'ben_hcode' => $data->hcode,
+        ]);
     }
 }
