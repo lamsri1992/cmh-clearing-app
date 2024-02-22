@@ -25,7 +25,7 @@ class importController extends Controller
         $file->move(public_path('ImportFiles/'), $fileName);
         
         DB::table('import_log')->insert(['ex_file' => $fileName]);
-        DB::table('claim_er')->where('hn', NULL)->delete();
+        DB::table('claim_list')->where('hn', NULL)->delete();
 
         return back()->with('success', 'นำเข้าข้อมูลสำเร็จ');
     }

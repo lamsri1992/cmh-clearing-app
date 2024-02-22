@@ -12,9 +12,9 @@ class paid extends Controller
     {
         $hcode = Auth::user()->hcode;
         $query_count = "SELECT
-        (SELECT COUNT(vn) FROM claim_er WHERE p_status = '2' AND hospmain = $hcode) AS charge,
-        (SELECT COUNT(vn) FROM claim_er WHERE p_status IN ('7','8') AND hospmain = $hcode) AS success,
-        (SELECT COUNT(vn) FROM claim_er WHERE p_status = '4' AND hospmain = $hcode) AS deny";
+        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '2' AND hospmain = $hcode) AS charge,
+        (SELECT COUNT(vn) FROM claim_list WHERE p_status IN ('7','8') AND hospmain = $hcode) AS success,
+        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '4' AND hospmain = $hcode) AS deny";
 
         $count = DB::select($query_count);
         $data = DB::select("SELECT DISTINCT trans_code,SUM(trans_total) as total,trans_hcode,h_name,create_date
@@ -31,20 +31,20 @@ class paid extends Controller
     }
 
     public function detail(Request $request, $id){
-        $data = DB::table('claim_er')
+        $data = DB::table('claim_list')
                 ->select('vn','date_rx','hcode','hn','h_name','icd10','with_ambulance','drug','lab','proc',
                 'p_name','p_color','pay_order','contrast_pay',
                 DB::raw('drug + lab + proc + service_charge AS amount,
                 IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
                 IF(with_ambulance > "0", "600", with_ambulance) AS ambulance'))
-                ->join('hospital','h_code','claim_er.hcode')
-                ->join('p_status','p_status.id','claim_er.p_status')
+                ->join('hospital','h_code','claim_list.hcode')
+                ->join('p_status','p_status.id','claim_list.p_status')
                 ->where('trans_id',$id)
                 ->get();
         $check = DB::select("SELECT 
-        (SELECT COUNT(*) FROM claim_er WHERE p_status = '3' AND TRANS_ID = $id) AS confirm,
-        (SELECT COUNT(*) FROM claim_er WHERE p_status = '4' AND TRANS_ID = $id) AS deny,
-        (SELECT COUNT(*) FROM claim_er WHERE p_status = '2' AND TRANS_ID = $id) AS progress");
+        (SELECT COUNT(*) FROM claim_list WHERE p_status = '3' AND TRANS_ID = $id) AS confirm,
+        (SELECT COUNT(*) FROM claim_list WHERE p_status = '4' AND TRANS_ID = $id) AS deny,
+        (SELECT COUNT(*) FROM claim_list WHERE p_status = '2' AND TRANS_ID = $id) AS progress");
         $trans = DB::table('transaction')->where('transaction.trans_code',$id)->first();
         $paid = DB::table('paid')->where('paid.trans_code',$id)->first();
         // dd($trans);
@@ -52,14 +52,14 @@ class paid extends Controller
     }
 
     public function show($id){
-        $data = DB::table('claim_er')
+        $data = DB::table('claim_list')
                 ->select('vn','hn','pid','date_rx','date_rec','icd9','icd10','refer','drug','lab','proc','service_charge','with_ambulance','trans_id',
                 'with_ct_mri','pay_order','contrast','contrast_pay','h_name','p_status','p_name','reporter','hospmain','ptname','updated','note',
                 DB::raw('drug + lab + proc + service_charge AS amount,
                 IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
                 IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance'))
-                ->join('hospital','hospital.h_code','claim_er.hcode')
-                ->join('p_status','p_status.id','claim_er.p_status')
+                ->join('hospital','hospital.h_code','claim_list.hcode')
+                ->join('p_status','p_status.id','claim_list.p_status')
                 ->where('vn',base64_decode($id))
                 ->first();
         return view('paid.show', ['data' => $data]);
@@ -69,7 +69,7 @@ class paid extends Controller
     {
         $date = date('Y-m-d');
         $id = $request->recno;
-        DB::table('claim_er')->where('vn',$id)->update(["p_status" => 3]);
+        DB::table('claim_list')->where('vn',$id)->update(["p_status" => 3]);
         DB::table('transaction')->where('trans_recno',$id)->update([
             "trans_status" => 3,
             "trans_confirmdate" => $date
@@ -82,7 +82,7 @@ class paid extends Controller
         $id = $request->vn;
         $note = $request->formData;
 
-        DB::table('claim_er')->where('vn',$id)->update(
+        DB::table('claim_list')->where('vn',$id)->update(
             [
                 "p_status" => 4,
                 "note" => $note,
@@ -99,7 +99,7 @@ class paid extends Controller
     public function transConfirm(Request $request,$id)
     {
         $date = date('Y-m-d');
-        DB::table('claim_er')->where('trans_id',$id)->where('p_status',3)->update([
+        DB::table('claim_list')->where('trans_id',$id)->where('p_status',3)->update([
             'p_status' => 7
         ]);
 
@@ -151,7 +151,7 @@ class paid extends Controller
             'trans_paiddate' => $date
         ]);
 
-        DB::table('claim_er')->where('trans_id',$request->transId)->where('p_status',7)->update([
+        DB::table('claim_list')->where('trans_id',$request->transId)->where('p_status',7)->update([
             'p_status' => 8,
         ]);
 

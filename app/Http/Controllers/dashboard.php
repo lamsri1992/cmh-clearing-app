@@ -12,37 +12,37 @@ class dashboard extends Controller
     public function index()
     {
         $hcode = Auth::user()->hcode;
-        $creditor = DB::table('claim_er')
+        $creditor = DB::table('claim_list')
                 ->select(DB::raw('SUM(drug + lab + proc) AS total'))
                 ->where('hcode','=',$hcode)
                 ->where('hospmain','!=',$hcode)
                 ->first();
 
-        $dept = DB::table('claim_er')
+        $dept = DB::table('claim_list')
                 ->select(DB::raw('SUM(drug + lab + proc) AS total'))
                 ->where('hospmain','=',$hcode)
                 ->where('hcode','!=',$hcode)
                 ->first();
 
         $query_count = "SELECT
-                (SELECT COUNT(vn) FROM claim_er WHERE p_status = '1' AND hcode = $hcode) AS wait,
-                (SELECT COUNT(vn) FROM claim_er WHERE p_status = '2' AND hcode = $hcode) AS charge,
-                (SELECT COUNT(vn) FROM claim_er WHERE p_status = '3' AND hcode = $hcode) AS success,
-                (SELECT COUNT(vn) FROM claim_er WHERE p_status = '4' AND hospmain = $hcode) AS deny";
+                (SELECT COUNT(vn) FROM claim_list WHERE p_status = '1' AND hcode = $hcode) AS wait,
+                (SELECT COUNT(vn) FROM claim_list WHERE p_status = '2' AND hcode = $hcode) AS charge,
+                (SELECT COUNT(vn) FROM claim_list WHERE p_status = '3' AND hcode = $hcode) AS success,
+                (SELECT COUNT(vn) FROM claim_list WHERE p_status = '4' AND hospmain = $hcode) AS deny";
     
-        $paid = DB::table('claim_er')
+        $paid = DB::table('claim_list')
                 ->select('hcode','h_name',DB::raw('SUM(drug + lab + proc) AS paid'))
                 ->where('hospmain','=',$hcode)
                 ->where('hcode','!=',$hcode)
-                ->join('hospital','hospital.h_code','claim_er.hcode')
+                ->join('hospital','hospital.h_code','claim_list.hcode')
                 ->groupBy('hcode')
                 ->get();
             
-        $price = DB::table('claim_er')
+        $price = DB::table('claim_list')
                 ->select('hcode','h_name',DB::raw('SUM(drug + lab + proc) AS paid'))
                 ->where('hospmain','!=',$hcode)
                 ->where('hcode','=',$hcode)
-                ->join('hospital','hospital.h_code','claim_er.hospmain')
+                ->join('hospital','hospital.h_code','claim_list.hospmain')
                 ->groupBy('hospmain')
                 ->get();
 
@@ -52,13 +52,13 @@ class dashboard extends Controller
 
     public function deny(){
         $hcode = Auth::user()->hcode;
-        $data = DB::table('claim_er')
+        $data = DB::table('claim_list')
                 ->select('vn','date_rx','hcode','hn','h_name','icd10','with_ambulance','drug','lab','proc','p_name','p_color',
                 DB::raw('drug + lab + proc + service_charge AS amount,note,trans_id,
                 IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
                 IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance'))
-                ->join('hospital','h_code','claim_er.hcode')
-                ->join('p_status','p_status.id','claim_er.p_status')
+                ->join('hospital','h_code','claim_list.hcode')
+                ->join('p_status','p_status.id','claim_list.p_status')
                 ->where('hospmain',$hcode)
                 ->where('p_status',4)
                 ->get();
