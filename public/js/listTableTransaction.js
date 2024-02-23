@@ -58,72 +58,72 @@ $('#listData tbody').on('click', 'tr', function () {
     $(this).toggleClass('selected');
 });
 
-$('#btnCreate').click(function () {
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+// $('#btnCreate').click(function () {
+//     $.ajaxSetup({
+//         headers: {
+//             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//         }
+//     });
 
-    var count = 'จำนวน ' + table.rows('.selected').data().length + ' : รายการ';
-    var array = [];
-    table.rows('.selected').every(function(rowIdx) {
-        array.push(table.row(rowIdx).data())
-    })
-    var formData = array;
+//     var count = 'จำนวน ' + table.rows('.selected').data().length + ' : รายการ';
+//     var array = [];
+//     table.rows('.selected').every(function(rowIdx) {
+//         array.push(table.row(rowIdx).data())
+//     })
+//     var formData = array;
 
-    Swal.fire({
-        title: 'ยืนยันสร้างการ Transaction ?',
-        text: count,
-        showCancelButton: true,
-        confirmButtonText: `สร้างรายการ Transaction`,
-        cancelButtonText: `ยกเลิก`,
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url:"/charge/bill",
-                method:'POST',
-                data:{formData: formData},
-                success:function(data){
-                    let timerInterval
-                        Swal.fire({
-                        title: 'กำลังสร้าง Transaction',
-                        timer: 2000,
-                        timerProgressBar: true,
-                        didOpen: () => {
-                            Swal.showLoading()
-                            timerInterval = setInterval(() => {
-                            const content = Swal.getContent()
-                            if (content) {
-                                const b = content.querySelector('b')
-                                if (b) {
-                                b.textContent = Swal.getTimerLeft()
-                                }
-                            }
-                            }, 100)
-                        },
-                        willClose: () => {
-                            clearInterval(timerInterval)
-                        }
-                        }).then((result) => {
-                        if (result.dismiss === Swal.DismissReason.timer) {
-                                Swal.fire({
-                                icon: 'success',
-                                title: 'สร้างรายการสำเร็จ',
-                                showConfirmButton: false,
-                                timer: 3000
-                            })
-                            window.setTimeout(function () {
-                                location.replace('/charge/sent')
-                            }, 3500);
-                        }
-                    })
-                }
-            });
-        }
-    })
+//     Swal.fire({
+//         title: 'ยืนยันสร้างการ Transaction ?',
+//         text: count,
+//         showCancelButton: true,
+//         confirmButtonText: `สร้างรายการ Transaction`,
+//         cancelButtonText: `ยกเลิก`,
+//     }).then((result) => {
+//         if (result.isConfirmed) {
+//             $.ajax({
+//                 url:"/charge/bill",
+//                 method:'POST',
+//                 data:{formData: formData},
+//                 success:function(data){
+//                     let timerInterval
+//                         Swal.fire({
+//                         title: 'กำลังสร้าง Transaction',
+//                         timer: 2000,
+//                         timerProgressBar: true,
+//                         didOpen: () => {
+//                             Swal.showLoading()
+//                             timerInterval = setInterval(() => {
+//                             const content = Swal.getContent()
+//                             if (content) {
+//                                 const b = content.querySelector('b')
+//                                 if (b) {
+//                                 b.textContent = Swal.getTimerLeft()
+//                                 }
+//                             }
+//                             }, 100)
+//                         },
+//                         willClose: () => {
+//                             clearInterval(timerInterval)
+//                         }
+//                         }).then((result) => {
+//                         if (result.dismiss === Swal.DismissReason.timer) {
+//                                 Swal.fire({
+//                                 icon: 'success',
+//                                 title: 'สร้างรายการสำเร็จ',
+//                                 showConfirmButton: false,
+//                                 timer: 3000
+//                             })
+//                             window.setTimeout(function () {
+//                                 location.replace('/charge/sent')
+//                             }, 3500);
+//                         }
+//                     })
+//                 }
+//             });
+//         }
+//     })
 
-});
+// });
 
 $('#btnCreate_all').click(function () {
     var count = 'จำนวน ' + table.rows().data().length + ' : รายการ';

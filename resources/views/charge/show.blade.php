@@ -126,7 +126,7 @@
                                         timer: 3000
                                     })
                                     window.setTimeout(function () {
-                                        location.replace('/charge/filter?hospital='+hospmain+'&menuChoose=OPAE')
+                                        location.reload()
                                     }, 1500);
                                 }
                             });
@@ -143,10 +143,10 @@
                         <i class="fa-solid fa-ban"></i>
                         ยกเลิกการเรียกเก็บ
                     </button>
-                    <a href="{{ url()->previous() }}" class="btn btn-outline-primary" type="button">
+                    {{-- <a href="{{ url()->previous() }}" class="btn btn-outline-primary" type="button">
                         <i class="fa-solid fa-arrow-left"></i>
                         ย้อนกลับ
-                    </a>
+                    </a> --}}
                 </div>
             </div>
         </div>

@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <div style="margin-bottom: 1rem;">
+                {{-- <div style="margin-bottom: 1rem;">
                     <div class="row">
                         <div class="col-md-6">
                             <input type="text" id="min" name="min" class="form-control" placeholder="เลือกช่วงวันที่เริ่มต้น">
@@ -29,7 +29,7 @@
                             <input type="text" id="max" name="max" class="form-control" placeholder="เลือกช่วงวันที่สิ้นสุด">
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <table id="listData" class="display nowrap" style="width:100%">
                     <thead>
                         <tr>
@@ -68,13 +68,13 @@
                     </tbody>
                 </table>
                 <p>
-                    <button id="btnCreate" class="btn btn-success">
+                    {{-- <button id="btnCreate" class="btn btn-success">
                         <i class="fa-solid fa-check-circle"></i>
                         Create Select
-                    </button>
-                    <button id="btnCreate_all" class="btn btn-danger">
-                        <i class="fa-solid fa-check-double"></i>
-                        Create All
+                    </button> --}}
+                    <button id="btnCreate_all" class="btn btn-success">
+                        <i class="fa-solid fa-check-circle"></i>
+                        สร้างใบเรียกเก็บ
                     </button>
                 </p>
             </div>
@@ -84,4 +84,13 @@
 @endsection
 @section('script')
 <script src="{{ asset('js/listTableTransaction.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        Swal.fire({
+            icon: 'warning',
+            title: 'กรุณาดำเนินการสร้างใบเรียกเก็บ',
+            text: 'ข้อมูลจะถูกนำส่งอัตโนมัติทุกวันที่ 5 ของเดือน',
+        })
+    });
+</script>
 @endsection

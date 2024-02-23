@@ -19,7 +19,7 @@ new DataTable('#listData', {
     },
     initComplete: function () {
         this.api()
-            .columns([8,9])
+            .columns([2,8,9])
             .every(function () {
                 var column = this;
                 var select = $('<select class="form-select" style="width:100%;"><option value="">ทั้งหมด</option></select>')
@@ -91,5 +91,6 @@ table.on('click', 'tbody tr', (e) => {
     var obj = table.row('.selected').data();
     var id = obj[Object.keys(obj)[0]];
     var url = '/charge/' + btoa(id);
-    window.location.href = url;
+    // window.location.href = url;
+    window.open(url, '_blank');
 });

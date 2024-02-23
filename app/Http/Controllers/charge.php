@@ -19,8 +19,20 @@ class charge extends Controller
 
         $count = DB::select($query_count);
         $hos = DB::table('hospital')->where('H_CODE','!=',$hcode)->get();
+
+        $data = DB::table('claim_list')
+                ->select('vn','date_rx','hcode','hn','h_name','icd10','with_ambulance',
+                'drug','lab','proc','p_name','p_color','ptname','pttype',
+                DB::raw('drug + lab + proc + service_charge AS amount,
+                IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
+                IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance'))
+                ->join('hospital','h_code','claim_list.hospmain')
+                ->join('p_status','p_status.id','claim_list.p_status')
+                ->where('hcode',$hcode)
+                ->get();
+
         // dd($count);
-        return view('charge.index',['hos'=>$hos,'count'=>$count]);
+        return view('charge.index',['hos'=>$hos,'count'=>$count,'data'=>$data]);
     }
 
     public function filter(Request $request){
