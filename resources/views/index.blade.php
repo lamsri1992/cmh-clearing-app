@@ -14,9 +14,9 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 font-weight-bold">ยอดเรียกเก็บ</p>
+                            <p class="text-sm mb-0 font-weight-bold">ยอดลูกหนี้</p>
                             <h5 class="font-weight-bolder" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                data-bs-title="ยอดเรียกเก็บจริง">
+                                data-bs-title="ยอดลูกหนี้">
                                 {{ number_format($creditor->total,2) }} บาท
                             </h5>
                         </div>
@@ -36,9 +36,9 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 font-weight-bold">ยอดตามจ่าย</p>
+                            <p class="text-sm mb-0 font-weight-bold">ยอดเจ้าหนี้</p>
                             <h5 class="font-weight-bolder" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                data-bs-title="ยอดตามจ่ายจริง">
+                                data-bs-title="ยอดเจ้าหนี้">
                                 {{ number_format($dept->total,2) }} บาท
                             </h5>
                         </div>
