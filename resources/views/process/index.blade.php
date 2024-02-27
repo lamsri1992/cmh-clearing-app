@@ -22,15 +22,46 @@
                     </div>                    
                     <div class="col-md-6">
                         <span class="fw-bold">จำนวนข้อมูล :: </span>
-                        {{ $count." รายการ" }}
+                        {{ number_format($count)." รายการ" }}
                     </div>
                     <div class="col-md-12" style="margin-top: 1rem;">
-                        <span class="fw-bold">Mapping สิทธิเรียกเก็บ :: </span>
-                        <ul class="">
-                            @foreach ($map as $res)
-                            <li class="">{{ $res->ben_ptname }}</li>
-                            @endforeach
-                          </ul>
+                        <span class="fw-bold">เกณฑ์การจ่าย</span>
+                        <table class="table table-striped table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th width="30%">ปี</th>
+                                    <th width="30%">ประเภท</th>
+                                    <th width="30%">ยอดจ่ายจริง (ไม่เกิน)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($op_paid as $res)
+                                <tr>
+                                    <td>{{ $res->year }}</td>
+                                    <td>{{ $res->type }}</td>
+                                    <td>{{ number_format($res->paid,2) }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <table class="table table-striped table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th width="30%">ปี</th>
+                                    <th width="30%">ประเภท</th>
+                                    <th width="30%">ยอดเหมาจ่าย</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($op_refer as $res)
+                                <tr>
+                                    <td>{{ $res->year }}</td>
+                                    <td>{{ $res->type }}</td>
+                                    <td>{{ number_format($res->paid,2) }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

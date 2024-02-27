@@ -35,10 +35,12 @@ class paid extends Controller
                 ->select('vn','date_rx','hcode','hn','h_name','icd10','with_ambulance','drug','lab','proc',
                 'p_name','p_color','pay_order','contrast_pay',
                 DB::raw('drug + lab + proc + service_charge AS amount,
-                IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
-                IF(with_ambulance > "0", "600", with_ambulance) AS ambulance'))
+                IF((drug + lab + proc + service_charge) > claim_paid.paid, claim_paid.paid, (drug + lab + proc + service_charge)) AS paid,
+                IF(with_ambulance > "0", claim_refer.paid, with_ambulance) AS ambulance'))
                 ->join('hospital','h_code','claim_list.hcode')
                 ->join('p_status','p_status.id','claim_list.p_status')
+                ->join('claim_paid','claim_paid.year','claim_list.p_year')
+                ->join('claim_refer','claim_refer.year','claim_list.p_year')
                 ->where('trans_id',$id)
                 ->get();
         $check = DB::select("SELECT 
@@ -56,10 +58,12 @@ class paid extends Controller
                 ->select('vn','hn','pid','date_rx','date_rec','icd9','icd10','refer','drug','lab','proc','service_charge','with_ambulance','trans_id',
                 'with_ct_mri','pay_order','contrast','contrast_pay','h_name','p_status','p_name','reporter','hospmain','ptname','updated','note',
                 DB::raw('drug + lab + proc + service_charge AS amount,
-                IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
-                IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance'))
+                IF((drug + lab + proc + service_charge) > claim_paid.paid, claim_paid.paid, (drug + lab + proc + service_charge)) AS paid,
+                IF(with_ambulance = "Y", claim_refer.paid, with_ambulance) AS ambulance'))
                 ->join('hospital','hospital.h_code','claim_list.hcode')
                 ->join('p_status','p_status.id','claim_list.p_status')
+                ->join('claim_paid','claim_paid.year','claim_list.p_year')
+                ->join('claim_refer','claim_refer.year','claim_list.p_year')
                 ->where('vn',base64_decode($id))
                 ->first();
         return view('paid.show', ['data' => $data]);

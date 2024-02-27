@@ -24,10 +24,12 @@ class charge extends Controller
                 ->select('vn','date_rx','hcode','hn','h_name','icd10','with_ambulance',
                 'drug','lab','proc','p_name','p_color','ptname','pttype',
                 DB::raw('drug + lab + proc + service_charge AS amount,
-                IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
-                IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance'))
+                IF((drug + lab + proc + service_charge) > claim_paid.paid, claim_paid.paid, (drug + lab + proc + service_charge)) AS paid,
+                IF(with_ambulance = "Y", claim_refer.paid, with_ambulance) AS ambulance'))
                 ->join('hospital','h_code','claim_list.hospmain')
                 ->join('p_status','p_status.id','claim_list.p_status')
+                ->join('claim_paid','claim_paid.year','claim_list.p_year')
+                ->join('claim_refer','claim_refer.year','claim_list.p_year')
                 ->where('hcode',$hcode)
                 ->get();
 
@@ -45,10 +47,12 @@ class charge extends Controller
                 ->select('vn','date_rx','hcode','hn','h_name','icd10','with_ambulance',
                 'drug','lab','proc','p_name','p_color','ptname','pttype',
                 DB::raw('drug + lab + proc + service_charge AS amount,
-                IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
-                IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance'))
+                IF((drug + lab + proc + service_charge) > claim_paid.paid, claim_paid.paid, (drug + lab + proc + service_charge)) AS paid,
+                IF(with_ambulance = "Y", claim_refer.paid, with_ambulance) AS ambulance'))
                 ->join('hospital','h_code','claim_list.hospmain')
                 ->join('p_status','p_status.id','claim_list.p_status')
+                ->join('claim_paid','claim_paid.year','claim_list.p_year')
+                ->join('claim_refer','claim_refer.year','claim_list.p_year')
                 ->where('hospmain',$hospmain)
                 ->where('hcode',$hcode)
                 ->whereBetween('date_rx', [$d_start, $d_end])
@@ -63,10 +67,12 @@ class charge extends Controller
                 ->select('vn','hn','pid','date_rx','date_rec','icd9','icd10','refer','drug','lab','proc','service_charge','with_ambulance',
                 'with_ct_mri','pay_order','contrast','contrast_pay','h_name','p_status','p_name','reporter','hospmain','ptname','updated','note',
                 DB::raw('drug + lab + proc + service_charge AS amount,
-                IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
-                IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance'))
+                IF((drug + lab + proc + service_charge) > claim_paid.paid, claim_paid.paid, (drug + lab + proc + service_charge)) AS paid,
+                IF(with_ambulance = "Y", claim_refer.paid, with_ambulance) AS ambulance'))
                 ->join('hospital','hospital.h_code','claim_list.hospmain')
                 ->join('p_status','p_status.id','claim_list.p_status')
+                ->join('claim_paid','claim_paid.year','claim_list.p_year')
+                ->join('claim_refer','claim_refer.year','claim_list.p_year')
                 ->where('vn',base64_decode($id))
                 ->first();
         // dd($data);
@@ -100,10 +106,12 @@ class charge extends Controller
     public function list(){
         $hcode = Auth::user()->hcode;
         $data = DB::table('claim_list')
-                ->select('hospmain','h_name',DB::raw('COUNT(*) AS number,IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance,
-                SUM(IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge))) AS total,
+                ->select('hospmain','h_name',DB::raw('COUNT(*) AS number,IF(with_ambulance = "Y", claim_refer.paid, with_ambulance) AS ambulance,
+                SUM(IF((drug + lab + proc + service_charge) > claim_paid.paid, claim_paid.paid, (drug + lab + proc + service_charge))) AS total,
                 SUM(pay_order + contrast_pay) AS ct_total'))
                 ->join('hospital','h_code','claim_list.hospmain')
+                ->join('claim_paid','claim_paid.year','claim_list.p_year')
+                ->join('claim_refer','claim_refer.year','claim_list.p_year')
                 ->where('hospmain','!=',$hcode)
                 ->where('hcode','=',$hcode)
                 ->where('p_status','=',5)
@@ -119,10 +127,12 @@ class charge extends Controller
                 ->select('vn','date_rx','hcode','hn','h_name','icd10','with_ambulance','drug','lab','proc',
                 'p_name','p_color','hospmain','pay_order','contrast_pay',
                 DB::raw('drug + lab + proc + service_charge AS amount,
-                IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
-                IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance'))
+                IF((drug + lab + proc + service_charge) > claim_paid.paid, claim_paid.paid, (drug + lab + proc + service_charge)) AS paid,
+                IF(with_ambulance = "Y", claim_refer.paid, with_ambulance) AS ambulance'))
                 ->join('hospital','h_code','claim_list.hospmain')
                 ->join('p_status','p_status.id','claim_list.p_status')
+                ->join('claim_paid','claim_paid.year','claim_list.p_year')
+                ->join('claim_refer','claim_refer.year','claim_list.p_year')
                 ->where('hospmain','=',base64_decode($id))
                 ->where('hcode','!=',base64_decode($id))
                 ->where('p_status',5)
@@ -167,9 +177,11 @@ class charge extends Controller
         $data = DB::table('claim_list')
                 ->select('hospmain','h_name','h_code',
                 DB::raw('COUNT(DISTINCT trans_id) AS number,
-                SUM(IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge))) AS total,
+                SUM(IF((drug + lab + proc + service_charge) > claim_paid.paid, claim_paid.paid, (drug + lab + proc + service_charge))) AS total,
                 SUM(pay_order + contrast_pay) AS ctmri'))
                 ->join('hospital','h_code','claim_list.hospmain')
+                ->join('claim_paid','claim_paid.year','claim_list.p_year')
+                ->join('claim_refer','claim_refer.year','claim_list.p_year')
                 ->where('hospmain','!=',$hcode)
                 ->where('hcode','=',$hcode)
                 ->where('trans_id','!=',NULL)
@@ -185,10 +197,12 @@ class charge extends Controller
                 ->select('vn','date_rx','hcode','hn','h_name','icd10','with_ambulance','drug','lab','proc','p_name','p_color',
                 'pay_order','with_ct_mri','contrast_pay',
                 DB::raw('drug + lab + proc + service_charge AS amount,
-                IF((drug + lab + proc + service_charge) > 700, 700, (drug + lab + proc + service_charge)) AS paid,
-                IF(with_ambulance = "Y", "600", with_ambulance) AS ambulance'))
+                IF((drug + lab + proc + service_charge) > claim_paid.paid, claim_paid.paid, (drug + lab + proc + service_charge)) AS paid,
+                IF(with_ambulance = "Y", claim_refer.paid, with_ambulance) AS ambulance'))
                 ->join('hospital','h_code','claim_list.hospmain')
                 ->join('p_status','p_status.id','claim_list.p_status')
+                ->join('claim_paid','claim_paid.year','claim_list.p_year')
+                ->join('claim_refer','claim_refer.year','claim_list.p_year')
                 ->where('trans_id',$id)
                 ->get();
         $paid = DB::table('paid')->where('trans_code',$id)->first();

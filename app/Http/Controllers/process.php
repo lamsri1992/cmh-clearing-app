@@ -16,7 +16,9 @@ class process extends Controller
                 FROM claim_list
                 WHERE hcode = {$hcode}");
         $map = DB::table('benefit')->where('ben_hcode',$hcode)->get();
-        return view('process.index',['data'=>$data,'count'=>$count,'bent'=>$bent,'map'=>$map]);
+        $op_paid = DB::table('claim_paid')->get();
+        $op_refer = DB::table('claim_refer')->get();
+        return view('process.index',['data'=>$data,'count'=>$count,'bent'=>$bent,'map'=>$map,'op_paid'=>$op_paid,'op_refer'=>$op_refer]);
     }
 
     public function mapping(Request $request)

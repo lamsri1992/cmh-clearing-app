@@ -17,7 +17,7 @@
                             <p class="text-sm mb-0 font-weight-bold">ยอดลูกหนี้</p>
                             <h5 class="font-weight-bolder" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                 data-bs-title="ยอดลูกหนี้">
-                                {{ number_format($creditor->total,2) }} บาท
+                                {{ number_format($creditor->total,2) }}
                             </h5>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                             <p class="text-sm mb-0 font-weight-bold">ยอดเจ้าหนี้</p>
                             <h5 class="font-weight-bolder" data-bs-toggle="tooltip" data-bs-placement="bottom"
                                 data-bs-title="ยอดเจ้าหนี้">
-                                {{ number_format($dept->total,2) }} บาท
+                                {{ number_format($dept->total,2) }}
                             </h5>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                         <div class="numbers">
                             <p class="text-sm mb-0 font-weight-bold">ปฏิเสธจ่าย</p>
                             <h5 class="font-weight-bolder">
-                                0.00 บาท
+                                0.00
                             </h5>
                         </div>
                     </div>
@@ -102,7 +102,7 @@
             <div class="card-header pb-0 pt-3 bg-transparent">
                 <h6 class="text-capitalize">
                     <i class="fa-solid fa-chart-pie"></i>
-                    แผนภูมิแสดงรายการตามจ่าย
+                    แผนภูมิแสดงรายการเจ้าหนี้แยกตามโรงพยาบาล
                 </h6>
             </div>
             <div class="card-body">
@@ -115,7 +115,7 @@
             <div class="card-header pb-0 pt-3 bg-transparent">
                 <h6 class="text-capitalize">
                     <i class="fa-solid fa-chart-pie"></i>
-                    แผนภูมิแสดงรายการเรียกเก็บ
+                    แผนภูมิแสดงรายการลูกหนี้แยกตามโรงพยาบาล
                 </h6>
             </div>
             <div class="card-body">
@@ -141,7 +141,7 @@
       type: 'bar',
       data: {
         datasets: [{
-            label: 'ยอดตามจ่าย',
+            label: 'ยอดเจ้าหนี้',
             data: [
                 @foreach ($paid as $res)
                 "{{ $res->paid }}",
@@ -175,7 +175,7 @@
       type: 'bar',
       data: {
         datasets: [{
-            label: 'ยอดเรียกเก็บ',
+            label: 'ยอดลูกหนี้',
             data: [
                 @foreach ($price as $res)
                 "{{ $res->paid }}",
