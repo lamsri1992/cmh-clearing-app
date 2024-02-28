@@ -14,27 +14,49 @@ class dashboard extends Controller
         $hcode = Auth::user()->hcode;
         $creditor = DB::table('claim_list')
                 ->select(DB::raw('SUM(drug + lab + proc) AS total'))
+                ->join('benefit','benefit.ben_pttype','claim_list.pttype')
                 ->where('hcode','=',$hcode)
                 ->where('hospmain','!=',$hcode)
+                ->whereIn('benefit.ben_status_id', [1, 2])
                 ->first();
 
         $dept = DB::table('claim_list')
                 ->select(DB::raw('SUM(drug + lab + proc) AS total'))
+                ->join('benefit','benefit.ben_pttype','claim_list.pttype')
                 ->where('hospmain','=',$hcode)
                 ->where('hcode','!=',$hcode)
+                ->whereIn('benefit.ben_status_id', [1, 2])
                 ->first();
 
         $query_count = "SELECT
-                (SELECT COUNT(vn) FROM claim_list WHERE p_status = '1' AND hcode = $hcode) AS wait,
-                (SELECT COUNT(vn) FROM claim_list WHERE p_status = '2' AND hcode = $hcode) AS charge,
-                (SELECT COUNT(vn) FROM claim_list WHERE p_status = '3' AND hcode = $hcode) AS success,
-                (SELECT COUNT(vn) FROM claim_list WHERE p_status = '4' AND hospmain = $hcode) AS deny";
+                (SELECT COUNT(vn) FROM claim_list 
+                        LEFT JOIN benefit ON benefit.ben_pttype = claim_list.pttype
+                        WHERE p_status = '1' 
+                        AND hcode = $hcode
+                        AND benefit.ben_status_id IN ('1','2')) AS wait,
+                (SELECT COUNT(vn) FROM claim_list 
+                        LEFT JOIN benefit ON benefit.ben_pttype = claim_list.pttype
+                        WHERE p_status = '2' 
+                        AND hcode = $hcode
+                        AND benefit.ben_status_id IN ('1','2')) AS charge,
+                (SELECT COUNT(vn) FROM claim_list 
+                        LEFT JOIN benefit ON benefit.ben_pttype = claim_list.pttype
+                        WHERE p_status = '3' 
+                        AND hcode = $hcode
+                        AND benefit.ben_status_id IN ('1','2')) AS success,
+                (SELECT COUNT(vn) FROM claim_list 
+                        LEFT JOIN benefit ON benefit.ben_pttype = claim_list.pttype
+                        WHERE p_status = '4' 
+                        AND hospmain = $hcode
+                        AND benefit.ben_status_id IN ('1','2')) AS deny";
     
         $paid = DB::table('claim_list')
                 ->select('hcode','h_name',DB::raw('SUM(drug + lab + proc) AS paid'))
                 ->where('hospmain','=',$hcode)
                 ->where('hcode','!=',$hcode)
                 ->join('hospital','hospital.h_code','claim_list.hcode')
+                ->join('benefit','benefit.ben_pttype','claim_list.pttype')
+                ->whereIn('benefit.ben_status_id', [1, 2])
                 ->groupBy('hcode')
                 ->get();
             
@@ -43,6 +65,8 @@ class dashboard extends Controller
                 ->where('hospmain','!=',$hcode)
                 ->where('hcode','=',$hcode)
                 ->join('hospital','hospital.h_code','claim_list.hospmain')
+                ->join('benefit','benefit.ben_pttype','claim_list.pttype')
+                ->whereIn('benefit.ben_status_id', [1, 2])
                 ->groupBy('hospmain')
                 ->get();
 

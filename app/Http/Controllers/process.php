@@ -12,10 +12,13 @@ class process extends Controller
         $hcode = Auth::user()->hcode;
         $data = DB::table('claim_list')->where('hcode',$hcode)->orderBy('date_rx','DESC')->first();
         $count = DB::table('claim_list')->where('hcode',$hcode)->count();
-        $bent = DB::select("SELECT DISTINCT pttype , ptname
+        $bent = DB::select("SELECT DISTINCT pttype , ptname , ben_pttype
                 FROM claim_list
-                WHERE hcode = {$hcode}");
-        $map = DB::table('benefit')->where('ben_hcode',$hcode)->get();
+                LEFT JOIN benefit ON benefit.ben_pttype = claim_list.pttype
+                WHERE hcode = {$hcode}
+                AND benefit.ben_pttype IS NULL
+                ");
+        $map = DB::table('benefit')->where('ben_hcode',$hcode)->orderBy('ben_status_id','ASC')->get();
         $op_paid = DB::table('claim_paid')->get();
         $op_refer = DB::table('claim_refer')->get();
         return view('process.index',['data'=>$data,'count'=>$count,'bent'=>$bent,'map'=>$map,'op_paid'=>$op_paid,'op_refer'=>$op_refer]);
@@ -24,13 +27,12 @@ class process extends Controller
     public function mapping(Request $request)
     {
         $hcode = Auth::user()->hcode;
-        $pttype = $request->pttype;
-        $data = DB::table('claim_list')->where('pttype',$pttype)->where('hcode',$hcode)->first();
-        // dd($pttype,$data);
         DB::table('benefit')->insert([
-            'ben_pttype' => $data->pttype,
-            'ben_ptname' => $data->ptname,
-            'ben_hcode' => $data->hcode,
+            'ben_pttype' => $request->code,
+            'ben_ptname' => $request->map,
+            'ben_hcode' => $hcode,
+            'ben_status_id' => $request->id,
+            'ben_status_text' => $request->text,
         ]);
     }
 }

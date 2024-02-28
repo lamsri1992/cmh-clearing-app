@@ -11,18 +11,38 @@ class charge extends Controller
     public function index(){
         $hcode = Auth::user()->hcode;
         $query_count = "SELECT
-        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '1' AND hcode = $hcode) AS wait,
-        (SELECT COUNT(vn) FROM claim_list WHERE p_status IN('2','3','7','8') AND hcode = $hcode) AS charge,
-        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '4' AND hcode = $hcode) AS deny,
-        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '5' AND hcode = $hcode) AS confirm,
-        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '6' AND hcode = $hcode) AS cancel";
+        (SELECT COUNT(vn) FROM claim_list 
+            LEFT JOIN benefit ON benefit.ben_pttype = claim_list.pttype
+            WHERE p_status = '1' AND hcode = $hcode
+            AND benefit.ben_status_id IN ('1','2')
+            ) AS wait,
+        (SELECT COUNT(vn) FROM claim_list 
+            LEFT JOIN benefit ON benefit.ben_pttype = claim_list.pttype
+            WHERE p_status IN('2','3','7','8') AND hcode = $hcode
+            AND benefit.ben_status_id IN ('1','2')
+            ) AS charge,
+        (SELECT COUNT(vn) FROM claim_list 
+            LEFT JOIN benefit ON benefit.ben_pttype = claim_list.pttype
+            WHERE p_status = '4' AND hcode = $hcode
+            AND benefit.ben_status_id IN ('1','2')
+            ) AS deny,
+        (SELECT COUNT(vn) FROM claim_list 
+            LEFT JOIN benefit ON benefit.ben_pttype = claim_list.pttype
+            WHERE p_status = '5' AND hcode = $hcode
+            AND benefit.ben_status_id IN ('1','2')
+            ) AS confirm,
+        (SELECT COUNT(vn) FROM claim_list 
+            LEFT JOIN benefit ON benefit.ben_pttype = claim_list.pttype
+            WHERE p_status = '6' AND hcode = $hcode
+            AND benefit.ben_status_id IN ('1','2')
+            ) AS cancel";
 
         $count = DB::select($query_count);
         $hos = DB::table('hospital')->where('H_CODE','!=',$hcode)->get();
 
         $data = DB::table('claim_list')
                 ->select('vn','date_rx','hcode','hn','h_name','icd10','with_ambulance',
-                'drug','lab','proc','p_name','p_color','ptname','pttype',
+                'drug','lab','proc','p_name','p_color','ptname','pttype','benefit.ben_status_text',
                 DB::raw('drug + lab + proc + service_charge AS amount,
                 IF((drug + lab + proc + service_charge) > claim_paid.paid, claim_paid.paid, (drug + lab + proc + service_charge)) AS paid,
                 IF(with_ambulance = "Y", claim_refer.paid, with_ambulance) AS ambulance'))
@@ -30,7 +50,9 @@ class charge extends Controller
                 ->join('p_status','p_status.id','claim_list.p_status')
                 ->join('claim_paid','claim_paid.year','claim_list.p_year')
                 ->join('claim_refer','claim_refer.year','claim_list.p_year')
+                ->join('benefit','benefit.ben_pttype','claim_list.pttype')
                 ->where('hcode',$hcode)
+                ->whereIn('benefit.ben_status_id', [1, 2])
                 ->get();
 
         // dd($count);

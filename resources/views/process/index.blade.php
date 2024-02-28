@@ -44,7 +44,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <table class="table table-striped table-bordered text-center">
+                        <table class="table table-striped text-center">
                             <thead>
                                 <tr>
                                     <th width="30%">ปี</th>
@@ -62,23 +62,34 @@
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
-            {{-- <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
                         <span class="fw-bold">
                             ประมวลผลสิทธิการรักษา
                         </span>
-                        <table id="basicTable" class="table table-striped table-borderless" width="100%">
+                        <table class="table table-striped text-center">
                             <thead>
                                 <tr>
                                     <th class="text-center">รหัสสิทธิ</th>
                                     <th>ชื่อสิทธิ</th>
-                                    <th class="text-center">
-                                        <i class="fa-solid fa-bars"></i>
-                                    </th>
+                                    <th class="text-center"><i class="fa-solid fa-bars"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($map as $res)
+                                <tr>
+                                    <td>{{ $res->ben_pttype }}</td>
+                                    <td>{{ $res->ben_ptname }}</td>
+                                    <td>{{ $res->ben_status_text }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @if (count($bent) > 0)                            
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">รหัสสิทธิ</th>
+                                    <th>ชื่อสิทธิ</th>
+                                    <th class="text-center"><i class="fa-solid fa-bars"></i></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -87,49 +98,36 @@
                                     <td class="text-center">{{ $res->pttype }}</td>
                                     <td>{{ $res->ptname }}</td>
                                     <td class="text-center">
-                                        <a href="#" class="btn btn-success btn-xs"
-                                            onclick="
-                                                var pttype = {{ $res->pttype }};
-                                                Swal.fire({
-                                                    title: 'ยืนยันการ Map สิทธิการรักษา',
-                                                    text: '{{ $res->ptname }}',
-                                                    icon: 'info',
-                                                    showCancelButton: true,
-                                                    confirmButtonText: 'ยืนยัน',
-                                                    cancelButtonText: 'ยกเลิก',
-                                                }).then((result) => {
-                                                    if (result.isConfirmed) {
-                                                    $.ajax({
-                                                        url: '{{ route('process.map') }}',
-                                                        method: 'GET',
-                                                        data: {
-                                                            pttype: pttype,
-                                                        },
-                                                        success: function (data) {
-                                                            Swal.fire({
-                                                                icon: 'success',
-                                                                title: 'Map สิทธิสำเร็จ',
-                                                                showConfirmButton: false,
-                                                                timer: 3000
-                                                            })
-                                                            window.setTimeout(function () {
-                                                                location.reload()
-                                                            }, 1500);
-                                                        }
-                                                    });
-                                                }
-                                            })">
-                                            <i class="fa-solid fa-circle-check"></i>
-                                            Map สิทธิ
-                                        </a>
+                                        <select name="{{ $res->pttype }}">
+                                            <option>= Map สิทธิการรักษา =</option>
+                                            <option 
+                                                data-text="{{ $res->ptname }}" 
+                                                data-code="{{ $res->pttype }}" 
+                                                value="1">
+                                                OP-Anywhere นอก CUP ในจังหวัด
+                                            </option>
+                                            <option 
+                                                data-text="{{ $res->ptname }}" 
+                                                data-code="{{ $res->pttype }}" 
+                                                value="2">
+                                                OP-Anywhere (อุบัติเหตุ และฉุกเฉิน) นอก CUP ในจังหวัด
+                                            </option>
+                                            <option 
+                                                data-text="{{ $res->ptname }}" 
+                                                data-code="{{ $res->pttype }}" 
+                                                value="3">
+                                                ไม่ใช้งาน
+                                            </option>
+                                        </select>
                                     </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>                  
+                        @endif
+                    </div>
                 </div>
-            </div> --}}
+            </div>
         </div>
     </div>
 </div>
@@ -139,6 +137,33 @@
     $(function(){
         $(".datepicker").datepicker();
         $(".datepicker").datepicker( "option", "dateFormat", 'yy-mm-dd');
+    });
+
+    $('select').on('change', function() {
+        var text = `${this.options[ this.options.selectedIndex ].text}`;
+        var id = this.value;
+        var code = $(this).find(':selected').data('code');
+        var map = $(this).find(':selected').data('text');
+
+        $.ajax({
+            type: "GET",
+            url: "{{ route('process.map') }}",
+            data: {
+                'id': id,
+                'code': code,
+                'map': map,
+                'text': text,
+            },
+            success: function(data){
+                Swal.fire({
+                icon: "success",
+                title: "Mapping สิทธิแล้ว",
+                text: code + " : " + map + " = " + text,
+                }).then(function() {
+                    location.reload();
+                });
+            }
+        });
     });
 </script>
 @endsection
