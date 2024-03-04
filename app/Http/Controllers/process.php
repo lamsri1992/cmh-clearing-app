@@ -12,10 +12,11 @@ class process extends Controller
         $hcode = Auth::user()->hcode;
         $data = DB::table('claim_list')->where('hcode',$hcode)->orderBy('date_rx','DESC')->first();
         $count = DB::table('claim_list')->where('hcode',$hcode)->count();
-        $bent = DB::select("SELECT DISTINCT pttype , ptname , ben_pttype , ben_ptname
+        $bent = DB::select("SELECT DISTINCT pttype , ptname
                 FROM claim_list
                 LEFT JOIN benefit ON benefit.ben_pttype = claim_list.pttype
-                WHERE hcode = {$hcode}");
+                WHERE hcode = {$hcode} AND benefit.ben_pttype IS NULL
+                GROUP BY pttype");
         //  dd($bent);
         $map = DB::table('benefit')->where('ben_hcode',$hcode)->orderBy('ben_status_id','ASC')->get();
         $op_paid = DB::table('claim_paid')->get();
