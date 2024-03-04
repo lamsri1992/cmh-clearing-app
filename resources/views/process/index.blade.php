@@ -104,7 +104,7 @@
                                                 data-text="{{ $res->ptname }}" 
                                                 data-code="{{ $res->pttype }}" 
                                                 value="1">
-                                                OP-Anywhere นอก CUP ในจังหวัด
+                                                OP_Anywhere นอก CUP ในจังหวัด
                                             </option>
                                             <option 
                                                 data-text="{{ $res->ptname }}" 
