@@ -110,7 +110,13 @@
                                                 data-text="{{ $res->ptname }}" 
                                                 data-code="{{ $res->pttype }}" 
                                                 value="2">
-                                                OPAE , OPREFER (อุบัติเหตุ และฉุกเฉิน) UC นอก CUP ในจังหวัด
+                                                OP_AE (อุบัติเหตุ และฉุกเฉิน) UC นอก CUP ในจังหวัด
+                                            </option>
+                                            <option 
+                                                data-text="{{ $res->ptname }}" 
+                                                data-code="{{ $res->pttype }}" 
+                                                value="1">
+                                                OP_REFER UC นอก CUP ในจังหวัด
                                             </option>
                                             <option 
                                                 data-text="{{ $res->ptname }}" 
