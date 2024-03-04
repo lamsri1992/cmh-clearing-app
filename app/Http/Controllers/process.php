@@ -28,6 +28,7 @@ class process extends Controller
         $hcode = Auth::user()->hcode;
         $check = DB::table('benefit')
                 ->where('ben_pttype',$request->code)
+                ->where('ben_hcode',$hcode)
                 ->first();
 
         if(!isset($check)){
