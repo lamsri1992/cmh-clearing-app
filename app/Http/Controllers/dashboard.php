@@ -14,18 +14,18 @@ class dashboard extends Controller
         $hcode = Auth::user()->hcode;
         $creditor = DB::table('claim_list')
                 ->select(DB::raw('SUM(drug + lab + proc) AS total'))
-                ->join('benefit','benefit.ben_pttype','claim_list.pttype')
+                // ->join('benefit','benefit.ben_pttype','claim_list.pttype')
                 ->where('hcode','=',$hcode)
                 ->where('hospmain','!=',$hcode)
-                ->whereIn('benefit.ben_status_id', [1, 2])
+                // ->whereIn('benefit.ben_status_id', [1, 2])
                 ->first();
 
         $dept = DB::table('claim_list')
                 ->select(DB::raw('SUM(drug + lab + proc) AS total'))
-                ->join('benefit','benefit.ben_pttype','claim_list.pttype')
+                // ->join('benefit','benefit.ben_pttype','claim_list.pttype')
                 ->where('hospmain','=',$hcode)
                 ->where('hcode','!=',$hcode)
-                ->whereIn('benefit.ben_status_id', [1, 2])
+                // ->whereIn('benefit.ben_status_id', [1, 2])
                 ->first();
 
         $query_count = "SELECT
@@ -55,8 +55,8 @@ class dashboard extends Controller
                 ->where('hospmain','=',$hcode)
                 ->where('hcode','!=',$hcode)
                 ->join('hospital','hospital.h_code','claim_list.hcode')
-                ->join('benefit','benefit.ben_pttype','claim_list.pttype')
-                ->whereIn('benefit.ben_status_id', [1, 2])
+                // ->join('benefit','benefit.ben_pttype','claim_list.pttype')
+                // ->whereIn('benefit.ben_status_id', [1, 2])
                 ->groupBy('hcode')
                 ->get();
             
@@ -65,8 +65,8 @@ class dashboard extends Controller
                 ->where('hospmain','!=',$hcode)
                 ->where('hcode','=',$hcode)
                 ->join('hospital','hospital.h_code','claim_list.hospmain')
-                ->join('benefit','benefit.ben_pttype','claim_list.pttype')
-                ->whereIn('benefit.ben_status_id', [1, 2])
+                // ->join('benefit','benefit.ben_pttype','claim_list.pttype')
+                // ->whereIn('benefit.ben_status_id', [1, 2])
                 ->groupBy('hospmain')
                 ->get();
 

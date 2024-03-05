@@ -26,7 +26,7 @@
                     </div>
                     <div class="col-md-12" style="margin-top: 1rem;">
                         <span class="fw-bold">เกณฑ์การจ่าย</span>
-                        <table class="table table-striped table-bordered text-center">
+                        <table class="table table-striped text-center">
                             <thead>
                                 <tr>
                                     <th width="30%">ปี</th>
@@ -62,114 +62,95 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <span class="fw-bold">
-                            ประมวลผลสิทธิการรักษา
-                        </span>
-                        <table class="table table-striped text-center">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">รหัสสิทธิ</th>
-                                    <th>ชื่อสิทธิ</th>
-                                    <th class="text-center"><i class="fa-solid fa-bars"></i></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($map as $res)
-                                <tr>
-                                    <td>{{ $res->ben_pttype }}</td>
-                                    <td>{{ $res->ben_ptname }}</td>
-                                    <td>{{ $res->ben_status_text }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        @if (count($bent) > 0)                            
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">รหัสสิทธิ</th>
-                                    <th>ชื่อสิทธิ</th>
-                                    <th class="text-center"><i class="fa-solid fa-bars"></i></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($bent as $res)
-                                <tr>
-                                    <td class="text-center">{{ $res->pttype }}</td>
-                                    <td>{{ $res->ptname }}</td>
-                                    <td class="text-center">
-                                        <select name="{{ $res->pttype }}">
-                                            <option>= Map สิทธิการรักษา =</option>
-                                            <option 
-                                                data-text="{{ $res->ptname }}" 
-                                                data-code="{{ $res->pttype }}" 
-                                                value="1">
-                                                OP_Anywhere นอก CUP ในจังหวัด
-                                            </option>
-                                            <option 
-                                                data-text="{{ $res->ptname }}" 
-                                                data-code="{{ $res->pttype }}" 
-                                                value="2">
-                                                OP_AE (อุบัติเหตุ และฉุกเฉิน) UC นอก CUP ในจังหวัด
-                                            </option>
-                                            <option 
-                                                data-text="{{ $res->ptname }}" 
-                                                data-code="{{ $res->pttype }}" 
-                                                value="1">
-                                                OP_REFER UC นอก CUP ในจังหวัด
-                                            </option>
-                                            <option 
-                                                data-text="{{ $res->ptname }}" 
-                                                data-code="{{ $res->pttype }}" 
-                                                value="3">
-                                                ไม่ใช้งาน
-                                            </option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        @endif
+                          <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-opae" role="tabpanel" aria-labelledby="nav-opae-tab" tabindex="0">
+                                <button type="button" class="btn btn-success" style="margin-top: 0.5rem;"
+                                    data-bs-toggle="modal" data-bs-target="#opae">
+                                    <i class="fa-solid fa-clipboard-check"></i>
+                                    Mapping สิทธิ
+                                </button>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">รหัสสิทธิจาก HIS</th>
+                                            <th>สิทธิการรักษา</th>
+                                            <th>สิทธิ Mapping</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($map as $res)
+                                        <tr>
+                                            <td class="text-center">{{ $res->map_pttype }}</td>
+                                            <td>{{ $res->map_ptname }}</td>
+                                            <td>{{ $res->map_system_name }}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="opae" aria-labelledby="opaeLabel" aria-hidden="true">
+    <form action="{{ route('process.map') }}">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="opaeLabel">OP_AE (อุบัติเหตุ และฉุกเฉิน) UC นอก CUP ในจังหวัด</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <select class="array-select" name="itemOPAE"></select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิดหน้าต่าง</button>
+                    <button type="button" class="btn btn-success"
+                        onclick="Swal.fire({
+                            title: 'ยืนยันการ Mapping สิทธิ ?',
+                            showDenyButton: true,
+                            confirmButtonText: 'บันทึกข้อมูล',
+                            denyButtonText: 'ยกเลิก'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                console.log('Confirm Submit')
+                                form.submit()
+                            }
+                        });"
+                    >
+                        <i class="fa-solid fa-save"></i>
+                        บันทึกข้อมูล
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 @endsection
 @section('script')
 <script>
-    $(function(){
-        $(".datepicker").datepicker();
-        $(".datepicker").datepicker( "option", "dateFormat", 'yy-mm-dd');
-    });
-
-    $('select').on('change', function() {
-        var text = `${this.options[ this.options.selectedIndex ].text}`;
-        var id = this.value;
-        var code = $(this).find(':selected').data('code');
-        var map = $(this).find(':selected').data('text');
-
-        $.ajax({
-            type: "GET",
-            url: "{{ route('process.map') }}",
-            data: {
-                'id': id,
-                'code': code,
-                'map': map,
-                'text': text,
-            },
-            success: function(data){
-                Swal.fire({
-                icon: "success",
-                title: "Mapping สิทธิแล้ว",
-                text: code + " : " + map + " = " + text,
-                }).then(function() {
-                    location.reload();
-                });
-            }
-        });
+    const hcode = {{ Auth::user()->hcode }};
+    $('.array-select').select2({
+        width: '100%',
+        placeholder: "Mapping ข้อมูลสิทธิ",
+        ajax: {
+            url: 'https://exp.cmhis.org/query/pttype/' + hcode,
+            type: 'GET',
+            processResults: function (data) {
+                var text= []
+                for(i = 0; i < data.length; i++){
+                    text.push({"id": data[i].pttype + ',' + data[i].name, "text": data[i].name})
+                }
+                return {
+                    results: text,
+                };
+            } 
+        }
     });
 </script>
 @endsection

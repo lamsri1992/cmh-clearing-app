@@ -69,6 +69,12 @@
             $('.basic-single').select2();
         });
 
+        $(document).ready(function() {
+            $('.basic-multiple').select2({
+                width: '100%'
+            });
+        });
+
         $(function(){
             $(".datepicker").datepicker();
             $(".datepicker").datepicker( "option", "dateFormat", 'yy-mm-dd');
@@ -94,7 +100,7 @@
                 sInfoEmpty: '<small>ไม่มีข้อมูล</small>'
             },
         });
-</script>
+    </script>
     @if ($message = Session::get('success'))
     <script>
         Swal.fire({

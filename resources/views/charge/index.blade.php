@@ -141,7 +141,7 @@
                                 <td class="text-end text-success fw-bold">{{ number_format($res->paid,2) }}</td>
                                 <td class="text-end text-danger fw-bold">{{ number_format($res->ambulance,2) }}</td>
                                 <td class="text-end fw-bold" style="text-decoration-line: underline">{{ number_format($total,2) }}</td>
-                                <td class="">{{ $res->ben_status_text }}</td>
+                                <td class="">{{ $res->ptname }}</td>
                                 <td class="text-center text-white {{ $res->p_color }}">{{ $res->p_name }}</td>
                             </tr>
                         @endforeach
