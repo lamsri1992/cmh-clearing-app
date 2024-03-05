@@ -106,7 +106,7 @@
                                     <img src="{{ asset('img/logo_cmh.png') }}" alt="สำนักงานสาธารณสุข จังหวัดเชียงใหม่" width="60%">
                                 </div>
                                 <h4 class="mt-5 font-weight-bolder position-relative">
-                                    ระบบริหารข้อมูลหนี้ระหว่างโรงพยาบาล
+                                    ระบบบริหารข้อมูลหนี้ระหว่างโรงพยาบาล
                                 </h4>
                                 <p class="text-sm position-relative">
                                     CHIMS - Clearing House Information Management System
