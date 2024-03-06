@@ -178,7 +178,10 @@
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="importText"></h1>
+                    <h1 class="modal-title fs-5" id="importText">
+                        <i class="fa-solid fa-file-excel"></i>
+                        Import Excel
+                    </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -229,6 +232,12 @@
                         Import Excel
                     </button>
                     <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">ปิดหน้าต่าง</button>
+                </div>
+                <div class="text-center" style="margin-bottom: 1rem;">
+                    <a href="{{ asset('dataset_template.xls') }}">
+                        <i class="fa-solid fa-download text-primary"></i>
+                        ดาวน์โหลด Template + Query
+                    </a>
                 </div>
             </div>
         </form>
