@@ -31,7 +31,7 @@ table.on('click', 'tbody tr', (e) => {
     }
 
     var obj = table.row('.selected').data();
-    var id = obj[Object.keys(obj)[0]];
+    var id = obj[Object.keys(obj)[1]];
     var url = '/paid/' + btoa(id);
     window.location.href = url;
 });

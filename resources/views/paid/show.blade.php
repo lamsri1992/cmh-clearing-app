@@ -10,83 +10,53 @@
                 </span>
                 <div class="d-flex justify-content-between flex-xl-row flex-md-column flex-sm-row flex-column p-sm-3 p-0">
                     <div class="col-md-6">
-                        <p><b>ผู้บันทึก</b> : {{ $data->reporter }}</p>
                         <p><b>VN</b> : {{ $data->vn }}</p>
                         <p><b>HN</b> : {{ $data->hn }}</p>
                         <p><b>PID</b> : {{ $data->pid }}</p>
+                        <p><b>ผู้รับบริการ</b> : {{ $data->patient }}</p>
                         <p><b>สิทธิการรักษา</b> : {{ $data->ptname }}</p>
-                        <p><b>วันที่รับบริการ</b> : {{ date("Y-m-d", strtotime($data->date_rx)) }}</p>
-                        <p><b>วันที่เรียกเก็บ</b> : {{ date("Y-m-d", strtotime($data->date_rec)) }}</p>
                     </div>
                     <div class="col-md-6">
-                        <p><b>ตามจ่ายไปยัง</b> : {{ $data->h_name }}</p>
-                        <p><b>ICD9</b> : {{ $data->icd9 }}</p>
+                        <p><b>วันที่รับบริการ</b> : {{ date("Y-m-d", strtotime($data->visit_date)) }}</p>
+                        <p><b>เรียกเก็บไปยัง</b> : {{ $data->h_name }}</p>
                         <p><b>ICD10</b> : {{ $data->icd10 }}</p>
-                        <p><b>Refer</b> : {!! ($data->refer == 1) ? 
-                            '<i class="fa-solid fa-check-circle text-success"></i> ใช่' 
-                            : 
-                            '<i class="fa-solid fa-xmark-circle text-danger"></i> ไม่ใช่'
-                            !!}
-                        </p>
-                        <p><b>CT / MRI</b> : {!! ($data->with_ct_mri) ? 
-                            '<i class="fa-solid fa-check-circle text-success"></i> ใช่' 
-                            : 
-                            '<i class="fa-solid fa-xmark-circle text-danger"></i> ไม่ใช่'
-                            !!}
-                        </p>
-                        <p>
-                            <b>สถานะ</b> : 
-                            {{ $data->p_name }} <br>
-                            <i>{{ $data->note }}</i>
-                        </p>
+                        <p><b>สถานะ</b> : {{ $data->p_name }}</p>
                     </div>
                 </div>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th width="50%">ค่ายา</th>
-                            <td class="text-end">{{ number_format($data->drug,2) }}</td>
+                            <td class="text-end">{{ number_format($data->drug,2) }} บาท</td>
                         </tr>
                         <tr>
                             <th>Lab</th>
-                            <td class="text-end">{{ number_format($data->lab,2) }}</td>
+                            <td class="text-end">{{ number_format($data->lab,2) }} บาท</td>
+                        </tr>
+                        <tr>
+                            <th>Xray</th>
+                            <td class="text-end">{{ number_format($data->xray,2) }} บาท</td>
                         </tr>
                         <tr>
                             <th>หัตถการ</th>
-                            <td class="text-end">{{ number_format($data->proc,2) }}</td>
+                            <td class="text-end">{{ number_format($data->proc,2) }} บาท</td>
                         </tr>
                         <tr>
                             <th>ค่าบริการ</th>
-                            <td class="text-end">{{ number_format($data->service_charge,2) }}</td>
-                        </tr>
-                        <tr>
-                            <th>รวมทั้งหมด</th>
-                            <td class="text-end">{{ number_format($data->amount,2) }}</td>
-                        </tr>
-                        <tr>
-                            <th>ยอดจ่ายจริง <small class="fw-light text-danger">(จ่ายตามเกณฑ์ไม่เกิน 700 บาท)</small></th>
-                            <td class="text-end">{{ number_format($data->paid,2) }}</td>
+                            <td class="text-end">{{ number_format($data->service_charge,2) }} บาท</td>
                         </tr>
                         <tr>
                             <th>Ambulance</th>
-                            <td class="text-end">{{ number_format($data->ambulance,2) }}</td>
+                            <td class="text-end">{{ number_format($data->ambulance,2) }} บาท</td>
                         </tr>
                         <tr>
-                            <th>CT / MRI</th>
-                            <td class="text-end">{{ $data->with_ct_mri }} <br>
-                                {{ number_format($data->pay_order,2) }}
-                            </td>
+                            <th>ยอดรวมค่าใช้จ่ายทั้งหมด</th>
+                            <td class="text-end">{{ number_format($data->amount,2) }} บาท</td>
                         </tr>
                         <tr>
-                            <th>Contrast</th>
-                            <td class="text-end">{{ $data->contrast }} <br>
-                                {{ number_format($data->contrast_pay,2) }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>ยอดเรียกเก็บจริง</th>
+                            <th>ยอดเรียกเก็บได้ตามเกณฑ์</th>
                             <td class="text-end fw-bold text-decoration-underline">
-                                {{ number_format($data->paid + $data->ambulance + $data->pay_order + $data->contrast_pay,2) }}
+                                {{ number_format($data->paid + $data->ambulance,2) }} บาท
                             </td>
                         </tr>
                     </thead>
@@ -100,7 +70,7 @@
                 <div class="d-grid gap-2">
                     <button id="btnConfirm" type="button" class="btn btn-success"
                         onclick="
-                        var recno = {{ $data->vn }}
+                        var vn = {{ $data->vn }}
                         Swal.fire({
                             title: 'ยืนยันข้อมูลการตามจ่าย',
                             text: 'VN : {{ $data->vn }}',
@@ -114,7 +84,7 @@
                                 url: '{{ route('paid.confirm') }}',
                                 method: 'GET',
                                 data: {
-                                    recno: recno,
+                                    vn: vn,
                                 },
                                 success: function (data) {
                                     Swal.fire({
@@ -125,7 +95,7 @@
                                         timer: 3000
                                     })
                                     window.setTimeout(function () {
-                                        location.replace('/paid/transaction/{{ $data->trans_id }}')
+                                        location.replace('/paid/transaction/{{ $data->trans_code }}')
                                     }, 1500);
                                 }
                             });
@@ -208,7 +178,7 @@
                             timer: 3000
                         })
                         window.setTimeout(function () {
-                            location.reload()
+                            location.replace('/paid/transaction/{{ $data->trans_code }}')
                         }, 1500);
                     }
                 });

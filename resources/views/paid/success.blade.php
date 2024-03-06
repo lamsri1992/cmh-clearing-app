@@ -26,7 +26,7 @@
                             <th class="text-center">Transaction</th>
                             <th class="text-center">วันที่ยืนยันข้อมูล</th>
                             <th class="text-center">โรงพยาบาลเรียกเก็บ</th>
-                            <th class="text-center">ยอดตามจ่าย</th>
+                            <th class="text-center">ยอดเรียกเก็บ</th>
                             <th class="text-center">ยอดจ่ายจริง</th>
                             <th class="text-center">ส่วนต่าง</th>
                             <th class="text-center"><i class="fa-solid fa-bars"></i></th>

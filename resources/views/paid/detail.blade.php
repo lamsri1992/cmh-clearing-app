@@ -23,32 +23,28 @@
                 <table id="listData" class="display nowrap" style="width:100%">
                     <thead>
                         <tr>
-                            <th class="text-center">VN::</th>
-                            <th class="text-center">วันที่รับบริการ</th>
+                            <th class="text-center">วันที่</th>
+                            <th class="text-center">VN</th>
                             <th>หน่วยบริการ</th>
                             <th class="text-center">HN</th>
-                            <th class="text-end">ค่าใช้จ่าย</th>
+                            <th class="text-end">ยอดลูกหนี้</th>
                             <th class="text-end">ยอดเรียกเก็บ</th>
-                            <th class="text-end">Refer</th>
-                            <th class="text-end">CT / MRI</th>
-                            <th class="text-end">CONTRAST</th>
+                            <th class="text-end">Ambulance</th>
                             <th class="text-end">ยอดรวม</th>
                             <th class="text-center">สถานะ</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($data as $res)
-                        @php $total = $res->paid + $res->ambulance + $res->pay_order + $res->contrast_pay; @endphp
+                        @php $total = $res->paid + $res->ambulance; @endphp
                         <tr>
+                            <td class="text-center">{{ date("Y-m-d", strtotime($res->visit_date)) }}</td>
                             <td class="text-center">{{ $res->vn }}</td>
-                            <td class="text-center">{{ date("Y-m-d", strtotime($res->date_rx)) }}</td>
                             <td>{{ $res->h_name }}</td>
                             <td class="text-center">{{ $res->hn }}</td>
                             <td class="text-end text-primary fw-bold">{{ number_format($res->amount,2) }}</td>
                             <td class="text-end text-success fw-bold">{{ number_format($res->paid,2) }}</td>
                             <td class="text-end text-danger fw-bold">{{ number_format($res->ambulance,2) }}</td>
-                            <td class="text-end text-dark fw-bold">{{ number_format($res->pay_order,2) }}</td>
-                            <td class="text-end text-warning fw-bold">{{ number_format($res->contrast_pay,2) }}</td>
                             <td class="text-end fw-bold" style="text-decoration-line: underline">{{ number_format($total,2) }}</td>
                             <td class="text-center text-white {{ $res->p_color }}">{{ $res->p_name }}</td>
                         </tr>
@@ -163,7 +159,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">วันที่</label>
-                        <input name="paid_date" class="form-control" type="text" placeholder="ระบุวันที่ชำระเงิน">
+                        <input type="text" class="form-control datepicker" name="paid_date" placeholder="ระบุวันที่ชำระเงิน" required>
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">หมายเลขอ้างอิง</label>
@@ -172,7 +168,18 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">ปิดหน้าต่าง</button>
-                    <button type="submit" class="btn btn-success btn-sm">
+                    <button type="button" class="btn btn-success btn-sm"
+                        onclick="Swal.fire({
+                            title: 'ยืนยันการบันทึกข้อมูล',
+                            text: 'กรุณาตรวจสอบข้อมูลให้ถูกต้อง ครบถ้วน',
+                            showDenyButton: true,
+                            confirmButtonText: 'ยืนยัน',
+                            denyButtonText: 'ยกเลิก'
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                                form.submit()
+                            }
+                          });">
                         <i class="fa-solid fa-save"></i>
                         บันทึกข้อมูล
                     </button>

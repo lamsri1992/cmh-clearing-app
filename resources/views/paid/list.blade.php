@@ -131,7 +131,18 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">ปิดหน้าต่าง</button>
-                    <button type="submit" class="btn btn-success btn-sm">
+                    <button type="button" class="btn btn-success btn-sm"
+                        onclick="Swal.fire({
+                            title: 'ยืนยันการบันทึกข้อมูล',
+                            text: 'กรุณาตรวจสอบข้อมูลให้ถูกต้อง ครบถ้วน',
+                            showDenyButton: true,
+                            confirmButtonText: 'ยืนยัน',
+                            denyButtonText: 'ยกเลิก'
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                                form.submit()
+                            }
+                          });">
                         <i class="fa-solid fa-save"></i>
                         บันทึกข้อมูล
                     </button>
