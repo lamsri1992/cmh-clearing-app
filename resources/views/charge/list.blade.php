@@ -20,9 +20,8 @@
                                     {{ $res->h_name }}
                                 </div>
                                 <i class="fa-solid fa-spinner fa-spin text-info"></i>
-                                ยอดเรียกเก็บ OPAE / OPER {{ number_format($res->total,2) }} บาท <br>
-                                <i class="fa-solid fa-spinner fa-spin text-info"></i>
-                                ยอดเรียกเก็บ CT / MRI / CONTRAST {{ number_format($res->ct_total,2) }} บาท
+                                ยอดเรียกเก็บ OP_AE (UC นอกเขต อุบัติเหตุ และฉุกเฉิน)<br>
+                                {{ number_format($res->total,2) }} บาท 
                             </div>
                             <span class="badge bg-primary rounded-pill" style="width: 15%;">
                                 {{ number_format($res->number) }} รายการ

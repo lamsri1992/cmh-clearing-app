@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Claim extends Model
 {
-    protected $table = 'claim_er';
+    protected $table = 'claim_list';
     protected $guarded = [];
     public $timestamps = false;
 }

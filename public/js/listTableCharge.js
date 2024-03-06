@@ -19,7 +19,7 @@ new DataTable('#listData', {
     },
     initComplete: function () {
         this.api()
-            .columns([2,8,9])
+            .columns([2,8])
             .every(function () {
                 var column = this;
                 var select = $('<select class="form-select" style="width:100%;"><option value="">ทั้งหมด</option></select>')
@@ -49,7 +49,7 @@ var minDate, maxDate;
 DataTable.ext.search.push(function (settings, data, dataIndex) {
     var min = minDate.val();
     var max = maxDate.val();
-    var date = new Date(data[1]);
+    var date = new Date(data[0]);
  
     if (
         (min === null && max === null) ||
@@ -89,8 +89,8 @@ table.on('click', 'tbody tr', (e) => {
     }
 
     var obj = table.row('.selected').data();
-    var id = obj[Object.keys(obj)[0]];
+    var id = obj[Object.keys(obj)[1]];
     var url = '/charge/' + btoa(id);
-    // window.location.href = url;
-    window.open(url, '_blank');
+    window.location.href = url;
+    // window.open(url, '_blank');
 });

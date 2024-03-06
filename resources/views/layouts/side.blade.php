@@ -39,7 +39,7 @@
                     <span class="nav-link-text ms-1">รายการยอดเจ้าหนี้</span>
                 </a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link {{ (request()->is('process*')) ? 'active' : '' }}" href="{{ url('process') }}">
                     <div
                         class="icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
@@ -47,7 +47,7 @@
                     </div>
                     <span class="nav-link-text ms-1">ประมวลผลข้อมูล</span>
                 </a>
-            </li>
+            </li> --}}
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <div

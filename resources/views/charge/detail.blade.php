@@ -23,15 +23,13 @@
                 <table id="listData" class="display nowrap" style="width:100%">
                     <thead>
                         <tr>
-                            <th class="text-center">VN::</th>
-                            <th class="text-center">วันที่รับบริการ</th>
-                            <th>หน่วยบริการ</th>
+                            <th class="text-center">VN</th>
+                            <th class="text-center">วันที่</th>
+                            <th>รพ.</th>
                             <th class="text-center">HN</th>
-                            <th class="text-end">ค่าใช้จ่าย</th>
+                            <th class="text-end">ยอดลูกหนี้</th>
                             <th class="text-end">ยอดเรียกเก็บ</th>
-                            <th class="text-end">Refer</th>
-                            <th class="text-end">CT / MRI</th>
-                            <th class="text-end">CONTRAST</th>
+                            <th class="text-end">Ambulance</th>
                             <th class="text-end">ยอดรวม</th>
                             <th class="text-center">สถานะ</th>
                         </tr>
@@ -40,19 +38,17 @@
                         @php $all = 0; @endphp
                         @foreach ($data as $res)
                         @php 
-                            $total = $res->paid + $res->ambulance + $res->pay_order + $res->contrast_pay;
+                            $total = $res->paid + $res->ambulance;
                             $all += $total;
                         @endphp
                             <tr>
                                 <td class="text-center">{{ $res->vn }}</td>
-                                <td class="text-center">{{ date("Y-m-d", strtotime($res->date_rx)) }}</td>
+                                <td class="text-center">{{ date("Y-m-d", strtotime($res->visit_date)) }}</td>
                                 <td>{{ $res->h_name }}</td>
                                 <td class="text-center">{{ $res->hn }}</td>
                                 <td class="text-end text-primary fw-bold">{{ number_format($res->amount,2) }}</td>
                                 <td class="text-end text-success fw-bold">{{ number_format($res->paid,2) }}</td>
                                 <td class="text-end text-danger fw-bold">{{ number_format($res->ambulance,2) }}</td>
-                                <td class="text-end text-dark fw-bold">{{ number_format($res->pay_order,2) }}</td>
-                                <td class="text-end text-warning fw-bold">{{ number_format($res->contrast_pay,2) }}</td>
                                 <td class="text-end fw-bold" style="text-decoration-line: underline">{{ number_format($total,2) }}</td>
                                 <td class="text-center text-white {{ $res->p_color }}">{{ $res->p_name }}</td>
                             </tr>
@@ -78,8 +74,8 @@
                     <table class="table table-striped text-center table-bordered">
                         <thead>
                           <tr>
-                            <th scope="col" width="30%">จำนวนเรียกเก็บ</th>
-                            <th scope="col" width="30%">จำนวนจ่ายจริง</th>
+                            <th scope="col" width="30%">ยอดเรียกเก็บ</th>
+                            <th scope="col" width="30%">ยอดจ่ายจริง</th>
                             <th scope="col" width="30%">ส่วนต่าง</th>
                           </tr>
                         </thead>

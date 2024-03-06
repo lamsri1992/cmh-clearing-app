@@ -3,8 +3,6 @@
 @foreach ($count as $res)
 @php
     $wait = $res->wait;
-    $charge = $res->charge;
-    $success = $res->success;
     $deny = $res->deny;
 @endphp
 <div class="row">
@@ -58,7 +56,7 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 font-weight-bold">รอตรวจสอบ</p>
+                            <p class="text-sm mb-0 font-weight-bold">รอนำส่ง</p>
                             <h5 class="font-weight-bolder">
                                 {{ number_format($wait) }} รายการ
                             </h5>
@@ -81,7 +79,7 @@
                         <div class="numbers">
                             <p class="text-sm mb-0 font-weight-bold">ปฏิเสธจ่าย</p>
                             <h5 class="font-weight-bolder">
-                                0.00
+                                {{ $deny }} รายการ
                             </h5>
                         </div>
                     </div>

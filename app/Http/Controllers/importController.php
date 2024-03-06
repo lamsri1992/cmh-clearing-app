@@ -19,14 +19,18 @@ class importController extends Controller
         
         Excel::import(new ClaimImport,request()->file('select-file'));
         $file  = $request->file('select-file');
-        $fileName = $hcode."_".date('Ymdhis');
+        $fileName = $hcode."_".date('Ymdhis').".xls";
         $destination = public_path('ImportFiles/');
         File::makeDirectory($destination, 0777, true, true);
         $file->move(public_path('ImportFiles/'), $fileName);
         
-        DB::table('import_log')->insert(['ex_file' => $fileName]);
-        DB::table('claim_list')->where('hn', NULL)->delete();
-
+        DB::table('import_log')->insert(
+            [
+                'ex_file' => $fileName,
+                'upload_date' => date("Y-m-d H:i:s")
+            ]
+        );
+        DB::table('claim_list')->where('vn', NULL)->delete();
         return back()->with('success', 'นำเข้าข้อมูลสำเร็จ');
     }
 }
