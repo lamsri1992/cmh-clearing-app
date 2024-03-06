@@ -51,9 +51,10 @@ class dashboard extends Controller
     public function deny(){
         $hcode = Auth::user()->hcode;
         $data = DB::table('claim_list')
-                ->select('vn','visit_date','hcode','hn','h_name','icd10','with_ambulance','drug','lab','proc','p_name','p_color',
-                DB::raw('drug + lab + proc + xray + service_charge AS amount,
-                IF((drug + lab + proc + xray + service_charge) > claim_paid.paid, claim_paid.paid, (drug + lab + proc + xray + service_charge)) AS paid,
+                ->select('vn','visit_date','hcode','hn','h_name','icd10','with_ambulance','drug','lab','proc'
+                ,'p_name','p_color','trans_code','deny_note','deny_date',
+                DB::raw('total AS amount,
+                IF((total) > claim_paid.paid, claim_paid.paid, (total)) AS paid,
                 IF(with_ambulance = "Y", claim_refer.paid, with_ambulance) AS ambulance'))
                 ->join('hospital','h_code','claim_list.hcode')
                 ->join('p_status','p_status.id','claim_list.p_status')

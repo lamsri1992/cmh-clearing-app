@@ -24,11 +24,11 @@
                     <thead>
                         <tr>
                             <th class="text-center">TransCode::</th>
-                            <th class="text-center">VN::</th>
+                            <th class="text-center">VN</th>
                             <th class="text-center">วันที่รับบริการ</th>
-                            <th>หน่วยบริการ</th>
+                            <th>เจ้าหนี้</th>
                             <th class="text-center">HN</th>
-                            <th class="text-end">ยอดที่เรียกเก็บได้</th>
+                            <th class="text-end">ยอดหนี้</th>
                             <th class="text-center">สถานะ</th>
                             <th class="text-center">หมายเหตุ</th>
                         </tr>
@@ -36,16 +36,16 @@
                     <tbody>
                         @foreach ($data as $res)
                             <tr>
-                                <td class="text-center">{{ $res->trans_id }}</td>
+                                <td class="text-center">{{ $res->trans_code }}</td>
                                 <td class="text-center">{{ $res->vn }}</td>
-                                <td class="text-center">{{ date("Y-m-d", strtotime($res->date_rx)) }}</td>
+                                <td class="text-center">{{ date("Y-m-d", strtotime($res->visit_date)) }}</td>
                                 <td>{{ $res->h_name }}</td>
                                 <td class="text-center">{{ $res->hn }}</td>
                                 <td class="text-end fw-bold" style="text-decoration-line: underline">
                                     {{ number_format($res->paid + $res->ambulance,2) }}
                                 </td>
                                 <td class="text-center text-white {{ $res->p_color }}">{{ $res->p_name }}</td>
-                                <td class="text-center">{{ $res->note }}</td>
+                                <td class="text-center">{{ $res->deny_note }}</td>
                             </tr>
                         @endforeach
                     </tbody>
