@@ -26,6 +26,7 @@ class ClaimImport implements ToModel
             'patient' => $row['3'],
             'pid' => $row['4'],
             'visit_date' => $row['5'],
+            // 'visit_date' => Date::excelToDateTimeObject($row['5'])->format('Y-m-d'),
             'icd10' => $row['6'],
             'drug' => $row['8'],
             'lab' => $row['9'],

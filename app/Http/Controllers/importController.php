@@ -14,7 +14,7 @@ class importController extends Controller
     {
         $hcode = Auth::user()->hcode;
         $this->validate($request, [
-            'select-file' => 'required|mimes:xls,xlsx'
+            'select-file' => 'required|mimes:xls'
         ]);
         
         Excel::import(new ClaimImport,request()->file('select-file'));
@@ -27,7 +27,8 @@ class importController extends Controller
         DB::table('import_log')->insert(
             [
                 'ex_file' => $fileName,
-                'upload_date' => date("Y-m-d H:i:s")
+                'upload_date' => date("Y-m-d H:i:s"),
+                'hcode' => $hcode,
             ]
         );
         DB::table('claim_list')->where('vn', NULL)->delete();

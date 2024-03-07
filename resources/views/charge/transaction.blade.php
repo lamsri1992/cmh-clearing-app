@@ -33,8 +33,8 @@
                 <table id="listData" class="display nowrap" style="width:100%">
                     <thead>
                         <tr>
-                            <th class="text-center">VN::</th>
                             <th class="text-center">วันที่รับบริการ</th>
+                            <th class="text-center">VN</th>
                             <th>หน่วยบริการ</th>
                             <th class="text-center">HN</th>
                             <th class="text-end">ยอดลูกหนี้</th>
@@ -49,8 +49,8 @@
                         @foreach ($data as $res)
                         @php $total = $res->paid + $res->ambulance; @endphp
                             <tr>
-                                <td class="text-center">{{ $res->vn }}</td>
                                 <td class="text-center">{{ date("Y-m-d", strtotime($res->visit_date)) }}</td>
+                                <td class="text-center">{{ $res->vn }}</td>
                                 <td>{{ $res->h_name }}</td>
                                 <td class="text-center">{{ $res->hn }}</td>
                                 <td class="text-end text-primary fw-bold">{{ number_format($res->amount,2) }}</td>

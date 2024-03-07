@@ -121,8 +121,8 @@ class charge extends Controller
         foreach($data as $array){
             $id = DB::table('transaction')->insertGetId(
                 [
-                    'trans_vn' => $array['0'],
-                    'trans_vstdate' => $array['1'],
+                    'trans_vn' => $array['1'],
+                    'trans_vstdate' => $array['0'],
                     'trans_total' => $array['7'],
                     'trans_code' => $transCode,
                     'trans_hcode' => $hcode,
@@ -132,7 +132,7 @@ class charge extends Controller
                 ]
             );
 
-            DB::table('claim_list')->where('vn',$array['0'])->update(
+            DB::table('claim_list')->where('vn',$array['1'])->update(
                 [
                     'p_status' => 2,
                     'trans_code' => $transCode,
