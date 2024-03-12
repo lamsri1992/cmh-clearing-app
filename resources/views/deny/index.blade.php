@@ -38,7 +38,7 @@
                             <tr>
                                 <td class="text-center">{{ $res->trans_code }}</td>
                                 <td class="text-center">{{ $res->vn }}</td>
-                                <td class="text-center">{{ date("Y-m-d", strtotime($res->visit_date)) }}</td>
+                                <td class="text-center">{{ date("d/m/Y", strtotime($res->visit_date)) }}</td>
                                 <td>{{ $res->h_name }}</td>
                                 <td class="text-center">{{ $res->hn }}</td>
                                 <td class="text-end fw-bold" style="text-decoration-line: underline">

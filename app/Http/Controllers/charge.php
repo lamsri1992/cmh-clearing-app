@@ -11,27 +11,18 @@ class charge extends Controller
     public function index(){
         $hcode = Auth::user()->hcode;
         $query_count = "SELECT
-        (SELECT COUNT(vn) FROM claim_list WHERE p_status IN('2','3','7','8') AND hcode = $hcode) AS charge,
-        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '4' AND hcode = $hcode) AS deny,
-        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '5' AND hcode = $hcode) AS `wait`,
+        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '1' AND hcode = $hcode) AS `wait`,
+        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '2' AND hcode = $hcode) AS charge,
+        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '5' AND hcode = $hcode) AS deny,
         (SELECT SUM(total) FROM claim_list WHERE hcode = $hcode) AS deptor";
 
         $count = DB::select($query_count);
-        $hos = DB::table('hospital')->where('H_CODE','!=',$hcode)->get();
 
-        $data = DB::table('claim_list')
-                ->select('vn','visit_date','hcode','hn','h_name','icd10','with_ambulance',
-                'drug','lab','proc','xray','service_charge','total','p_name','p_color','ptname','pttype',
-                DB::raw('IF(total > claim_paid.paid, claim_paid.paid,total) AS paid,
-                IF(with_ambulance = "Y", claim_refer.paid, with_ambulance) AS ambulance'))
-                ->join('hospital','h_code','claim_list.hospmain')
-                ->join('p_status','p_status.id','claim_list.p_status')
-                ->join('claim_paid','claim_paid.year','claim_list.p_year')
-                ->join('claim_refer','claim_refer.year','claim_list.p_year')
+        $data = DB::table('import_log')
+                ->join('hospital','hospital.h_code','import_log.hcode')
                 ->where('hcode',$hcode)
                 ->get();
-        // echo $data;
-        return view('charge.index',['hos'=>$hos,'count'=>$count,'data'=>$data]);
+        return view('charge.index',['count'=>$count,'data'=>$data]);
     }
 
     public function show($id){
@@ -47,20 +38,19 @@ class charge extends Controller
                 ->join('claim_refer','claim_refer.year','claim_list.p_year')
                 ->where('vn',base64_decode($id))
                 ->first();
-        // dd($data);
         return view('charge.show', ['data' => $data]);
     }
 
-    public function confirm(Request $request)
-    {
-        $id = $request->recno;
-        $query = DB::table('claim_list')->where('vn',$id)->update(
-            [
-                "p_status" => 5,
-                "updated" => date('Y-m-d')
-            ]
-        );
-    }
+    // public function confirm(Request $request)
+    // {
+    //     $id = $request->recno;
+    //     $query = DB::table('claim_list')->where('vn',$id)->update(
+    //         [
+    //             "p_status" => 5,
+    //             "updated" => date('Y-m-d')
+    //         ]
+    //     );
+    // }
 
     public function cancel(Request $request)
     {
@@ -86,7 +76,7 @@ class charge extends Controller
                 ->join('claim_refer','claim_refer.year','claim_list.p_year')
                 ->where('hospmain','!=',$hcode)
                 ->where('hcode','=',$hcode)
-                ->where('p_status','=',5)
+                ->where('p_status','=',1)
                 ->groupBy('h_code')
                 ->get();
         return view('charge.list', ['data' => $data]);
@@ -94,6 +84,7 @@ class charge extends Controller
 
     public function transaction($id)
     {
+        $hcode = Auth::user()->hcode;
         $data = DB::table('claim_list')
                 ->select('vn','visit_date','hcode','hn','h_name','icd10','with_ambulance','drug','lab','proc','xray','service_charge',
                 'p_name','p_color','hospmain',
@@ -105,10 +96,9 @@ class charge extends Controller
                 ->join('claim_paid','claim_paid.year','claim_list.p_year')
                 ->join('claim_refer','claim_refer.year','claim_list.p_year')
                 ->where('hospmain','=',base64_decode($id))
-                ->where('hcode','!=',base64_decode($id))
-                ->where('p_status',5)
+                ->where('hcode','=',$hcode)
+                ->where('p_status',1)
                 ->get();
-        // echo($data);
         return view('charge.transaction', ['data' => $data]);
     }
 
@@ -117,7 +107,6 @@ class charge extends Controller
         $data = $request->get('formData');
         $hcode = Auth::user()->hcode;
         $transCode = $hcode."".date('Ym').substr(rand(),1,5);
-        // dd($data);
         foreach($data as $array){
             $id = DB::table('transaction')->insertGetId(
                 [
@@ -153,10 +142,9 @@ class charge extends Controller
                 ->where('hospmain','!=',$hcode)
                 ->where('hcode','=',$hcode)
                 ->where('trans_code','!=',NULL)
-                ->whereIn('p_status',[2,3,5,7,8])
+                ->whereIn('p_status',[2])
                 ->groupBy('h_code')
                 ->get();
-        // dd($data);
         return view('charge.sent', ['data' => $data]);
     }
 
@@ -174,7 +162,6 @@ class charge extends Controller
                 ->where('trans_code',$id)
                 ->get();
         $paid = DB::table('paid')->where('trans_code',$id)->first();
-        // echo($data);
         return view('charge.detail', ['data' => $data,'id'=>$id,'paid'=>$paid]);
     }
 

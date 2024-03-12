@@ -17,7 +17,7 @@
                         <p><b>สิทธิการรักษา</b> : {{ $data->ptname }}</p>
                     </div>
                     <div class="col-md-6">
-                        <p><b>วันที่รับบริการ</b> : {{ date("Y-m-d", strtotime($data->visit_date)) }}</p>
+                        <p><b>วันที่รับบริการ</b> : {{ date("d/m/Y", strtotime($data->visit_date)) }}</p>
                         <p><b>เรียกเก็บไปยัง</b> : {{ $data->h_name }}</p>
                         <p><b>ICD10</b> : {{ $data->icd10 }}</p>
                         <p><b>สถานะ</b> : {{ $data->p_name }}</p>
@@ -90,7 +90,7 @@
 <script>
     $(document).ready(function() {
         var pstatus = {{ $data->p_status }};
-        if(pstatus != 5) {
+        if(pstatus != 1) {
             document.getElementById("btnUpdate").disabled = true;
             document.getElementById("btnCancel").disabled = true;
         }
@@ -134,8 +134,7 @@
                             timer: 3000
                         })
                         window.setTimeout(function () {
-                            // location.reload()
-                            window.location.href = "{{ route('charge') }}";
+                            window.location.href = "{{ route('charge.transaction',base64_encode($data->hospmain)) }}";
                         }, 1500);
                     }
                 });

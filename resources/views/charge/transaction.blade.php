@@ -20,16 +20,6 @@
                 </div>
             </div>
             <div class="card-body">
-                {{-- <div style="margin-bottom: 1rem;">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <input type="text" id="min" name="min" class="form-control" placeholder="เลือกช่วงวันที่เริ่มต้น">
-                        </div>
-                        <div class="col-md-6">
-                            <input type="text" id="max" name="max" class="form-control" placeholder="เลือกช่วงวันที่สิ้นสุด">
-                        </div>
-                    </div>
-                </div> --}}
                 <table id="listData" class="display nowrap" style="width:100%">
                     <thead>
                         <tr>
@@ -49,7 +39,7 @@
                         @foreach ($data as $res)
                         @php $total = $res->paid + $res->ambulance; @endphp
                             <tr>
-                                <td class="text-center">{{ date("Y-m-d", strtotime($res->visit_date)) }}</td>
+                                <td class="text-center">{{ date("d/m/Y", strtotime($res->visit_date)) }}</td>
                                 <td class="text-center">{{ $res->vn }}</td>
                                 <td>{{ $res->h_name }}</td>
                                 <td class="text-center">{{ $res->hn }}</td>
@@ -81,7 +71,7 @@
         Swal.fire({
             icon: 'warning',
             title: 'กรุณาดำเนินการสร้างใบเรียกเก็บ',
-            text: 'ข้อมูลจะถูกนำส่งอัตโนมัติทุกวันที่ 5 ของเดือน',
+            text: 'ข้อมูลจะถูกประมวลผลอัตโนมัติทุกวันที่ 5 ของเดือน',
         })
     });
 
@@ -108,6 +98,7 @@
         cancelButtonText: `ยกเลิก`,
     }).then((result) => {
         if (result.isConfirmed) {
+            document.getElementById('btnCreate_all').disabled = true;
             $.ajax({
                 url:"/charge/bill",
                 method:'POST',

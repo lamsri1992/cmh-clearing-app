@@ -36,6 +36,18 @@
         <span id="loading-msg">กำลังดาวน์โหลดข้อมูล</span>
     </div>
     <div class="min-height-300 bg-primary position-absolute w-100"></div>
+    @if (Auth::user()->mode == 'Y')
+    @include('layouts.side_cmh')
+    <main class="main-content position-relative border-radius-lg ">
+        @include('layouts.nav')
+        <div class="container-fluid py-4">
+            <div class="row mt-4">
+                @yield('content')
+            </div>
+            @include('layouts.foot')
+        </div>
+    </main>
+    @else
     @include('layouts.side')
     <main class="main-content position-relative border-radius-lg ">
         @include('layouts.nav')
@@ -46,6 +58,7 @@
             @include('layouts.foot')
         </div>
     </main>
+    @endif
     <!--   Core JS Files   -->
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> --}}
     <script src="{{ asset('argon/assets/js/core/popper.min.js') }}"></script>

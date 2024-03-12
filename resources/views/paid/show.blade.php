@@ -17,7 +17,7 @@
                         <p><b>สิทธิการรักษา</b> : {{ $data->ptname }}</p>
                     </div>
                     <div class="col-md-6">
-                        <p><b>วันที่รับบริการ</b> : {{ date("Y-m-d", strtotime($data->visit_date)) }}</p>
+                        <p><b>วันที่รับบริการ</b> : {{ date("d/m/Y", strtotime($data->visit_date)) }}</p>
                         <p><b>เรียกเก็บไปยัง</b> : {{ $data->h_name }}</p>
                         <p><b>ICD10</b> : {{ $data->icd10 }}</p>
                         <p><b>สถานะ</b> : {{ $data->p_name }}</p>

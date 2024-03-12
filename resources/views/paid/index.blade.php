@@ -134,7 +134,7 @@
                                     {{ "เรียกเก็บจาก ".$res->h_name }} <br>
                                 <small>
                                     <i class="fa-regular fa-calendar"></i>
-                                    {{ "วันที่เรียกเก็บ ".date("Y-m-d", strtotime($res->create_date)) }} <br>
+                                    {{ "วันที่เรียกเก็บ ".date("d/m/Y", strtotime($res->create_date)) }} <br>
                                 </small>
                             </div>
                             <span class="badge bg-primary rounded-pill" style="width: 20%;font-size:14px;">

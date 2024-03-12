@@ -100,11 +100,11 @@
             <div class="card-header pb-0 pt-3 bg-transparent">
                 <h6 class="text-capitalize">
                     <i class="fa-solid fa-chart-pie"></i>
-                    แผนภูมิแสดงรายการเจ้าหนี้แยกตามโรงพยาบาล
+                    แผนภูมิแสดงรายการลูกหนี้แยกตามโรงพยาบาล
                 </h6>
             </div>
             <div class="card-body">
-                <canvas id="myChart"></canvas>
+                <canvas id="chargeChart"></canvas>
             </div>
         </div>
     </div>
@@ -113,11 +113,11 @@
             <div class="card-header pb-0 pt-3 bg-transparent">
                 <h6 class="text-capitalize">
                     <i class="fa-solid fa-chart-pie"></i>
-                    แผนภูมิแสดงรายการลูกหนี้แยกตามโรงพยาบาล
+                    แผนภูมิแสดงรายการเจ้าหนี้แยกตามโรงพยาบาล
                 </h6>
             </div>
             <div class="card-body">
-                <canvas id="chargeChart"></canvas>
+                <canvas id="myChart"></canvas>
             </div>
         </div>
     </div>
@@ -146,10 +146,10 @@
                 @endforeach
             ],
             backgroundColor: [
-                '#2dce89',
+                '#f6c23ecf',
             ],
             borderColor: [
-                '#2dce89',
+                '#f6c23ecf',
             ],
         }],
         labels: labels
@@ -180,10 +180,10 @@
                 @endforeach
             ],
             backgroundColor: [
-                '#f6c23ecf',
+                '#2dce89',
             ],
             borderColor: [
-                '#f6c23ecf',
+                '#2dce89',
             ],
         }],
         labels: labels2

@@ -11,41 +11,45 @@ class dashboard extends Controller
 {
     public function index()
     {
-        $hcode = Auth::user()->hcode;
-        $creditor = DB::table('claim_list')
-                ->select(DB::raw('SUM(total) AS total'))
-                ->where('hcode','=',$hcode)
-                ->where('hospmain','!=',$hcode)
-                ->first();
-
-        $dept = DB::table('claim_list')
-                ->select(DB::raw('SUM(total) AS total'))
-                ->where('hospmain','=',$hcode)
-                ->where('hcode','!=',$hcode)
-                ->first();
-
-        $query_count = "SELECT
-                (SELECT COUNT(vn) FROM claim_list WHERE p_status = '5' AND hcode = $hcode) AS `wait`,
-                (SELECT COUNT(vn) FROM claim_list WHERE p_status = '4' AND hospmain = $hcode) AS deny";
-    
-        $paid = DB::table('claim_list')
-                ->select('hcode','h_name',DB::raw('SUM(total) AS paid'))
-                ->where('hospmain','=',$hcode)
-                ->where('hcode','!=',$hcode)
-                ->join('hospital','hospital.h_code','claim_list.hcode')
-                ->groupBy('hcode')
-                ->get();
+        if(Auth::user()->mode == 'Y'){
+        return redirect()->route('cmh.index');
+        }else{
+                $hcode = Auth::user()->hcode;
+                $creditor = DB::table('claim_list')
+                        ->select(DB::raw('SUM(total) AS total'))
+                        ->where('hcode','=',$hcode)
+                        ->where('hospmain','!=',$hcode)
+                        ->first();
+        
+                $dept = DB::table('claim_list')
+                        ->select(DB::raw('SUM(total) AS total'))
+                        ->where('hospmain','=',$hcode)
+                        ->where('hcode','!=',$hcode)
+                        ->first();
+        
+                $query_count = "SELECT
+                        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '1' AND hcode = $hcode) AS `wait`,
+                        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '5' AND hospmain = $hcode) AS deny";
             
-        $price = DB::table('claim_list')
-                ->select('hcode','h_name',DB::raw('SUM(total) AS paid'))
-                ->where('hospmain','!=',$hcode)
-                ->where('hcode','=',$hcode)
-                ->join('hospital','hospital.h_code','claim_list.hospmain')
-                ->groupBy('hospmain')
-                ->get();
-
-        $count = DB::select($query_count);
-        return view('index', ['creditor' => $creditor,'dept' => $dept,'count' => $count,'paid' => $paid,'price' => $price]);
+                $paid = DB::table('claim_list')
+                        ->select('hcode','h_name',DB::raw('SUM(total) AS paid'))
+                        ->where('hospmain','=',$hcode)
+                        ->where('hcode','!=',$hcode)
+                        ->join('hospital','hospital.h_code','claim_list.hcode')
+                        ->groupBy('hcode')
+                        ->get();
+                    
+                $price = DB::table('claim_list')
+                        ->select('hcode','h_name',DB::raw('SUM(total) AS paid'))
+                        ->where('hospmain','!=',$hcode)
+                        ->where('hcode','=',$hcode)
+                        ->join('hospital','hospital.h_code','claim_list.hospmain')
+                        ->groupBy('hospmain')
+                        ->get();
+        
+                $count = DB::select($query_count);
+                return view('index', ['creditor' => $creditor,'dept' => $dept,'count' => $count,'paid' => $paid,'price' => $price]);
+        }
     }
 
     public function deny(){
@@ -61,7 +65,7 @@ class dashboard extends Controller
                 ->join('claim_paid','claim_paid.year','claim_list.p_year')
                 ->join('claim_refer','claim_refer.year','claim_list.p_year')
                 ->where('hospmain',$hcode)
-                ->where('p_status',4)
+                ->where('p_status',5)
                 ->get();
         // dd($data);
         return view('deny.index',['data'=>$data]);

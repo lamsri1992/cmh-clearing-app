@@ -17,7 +17,7 @@
                         <i>ไม่พบการประมวลผลข้อมูล</i>
                         @else
                             <i class="fa-regular fa-calendar-check"></i>
-                            {{ date("Y-m-d", strtotime($data->date_rx)); }}
+                            {{ date("d/m/Y", strtotime($data->date_rx)); }}
                         @endif
                     </div>                    
                     <div class="col-md-6">

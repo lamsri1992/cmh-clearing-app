@@ -12,23 +12,37 @@
             <div class="card-body">
                 <ol class="list-group">
                     @if (count($data) > 0)
-                    @foreach ($data as $res)
-                    <a href="{{ route('charge.transaction',base64_encode($res->hospmain)) }}">
-                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                            <div class="ms-2 me-auto">
-                                <div class="fw-bold">
-                                    {{ $res->h_name }}
-                                </div>
-                                <i class="fa-solid fa-spinner fa-spin text-info"></i>
-                                ยอดเรียกเก็บ OP_AE (UC นอกเขต อุบัติเหตุ และฉุกเฉิน)<br>
-                                {{ number_format($res->total,2) }} บาท 
-                            </div>
-                            <span class="badge bg-primary rounded-pill" style="width: 15%;">
-                                {{ number_format($res->number) }} รายการ
-                            </span>
-                        </li>
-                    </a>
-                    @endforeach
+                    <table id="listData" class="table table-borderless" width="100%">
+                        <thead>
+                            <tr>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($data as $res)
+                            <tr>
+                                <td>
+                                    <a href="{{ route('charge.transaction',base64_encode($res->hospmain)) }}">
+                                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                                            <div class="ms-2 me-auto">
+                                                <div class="fw-bold">
+                                                    {{ $res->h_name }}
+                                                </div>
+                                                <i class="fa-solid fa-spinner fa-spin text-info"></i>
+                                                ยอดเรียกเก็บ OP_AE (UC นอกเขต อุบัติเหตุ และฉุกเฉิน)<br>
+                                                {{ number_format($res->total,2) }} บาท 
+                                            </div>
+                                            <span class="badge bg-primary rounded-pill" style="width: 15%;">
+                                                {{ number_format($res->number) }} รายการ
+                                            </span>
+                                        </li>
+                                    </a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    
                     @else
                     <span><i>ไม่มีข้อมูล</i></span>
                     @endif
@@ -39,4 +53,26 @@
 </div>
 @endsection
 @section('script')
+<script>
+    new DataTable('#listData', {
+    lengthMenu: [
+        [5, 10, 15, -1],
+        [5, 10, 15, "All"]
+    ],
+    responsive: true,
+    scrollX: true,
+    oLanguage: {
+        oPaginate: {
+            sFirst: '<small>หน้าแรก</small>',
+            sLast: '<small>หน้าสุดท้าย</small>',
+            sNext: '<small>ถัดไป</small>',
+            sPrevious: '<small>กลับ</small>'
+        },
+        sSearch: '<small><i class="fa fa-search"></i> ค้นหา</small>',
+        sInfo: '<small>ทั้งหมด _TOTAL_ รายการ</small>',
+        sLengthMenu: '<small>แสดง _MENU_ รายการ</small>',
+        sInfoEmpty: '<small>ไม่มีข้อมูล</small>'
+    },
+});
+</script>
 @endsection

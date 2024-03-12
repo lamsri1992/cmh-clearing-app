@@ -7,6 +7,7 @@ use App\Http\Controllers\paid;
 use App\Http\Controllers\charge;
 use App\Http\Controllers\process;
 use App\Http\Controllers\importController;
+use App\Http\Controllers\cmh;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +39,7 @@ Route::prefix('/')->group(function () {
 });
 
 Route::prefix('charge')->group(function () {
-    Route::get('/confirm', [charge::class, 'confirm'])->name('charge.confirm');
+    // Route::get('/confirm', [charge::class, 'confirm'])->name('charge.confirm');
     Route::get('/cancel', [charge::class, 'cancel'])->name('charge.cancel');
     Route::get('/list', [charge::class, 'list'])->name('charge.list');
     Route::post('/import', [importController::class, 'import'])->name('charge.import');
@@ -63,6 +64,10 @@ Route::prefix('paid')->group(function () {
 
 Route::prefix('process')->group(function () {
     Route::get('/benefit/map', [process::class, 'mapping'])->name('process.map');
+});
+
+Route::prefix('cmh')->group(function () {
+    Route::get('/', [cmh::class, 'index'])->name('cmh.index');
 });
 
 require __DIR__.'/auth.php';

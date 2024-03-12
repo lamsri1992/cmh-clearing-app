@@ -13,7 +13,7 @@
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link {{ (request()->is('dashboard')) ? 'active' : '' }}" href="{{ url('dashboard') }}">
+                <a class="nav-link {{ (request()->is('cmh')) ? 'active' : '' }}" href="{{ url('cmh') }}">
                     <div
                         class="icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa-solid fa-gauge-high text-dark text-sm opacity-10"></i>
@@ -22,21 +22,12 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ (request()->is('charge*')) ? 'active' : '' }}" href="{{ url('charge') }}">
+                <a class="nav-link {{ (request()->is('cmh/process')) ? 'active' : '' }}" href="{{ url('cmh/process') }}">
                     <div
                         class="icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa-solid fa-list-check text-dark text-sm opacity-10"></i>
+                        <i class="fa-solid fa-folder-tree text-dark text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">รายการยอดลูกหนี้</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ (request()->is('paid*')) ? 'active' : '' }}" href="{{ url('paid') }}">
-                    <div
-                        class="icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa-solid fa-comments-dollar text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">รายการยอดเจ้าหนี้</span>
+                    <span class="nav-link-text ms-1">ประมวลผลข้อมูล</span>
                 </a>
             </li>
             <li class="nav-item">

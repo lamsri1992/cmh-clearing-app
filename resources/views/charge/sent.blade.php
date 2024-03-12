@@ -6,7 +6,7 @@
             <div class="card-header pb-0 pt-3 bg-transparent">
                 <h6 class="text-capitalize">
                     <i class="fa-solid fa-file-invoice"></i>
-                    รายการเรียกเก็บแยกตามโรงพยาบาล
+                    รายการเรียกเก็บแยกตามโรงพยาบาล - ส่ง สสจ. แล้ว
                 </h6>
             </div>
             <div class="card-body">
