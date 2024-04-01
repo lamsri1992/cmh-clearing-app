@@ -8,6 +8,7 @@ use DB;
 use Excel;
 use File;
 use Auth;
+
 class importController extends Controller
 {
     public function import(Request $request)
@@ -27,7 +28,7 @@ class importController extends Controller
         DB::table('import_log')->insert(
             [
                 'ex_file' => $fileName,
-                'upload_date' => date("Y-m-d H:i:s"),
+                'import_date' => date("Y-m-d"),
                 'hcode' => $hcode,
             ]
         );

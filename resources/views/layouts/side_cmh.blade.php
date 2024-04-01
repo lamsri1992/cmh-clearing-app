@@ -22,12 +22,21 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ (request()->is('cmh/process')) ? 'active' : '' }}" href="{{ url('cmh/process') }}">
+                <a class="nav-link {{ (request()->is('cmh/transaction*')) ? 'active' : '' }}" href="{{ url('cmh/transaction') }}">
                     <div
                         class="icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa-solid fa-folder-tree text-dark text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">ประมวลผลข้อมูล</span>
+                    <span class="nav-link-text ms-1">ข้อมูลเรียกเก็บ</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ (request()->is('cmh/report*')) ? 'active' : '' }}" href="{{ url('cmh/report') }}">
+                    <div
+                        class="icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-print text-dark text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">พิมพ์รายงาน</span>
                 </a>
             </li>
             <li class="nav-item">

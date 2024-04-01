@@ -3,8 +3,7 @@
 @foreach ($count as $res)
 @php
     $charge = $res->charge;
-    $wait = $res->wait;
-    $confirm = $res->confirm;
+    $success = $res->success;
     $deny = $res->deny;
 @endphp
 <div class="row">
@@ -36,8 +35,8 @@
                     <div class="col-8">
                         <div class="numbers">
                             <p class="text-sm mb-0 font-weight-bold">รายการรอตามจ่าย</p>
-                            <a href="{{ route('paid.list') }}" class="font-weight-bolder">
-                                {{ number_format($wait) }} รายการ
+                            <a href="#" class="font-weight-bolder">
+                                {{ number_format($charge) }} รายการ
                             </a>
                         </div>
                     </div>
@@ -56,9 +55,9 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 font-weight-bold">รายการยืนยันจ่าย</p>
+                            <p class="text-sm mb-0 font-weight-bold">ดำเนินการตามจ่ายแล้ว</p>
                             <a href="{{ route('paid.success') }}" class="font-weight-bolder">
-                                {{ number_format($confirm) }} รายการ
+                                {{ number_format($success) }} รายการ
                             </a>
                         </div>
                     </div>
@@ -108,20 +107,20 @@
                             </span>
                         </h6>
                     </div>
-                    {{-- <div class="col-md-6 text-end">
+                    <div class="col-md-6 text-end">
                         <h6 class="text-capitalize">
                             <a href="{{ route('paid.list') }}" class="btn btn-info btn-sm">
                                 <i class="fa-solid fa-clipboard-check"></i>
                                 รายการทั้งหมด
                             </a>
                         </h6>
-                    </div> --}}
+                    </div>
                 </div>
             </div>
             <div class="card-body">
                 @if (COUNT($data) == 0)
                 <div class="alert alert-warning text-center" role="alert">
-                    ไม่มีรายการเจ้าหนี้
+                    ไม่มีรายการที่ต้องตามจ่าย
                 </div>
                 @else
                 <ol class="list-group">

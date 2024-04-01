@@ -13,7 +13,7 @@ class charge extends Controller
         $query_count = "SELECT
         (SELECT COUNT(vn) FROM claim_list WHERE p_status = '1' AND hcode = $hcode) AS `wait`,
         (SELECT COUNT(vn) FROM claim_list WHERE p_status = '2' AND hcode = $hcode) AS charge,
-        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '5' AND hcode = $hcode) AS deny,
+        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '3' AND hcode = $hcode) AS depts,
         (SELECT SUM(total) FROM claim_list WHERE hcode = $hcode) AS deptor";
 
         $count = DB::select($query_count);
@@ -111,7 +111,7 @@ class charge extends Controller
             $id = DB::table('transaction')->insertGetId(
                 [
                     'trans_vn' => $array['1'],
-                    'trans_vstdate' => $array['0'],
+                    'trans_vstdate' => date('Y-m-d', strtotime($array['0'])),
                     'trans_total' => $array['7'],
                     'trans_code' => $transCode,
                     'trans_hcode' => $hcode,

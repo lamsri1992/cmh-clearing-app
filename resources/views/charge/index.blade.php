@@ -3,7 +3,7 @@
 @foreach ($count as $res)
 @php
     $wait = $res->wait;
-    $deny = $res->deny;
+    $depts = $res->depts;
     $charge = $res->charge;
     $deptor = $res->deptor;
 @endphp
@@ -20,7 +20,7 @@
                     </div>
                     <div class="col-4 text-end">
                         <div class="icon icon-shape bg-success text-center rounded-circle">
-                            <i class="fa-solid fa-clipboard-list text-lg opacity-10" aria-hidden="true"></i>
+                            <i class="fa-solid fa-comments-dollar text-lg opacity-10" aria-hidden="true"></i>
                         </div>
                     </div>
                 </div>
@@ -41,6 +41,27 @@
                     </div>
                     <div class="col-4 text-end">
                         <div class="icon icon-shape bg-info text-center rounded-circle">
+                            <i class="fa-solid fa-paper-plane text-lg opacity-10" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+            <div class="card-body p-3">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="numbers">
+                            <p class="text-sm mb-0 font-weight-bold">รอประมวลผล</p>
+                            <a href="{{ route('charge.sent') }}" class="font-weight-bolder">
+                                {{ number_format($charge) }} รายการ
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-4 text-end">
+                        <div class="icon icon-shape bg-primary text-center rounded-circle">
                             <i class="fa-solid fa-spinner fa-spin text-lg opacity-10" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -54,36 +75,15 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 font-weight-bold">ส่งข้อมูลไปยัง สสจ.​แล้ว</p>
-                            <a href="{{ route('charge.sent') }}" class="font-weight-bolder">
-                                {{ number_format($charge) }} รายการ
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-4 text-end">
-                        <div class="icon icon-shape bg-primary text-center rounded-circle">
-                            <i class="fa-solid fa-check text-lg opacity-10" aria-hidden="true"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-        <div class="card">
-            <div class="card-body p-3">
-                <div class="row">
-                    <div class="col-8">
-                        <div class="numbers">
-                            <p class="text-sm mb-0 font-weight-bold">ถูกปฏิเสธจ่าย</p>
+                            <p class="text-sm mb-0 font-weight-bold">ข้อมูลลูกหนี้เรียกเก็บ</p>
                             <a href="#" class="font-weight-bolder">
-                                {{ number_format($deny) }} รายการ
+                                {{ number_format($depts) }} รายการ
                             </a>
                         </div>
                     </div>
                     <div class="col-4 text-end">
-                        <div class="icon icon-shape bg-danger text-center rounded-circle">
-                            <i class="fa-solid fa-xmark text-lg opacity-10" aria-hidden="true"></i>
+                        <div class="icon icon-shape bg-warning text-center rounded-circle">
+                            <i class="fa-solid fa-list-check text-lg opacity-10" aria-hidden="true"></i>
                         </div>
                     </div>
                 </div>
@@ -98,8 +98,8 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h6 class="text-capitalize">
-                            <i class="fa-solid fa-clipboard-list"></i>
-                            รายการอัพโหลด
+                            <i class="fa-solid fa-history"></i>
+                            รายการนำเข้าข้อมูลลูกหนี้
                         </h6>
                     </div>
                     <div class="col-md-6 text-end">
@@ -131,7 +131,7 @@
                         @foreach ($data as $res)
                             <tr>
                                 <td class="text-center">
-                                    {{ date("d/m/Y", strtotime($res->upload_date)); }}
+                                    {{ date("d/m/Y", strtotime($res->import_date)); }}
                                 </td>
                                 <td class="text-center">
                                     {{ $res->h_name }}

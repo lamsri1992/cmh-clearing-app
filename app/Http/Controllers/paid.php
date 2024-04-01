@@ -12,9 +12,10 @@ class paid extends Controller
     {
         $hcode = Auth::user()->hcode;
         $query_count = "SELECT
-        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '2' AND hospmain = $hcode) AS charge,
-        (SELECT COUNT(vn) FROM claim_list WHERE p_status IN ('7','8') AND hospmain = $hcode) AS success,
-        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '4' AND hospmain = $hcode) AS deny,
+        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '1' AND hospmain = $hcode) AS charge,
+        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '7' AND hospmain = $hcode) AS `wait`,
+        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '4' AND hospmain = $hcode) AS confirm,
+        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '5' AND hospmain = $hcode) AS deny,
         (SELECT SUM(total) FROM claim_list WHERE hospmain = $hcode) AS creditor";
 
         $count = DB::select($query_count);
@@ -22,7 +23,7 @@ class paid extends Controller
                 FROM `transaction`
                 LEFT JOIN hospital ON hospital.H_CODE = trans_hcode
                 WHERE trans_hmain = {$hcode}
-                AND trans_status = 2
+                AND trans_status = 3
                 GROUP BY trans_code,trans_hcode,create_date,trans_paiddate
                 ORDER BY trans_id DESC
                 LIMIT 10");
@@ -45,9 +46,9 @@ class paid extends Controller
                 ->where('trans_code',$id)
                 ->get();
         $check = DB::select("SELECT 
-        (SELECT COUNT(*) FROM claim_list WHERE p_status = '3' AND trans_code = $id) AS confirm,
-        (SELECT COUNT(*) FROM claim_list WHERE p_status = '4' AND trans_code = $id) AS deny,
-        (SELECT COUNT(*) FROM claim_list WHERE p_status = '2' AND trans_code = $id) AS progress");
+        (SELECT COUNT(*) FROM claim_list WHERE p_status = '4' AND trans_code = $id) AS confirm,
+        (SELECT COUNT(*) FROM claim_list WHERE p_status = '5' AND trans_code = $id) AS deny,
+        (SELECT COUNT(*) FROM claim_list WHERE p_status = '3' AND trans_code = $id) AS progress");
         $trans = DB::table('transaction')->where('transaction.trans_code',$id)->first();
         $paid = DB::table('paid')->where('paid.trans_code',$id)->first();
         // dd($trans);
@@ -74,9 +75,9 @@ class paid extends Controller
     {
         $date = date('Y-m-d');
         $id = $request->vn;
-        DB::table('claim_list')->where('vn',$id)->update(["p_status" => 3]);
+        DB::table('claim_list')->where('vn',$id)->update(["p_status" => 4]);
         DB::table('transaction')->where('trans_vn',$id)->update([
-            "trans_status" => 3,
+            "trans_status" => 4,
             "trans_confirmdate" => $date
         ]);
     }
@@ -89,14 +90,14 @@ class paid extends Controller
 
         DB::table('claim_list')->where('vn',$id)->update(
             [
-                "p_status" => 4,
+                "p_status" => 5,
                 "deny_note" => $note,
                 "deny_date" => $date
             ]
         );
 
         DB::table('transaction')->where('trans_vn',$id)->update([
-            "trans_status" => 4,
+            "trans_status" => 5,
             "trans_confirmdate" => $date
         ]);
     }
@@ -104,11 +105,11 @@ class paid extends Controller
     public function transConfirm(Request $request,$id)
     {
         $date = date('Y-m-d');
-        DB::table('claim_list')->where('trans_code',$id)->where('p_status',3)->update([
+        DB::table('claim_list')->where('trans_code',$id)->where('p_status',4)->update([
             'p_status' => 7
         ]);
 
-        DB::table('transaction')->where('trans_code',$id)->where('trans_status',3)->update([
+        DB::table('transaction')->where('trans_code',$id)->where('trans_status',4)->update([
             'trans_status' => 7,
             'trans_paiddate' => $date
         ]);

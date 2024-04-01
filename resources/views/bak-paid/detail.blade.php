@@ -46,24 +46,20 @@
                             <td class="text-end text-success fw-bold">{{ number_format($res->paid,2) }}</td>
                             <td class="text-end text-danger fw-bold">{{ number_format($res->ambulance,2) }}</td>
                             <td class="text-end fw-bold" style="text-decoration-line: underline">{{ number_format($total,2) }}</td>
-                            <td class="text-center text-white {{ $res->p_color }}">
-                                <span data-bs-toggle="tooltip" data-bs-placement="top"
-                                    data-bs-title="">
-                                    {{ $res->p_name }}
-                                </span>
-                            </td>
+                            <td class="text-center text-white {{ $res->p_color }}">{{ $res->p_name }}</td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
                 @if ($trans->trans_status != 7)
+                @if ($trans->trans_status != 8)                    
                 @foreach ($check as $item)
                 @if ($item->progress >= 1)
-                <div class="text-center" style="margin-top: 1rem;">
+                <p>
                     <div class="alert alert-danger" role="alert">
                         ค้างดำเนินการตรวจสอบข้อมูลตามจ่าย :: <b>{{ $item->progress }} รายการ</b>
                     </div>
-                </div>
+                </p>
                 @else
                 <p class="text-center">
                     <button class="btn btn-primary btn-lg"
@@ -91,6 +87,37 @@
                 </p>
                 @endif
                 @endforeach
+                @endif
+                @endif
+                @if ($trans->trans_status == 7)
+                    <div class="text-center">
+                    <p>
+                        <div class="alert alert-success" role="alert">
+                            <i class="fa-solid fa-spinner fa-spin"></i>
+                            อยู่ระหว่างรอดำเนินการจ่าย
+                        </div>
+                        <a href="#" id="attach" class="badge bg-warning" 
+                            data-id="{{ $id }}"
+                            data-bs-toggle="modal" data-bs-target="#attachModal">
+                            <i class="fa-solid fa-check-circle"></i>
+                            ยืนยัน/แนบเอกสาร
+                        </a>
+                    </p>
+                </div>
+                @endif
+                @if ($trans->trans_status == 8)
+                    <div class="text-center">
+                    <p>
+                        <div class="alert alert-success" role="alert">
+                            <i class="fa-solid fa-check-circle"></i>
+                            ดำเนินการเสร็จสิ้น
+                        </div>
+                    </p>
+                    <a href="{{ asset('uploads/'.$paid->file) }}" target="_blank">
+                        <i class="fa-regular fa-file-pdf text-danger"></i>
+                        File - {{ $paid->file }}
+                    </a>
+                </div>
                 @endif
             </div>
         </div>

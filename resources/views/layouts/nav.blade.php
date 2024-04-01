@@ -12,8 +12,8 @@
             <div class="ms-md-auto pe-md-3 d-flex align-items-center"></div>
             <ul class="navbar-nav  justify-content-end">
                 <li class="nav-item dropdown pe-2 d-flex align-items-center">
-                    <a href="javascript:;" class="nav-link text-white font-weight-bold px-0" 
-                        id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a href="javascript:;" class="nav-link text-white font-weight-bold px-0" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa-solid fa-user-circle me-sm-1"></i>
                         <span class="d-sm-inline d-none">{{ Auth::user()->hcode." - ".Auth::user()->name }}</span>
                     </a>
@@ -33,10 +33,12 @@
                             </a>
                         </li>
                         <li class="mb-2">
-                            <form method="POST" action="{{ route('logout') }}" style="margin-top: -1.5rem; margin-bottom: -2rem;">
+                            <form method="POST" action="{{ route('logout') }}"
+                                style="margin-top: -1.5rem; margin-bottom: -2rem;">
                                 @csrf
-                                <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
-                                {!! '<span class="dropdown-item border-radius-md">
+                                <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault(); this.closest('form').submit();">
+                                    {!! '<span class="dropdown-item border-radius-md">
                                         <div class="d-flex py-1">
                                             <div class="d-flex flex-column justify-content-center">
                                                 <h6 class="text-sm font-weight-normal mb-1">
@@ -47,12 +49,21 @@
                                                 </h6>
                                             </div>
                                         </div>
-                                    </span>' 
-                                !!}
+                                    </span>'
+                                    !!}
                                 </x-dropdown-link>
                             </form>
                         </li>
                     </ul>
+                </li>
+                <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                    <a href="#" class="p-0 nav-link text-white" id="iconNavbarSidenav">
+                        <div class="sidenav-toggler-inner">
+                            <i class="sidenav-toggler-line bg-white"></i>
+                            <i class="sidenav-toggler-line bg-white"></i>
+                            <i class="sidenav-toggler-line bg-white"></i>
+                        </div>
+                    </a>
                 </li>
             </ul>
         </div>

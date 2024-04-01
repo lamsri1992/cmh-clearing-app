@@ -122,7 +122,7 @@
 <script>
     $(document).ready(function() {
         var pstatus = {{ $data->p_status }};
-        if(pstatus == 7) {
+        if(pstatus == 3 || pstatus == 7 || pstatus == 8) {
             Swal.fire({
                 title: "VN : " + {{ $data->vn }},
                 text: "รายการถูกยืนยันแล้ว",
@@ -132,7 +132,7 @@
             document.getElementById("btnConfirm").disabled = true;
             document.getElementById("btnDeny").disabled = true;
         }
-        if(pstatus == 5) {
+        if(pstatus == 4) {
             Swal.fire({
                 title: "VN : " + {{ $data->vn }},
                 text: "รายการถูกปฏิเสธจ่าย",

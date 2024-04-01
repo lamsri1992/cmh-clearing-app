@@ -27,25 +27,16 @@
                         class="icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa-solid fa-list-check text-dark text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">ข้อมูลลูกหนี้</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ (request()->is('create*')) ? 'active' : '' }}" href="{{ url('create') }}">
-                    <div
-                        class="icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa-solid fa-edit text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">บันทึกข้อมูลลูกหนี้</span>
+                    <span class="nav-link-text ms-1">รายการยอดลูกหนี้</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ (request()->is('paid*')) ? 'active' : '' }}" href="{{ url('paid') }}">
                     <div
                         class="icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa-solid fa-comment-dollar text-dark text-sm opacity-10"></i>
+                        <i class="fa-solid fa-comments-dollar text-dark text-sm opacity-10"></i>
                     </div>
-                    <span class="nav-link-text ms-1">ข้อมูลเจ้าหนี้</span>
+                    <span class="nav-link-text ms-1">รายการยอดเจ้าหนี้</span>
                 </a>
             </li>
             <li class="nav-item">

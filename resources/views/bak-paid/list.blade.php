@@ -7,8 +7,8 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h6 class="text-capitalize">
-                            <i class="fa-solid fa-file-invoice"></i>
-                            Transaction Code : {{ $id }}
+                            <i class="fa-regular fa-clock"></i>
+                            Transaction : รอดำเนินการตามจ่าย + แนบหลักฐานการจ่าย
                         </h6>
                     </div>
                     <div class="col-md-6 text-end">
@@ -20,78 +20,68 @@
                 </div>
             </div>
             <div class="card-body">
+                <div style="margin-bottom: 1rem;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="text" id="min" name="min" class="form-control" placeholder="เลือกช่วงวันที่เริ่มต้น">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="max" name="max" class="form-control" placeholder="เลือกช่วงวันที่สิ้นสุด">
+                        </div>
+                    </div>
+                </div>
                 <table id="listData" class="display nowrap" style="width:100%">
                     <thead>
                         <tr>
-                            <th class="text-center">วันที่</th>
-                            <th class="text-center">VN</th>
-                            <th>หน่วยบริการ</th>
-                            <th class="text-center">HN</th>
-                            <th class="text-end">ยอดลูกหนี้</th>
-                            <th class="text-end">ยอดเรียกเก็บ</th>
-                            <th class="text-end">Ambulance</th>
-                            <th class="text-end">ยอดรวม</th>
-                            <th class="text-center">สถานะ</th>
+                            <th class="text-center">Transaction</th>
+                            <th class="text-center">วันที่ยืนยันข้อมูล</th>
+                            <th class="text-center">โรงพยาบาลเรียกเก็บ</th>
+                            <th class="text-center">ยอดตามจ่าย</th>
+                            <th class="text-center"><i class="fa-solid fa-bars"></i></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($data as $res)
-                        @php $total = $res->paid + $res->ambulance; @endphp
-                        <tr>
-                            <td class="text-center">{{ date("d/m/Y", strtotime($res->visit_date)) }}</td>
-                            <td class="text-center">{{ $res->vn }}</td>
-                            <td>{{ $res->h_name }}</td>
-                            <td class="text-center">{{ $res->hn }}</td>
-                            <td class="text-end text-primary fw-bold">{{ number_format($res->amount,2) }}</td>
-                            <td class="text-end text-success fw-bold">{{ number_format($res->paid,2) }}</td>
-                            <td class="text-end text-danger fw-bold">{{ number_format($res->ambulance,2) }}</td>
-                            <td class="text-end fw-bold" style="text-decoration-line: underline">{{ number_format($total,2) }}</td>
-                            <td class="text-center text-white {{ $res->p_color }}">
-                                <span data-bs-toggle="tooltip" data-bs-placement="top"
-                                    data-bs-title="">
-                                    {{ $res->p_name }}
-                                </span>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td class="text-center">
+                                    <a href="{{ route('paid.detail',$res->trans_code) }}">
+                                        {{ $res->trans_code }}
+                                    </a>
+                                </td>
+                                <td class="text-center">{{ $res->trans_paiddate }}</td>
+                                <td class="text-center">{{ $res->h_name }}</td>
+                                <td class="text-center fw-bold">{{ number_format($res->total,2) }}</td>
+                                <td class="text-center">
+                                    @if ($res->trans_status == 8)
+                                        <div class="text-center">
+                                        <a href="{{ asset('uploads/'.$res->file) }}" target="_blank">
+                                            <i class="fa-regular fa-file-pdf text-danger"></i>
+                                            File - {{ $res->file }}
+                                        </a>
+                                    </div>
+                                    @endif
+                                    @if ($res->trans_status == 7)
+                                    <a href="#" id="attach" class="badge bg-warning" 
+                                        data-id="{{ $res->trans_code }}"
+                                        data-bs-toggle="modal" data-bs-target="#attachModal">
+                                        <i class="fa-solid fa-check-circle"></i>
+                                        ยืนยัน/แนบเอกสาร
+                                    </a>
+                                    @endif
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
                 </table>
-                @if ($trans->trans_status != 7)
-                @foreach ($check as $item)
-                @if ($item->progress >= 1)
-                <div class="text-center" style="margin-top: 1rem;">
-                    <div class="alert alert-danger" role="alert">
-                        ค้างดำเนินการตรวจสอบข้อมูลตามจ่าย :: <b>{{ $item->progress }} รายการ</b>
-                    </div>
-                </div>
-                @else
-                <p class="text-center">
-                    <button class="btn btn-primary btn-lg"
-                        onclick="Swal.fire({
-                            icon: 'warning',
-                            title: 'ยืนยันการดำเนินการ',
-                            text: 'Transaction Code :: '+ {{ $id }},
-                            footer: '<small>หากยืนยันแล้ว จะไม่สามารถยกเลิกได้</small>'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'ดำเนินการเสร็จสิ้น',
-                                    showConfirmButton: false,
-                                    timer: 3000
-                                });
-                                window.setTimeout(function () {
-                                    location.replace('/paid/transaction/confirm/'+{{ $id }})
-                                }, 3500);
-                            } 
-                        });">
-                        <i class="fa-solid fa-clipboard-check"></i>
-                        ดำเนินการ Transaction นี้
-                    </button>
-                </p>
-                @endif
-                @endforeach
-                @endif
             </div>
         </div>
     </div>
@@ -163,7 +153,7 @@
 </div>
 @endsection
 @section('script')
-<script src="{{ asset('js/listTableTransactionPaid.js') }}"></script>
+<script src="{{ asset('js/listTablePaidList.js') }}"></script>
 <script>
     $('[data-bs-target="#attachModal"').on('click', function () {
         var id = "<i class='fa-regular fa-clipboard'></i> Transaction Code : " + $(this).data('id');

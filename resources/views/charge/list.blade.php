@@ -10,43 +10,40 @@
                 </h6>
             </div>
             <div class="card-body">
-                <ol class="list-group">
-                    @if (count($data) > 0)
-                    <table id="listData" class="table table-borderless" width="100%">
-                        <thead>
-                            <tr>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($data as $res)
-                            <tr>
-                                <td>
-                                    <a href="{{ route('charge.transaction',base64_encode($res->hospmain)) }}">
-                                        <li class="list-group-item d-flex justify-content-between align-items-start">
-                                            <div class="ms-2 me-auto">
-                                                <div class="fw-bold">
-                                                    {{ $res->h_name }}
-                                                </div>
-                                                <i class="fa-solid fa-spinner fa-spin text-info"></i>
-                                                ยอดเรียกเก็บ OP_AE (UC นอกเขต อุบัติเหตุ และฉุกเฉิน)<br>
-                                                {{ number_format($res->total,2) }} บาท 
+                @if (count($data) > 0)
+                <table id="listData" class="table table-hover table-borderless table-bordered" width="100%">
+                    <thead>
+                        <tr>
+                            <th><i class="fa-solid fa-filter"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($data as $res)
+                        <tr>
+                            <td>
+                                <a href="{{ route('charge.transaction',base64_encode($res->hospmain)) }}">
+                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                        <div class="ms-2 me-auto">
+                                            <div class="fw-bold">
+                                                {{ $res->h_name }}
                                             </div>
-                                            <span class="badge bg-primary rounded-pill" style="width: 15%;">
-                                                {{ number_format($res->number) }} รายการ
-                                            </span>
-                                        </li>
-                                    </a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    
-                    @else
-                    <span><i>ไม่มีข้อมูล</i></span>
-                    @endif
-                </ol>
+                                            <i class="fa-solid fa-paper-plane text-info"></i>
+                                            ยอดเรียกเก็บ OP_AE (UC นอกเขต อุบัติเหตุ และฉุกเฉิน)<br>
+                                            {{ number_format($res->total,2) }} บาท 
+                                        </div>
+                                        <span class="badge bg-primary rounded-pill" style="width: 15%;">
+                                            {{ number_format($res->number) }} รายการ
+                                        </span>
+                                    </li>
+                                </a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                @else
+                <span><i>ไม่มีข้อมูล</i></span>
+                @endif
             </div>
         </div>
     </div>
