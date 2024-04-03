@@ -34,8 +34,10 @@ class create extends Controller
             'with_ambulance' => 'required',
         ]);
 
-        if($request->with_ambulance == 'N'){
-            $ambulance = NULL;
+        if($request->with_ambulance == 'Y'){
+            $ambulance = 'Y';
+        }else{
+            $ambulance = 'N';
         }
         
         DB::table('claim_list')->insert([

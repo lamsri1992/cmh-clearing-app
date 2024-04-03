@@ -70,7 +70,7 @@
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">วันที่รับบริการ</label>
-                                <input type="text" name="vstdate" class="form-control">
+                                <input type="text" name="vstdate" class="form-control datepicker">
                             </div>
                         </div>
                         <div class="col-md-4">
