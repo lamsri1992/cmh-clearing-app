@@ -74,8 +74,8 @@ class charge extends Controller
                 ->join('hospital','h_code','claim_list.hospmain')
                 ->join('claim_paid','claim_paid.year','claim_list.p_year')
                 ->join('claim_refer','claim_refer.year','claim_list.p_year')
-                ->where('hospmain','!=',$hcode)
-                ->where('hcode','=',$hcode)
+                // ->where('hospmain','!=',$hcode)
+                // ->where('hcode','=',$hcode)
                 ->where('p_status','=',1)
                 ->groupBy('h_code')
                 ->get();

@@ -46,67 +46,67 @@
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">หมายเลขบัตรประจำตัวประชาชน</label>
-                                <input type="text" name="pid" class="form-control">
+                                <input type="text" name="pid" class="form-control" placeholder="ระบุหมาขเลข 13 หลัก">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">ผู้รับบริการ</label>
-                                <input type="text" name="patient" class="form-control">
+                                <input type="text" name="patient" class="form-control" placeholder="นายทดสอบ ระบบ">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">HN</label>
-                                <input type="text" name="hn" class="form-control">
+                                <input type="text" name="hn" class="form-control" placeholder="ระบุ HN">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">VN</label>
-                                <input type="text" name="vn" class="form-control">
+                                <input type="text" name="vn" class="form-control" placeholder="ระบุ VN">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">วันที่รับบริการ</label>
-                                <input type="text" name="vstdate" class="form-control datepicker">
+                                <input type="text" name="vstdate" class="form-control datepicker" placeholder="เลือกวันที่รับบริการ">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">ICD10</label>
-                                <input type="text" name="icd10" class="form-control">
+                                <input type="text" name="icd10" class="form-control" placeholder="A99,J44,Z99">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">ค่ายา</label>
-                                <input type="text" name="drug" class="form-control">
+                                <input type="text" name="drug" class="form-control" placeholder="ถ้าไม่มีให้ใส่ 0">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">ค่าแลบ</label>
-                                <input type="text" name="lab" class="form-control">
+                                <input type="text" name="lab" class="form-control" placeholder="ถ้าไม่มีให้ใส่ 0">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">ค่า X-Ray</label>
-                                <input type="text" name="xray" class="form-control">
+                                <input type="text" name="xray" class="form-control" placeholder="ถ้าไม่มีให้ใส่ 0">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">ค่าหัตถการ</label>
-                                <input type="text" name="proc" class="form-control">
+                                <input type="text" name="proc" class="form-control" placeholder="ถ้าไม่มีให้ใส่ 0">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">ค่าบริการอื่น ๆ</label>
-                                <input type="text" name="service" class="form-control">
+                                <input type="text" name="service" class="form-control" placeholder="ถ้าไม่มีให้ใส่ 0">
                             </div>
                         </div>
                         <div class="col-md-4">
