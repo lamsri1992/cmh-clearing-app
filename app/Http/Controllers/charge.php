@@ -68,14 +68,15 @@ class charge extends Controller
     public function list(){
         $hcode = Auth::user()->hcode;
         $data = DB::table('claim_list')
-                ->select('hospmain','h_name',
+                ->select('hospmain','h_name','h_type_name','h_color',
                 DB::raw('COUNT(*) AS number,IF(with_ambulance = "Y", claim_refer.paid, with_ambulance) AS ambulance,
                 SUM(IF((total) > claim_paid.paid, claim_paid.paid, (total))) AS total'))
                 ->join('hospital','h_code','claim_list.hospmain')
+                ->join('hospital_type','h_type_id','hospital.h_type')
                 ->join('claim_paid','claim_paid.year','claim_list.p_year')
                 ->join('claim_refer','claim_refer.year','claim_list.p_year')
-                // ->where('hospmain','!=',$hcode)
-                // ->where('hcode','=',$hcode)
+                ->where('hospmain','!=',$hcode)
+                ->where('hcode','=',$hcode)
                 ->where('p_status','=',1)
                 ->groupBy('h_code')
                 ->get();

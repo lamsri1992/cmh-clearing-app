@@ -24,8 +24,9 @@
                                 <a href="{{ route('charge.transaction',base64_encode($res->hospmain)) }}">
                                     <li class="list-group-item d-flex justify-content-between align-items-start">
                                         <div class="ms-2 me-auto">
-                                            <div class="fw-bold">
+                                            <div class="fw-bold {{ $res->h_color }}">
                                                 {{ $res->h_name }}
+                                                <small>( {{ $res->h_type_name }} )</small>
                                             </div>
                                             <i class="fa-solid fa-paper-plane text-info"></i>
                                             ยอดเรียกเก็บ OP_AE (UC นอกเขต อุบัติเหตุ และฉุกเฉิน)<br>
