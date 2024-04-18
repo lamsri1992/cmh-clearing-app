@@ -37,7 +37,7 @@ class create extends Controller
         if($request->with_ambulance == 'Y'){
             $ambulance = 'Y';
         }else{
-            $ambulance = 'N';
+            $ambulance = NULL;
         }
         
         DB::table('claim_list')->insert([
@@ -60,5 +60,27 @@ class create extends Controller
             'ptname' => 'OP_AE : UC นอกเขต กรณีอุบัติเหตุและฉุกเฉิน',
         ]);
         return back()->with('success','เพิ่มข้อมูลลูกหนี้สำเร็จ');
+    }
+
+    public function update(Request $request, $id)
+    {
+        if($request->with_ambulance == 'Y'){
+            $ambulance = 'Y';
+        }else{
+            $ambulance = NULL;
+        }
+        
+        DB::table('claim_list')->where('id',$id)->update([
+            'visit_date' => $request->vstdate,
+            'icd10' => $request->icd10,
+            'drug' => $request->drug,
+            'lab' => $request->lab,
+            'xray' => $request->xray,
+            'proc' => $request->proc,
+            'service_charge' => $request->service,
+            'total' => $request->drug+$request->lab+$request->xray+$request->proc+$request->service,
+            'with_ambulance' => $ambulance,
+        ]);
+        return back()->with('success','แก้ไขข้อมูลลูกหนี้สำเร็จ');
     }
 }

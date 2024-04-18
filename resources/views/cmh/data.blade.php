@@ -82,6 +82,7 @@
                         </small>
                     </div>
                     <div class="col-md-6 text-end">
+                        @if ($wait > 0)
                         <form action="{{ route('cmh.process') }}">
                             <button type="button" class="btn btn-sm btn-secondary"
                                 onclick="Swal.fire({
@@ -101,6 +102,11 @@
                             Manual Process
                             </button>
                         </form>
+                        @else
+                        <small>
+                            <i>ไม่มีรายการรอประมวลผล</i>
+                        </small>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -124,8 +130,9 @@
                             <td class="text-center">{{ $res->number }} รายการ</td>
                             <td class="text-end fw-bold">{{ number_format($res->total,2) }}</td>
                             <td class="text-center">
-                                <i class="fa-solid fa-spinner fa-spin"></i>
-                                รอประมวลผล
+                                <span class="badge {{ $res->p_color }}">
+                                    {{ $res->p_name }}
+                                </span>
                             </td>
                             <td class="text-center">
                                 <a href="{{ route('cmh.detail',$res->h_code) }}" class="badge bg-success">

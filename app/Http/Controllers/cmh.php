@@ -17,7 +17,7 @@ class cmh extends Controller
                 FROM claim_list 
                 WHERE claim_list.hospmain = h.h_code) AS creditor
             FROM hospital h
-            WHERE h.h_cmh = '1'";
+            WHERE h.h_type = '1'";
         $data = DB::select($sql);
         return view('cmh.index',['data'=>$data]);
     }
@@ -35,11 +35,12 @@ class cmh extends Controller
                 WHERE `transaction`.trans_status = 2) AS trans_amount";
         $count = DB::select($sql);
         $data = DB::table('transaction')
-                ->select('h_name','h_code','trans_code','create_date',
+                ->select('h_name','h_code','trans_code','create_date','p_name','p_color',
                 DB::raw('COUNT(DISTINCT trans_code) AS number,
                 SUM(trans_total) AS total'))
                 ->join('hospital','h_code','transaction.trans_hcode')
-                ->where('trans_status',2)
+                ->join('p_status','p_status.id','transaction.trans_status')
+                // ->where('trans_status',2)
                 ->groupBy('h_code')
                 ->get();
         // echo $data;
@@ -59,7 +60,7 @@ class cmh extends Controller
                 ->join('claim_refer','claim_refer.year','claim_list.p_year')
                 ->where('hcode',$id)
                 ->where('trans_code','!=',NULL)
-                ->where('p_status',2)
+                // ->where('p_status',2)
                 ->groupBy('trans_code')
                 ->orderBy('h_code','ASC')
                 ->get();

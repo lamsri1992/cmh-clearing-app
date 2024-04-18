@@ -90,7 +90,7 @@
 
         $(function(){
             $(".datepicker").datepicker();
-            $(".datepicker").datepicker( "option", "dateFormat", 'yy-mm-dd');
+            // $(".datepicker").datepicker( "option", "dateFormat", 'yy-mm-dd');
         });
 
         new DataTable('#basicTable', {

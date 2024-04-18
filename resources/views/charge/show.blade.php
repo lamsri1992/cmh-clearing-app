@@ -68,10 +68,10 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-grid gap-2">
-                    <button id="btnUpdate" class="btn btn-primary" type="button">
-                        <i class="fa-solid fa-rotate fa-spin"></i>
-                        อัพเดตข้อมูลใหม่
-                    </button>
+                    <a href="{{ route('charge.edit',base64_encode($data->vn)) }}" id="btnUpdate" class="btn btn-primary" type="button">
+                        <i class="fa-solid fa-edit"></i>
+                        แก้ไขข้อมูล
+                    </a>
                     <button id="btnCancel" class="btn btn-danger" type="button">
                         <i class="fa-solid fa-ban"></i>
                         ยกเลิกการเรียกเก็บ
@@ -91,7 +91,7 @@
     $(document).ready(function() {
         var pstatus = {{ $data->p_status }};
         if(pstatus != 1) {
-            document.getElementById("btnUpdate").disabled = true;
+            document.getElementById("btnUpdate").hidden = true;
             document.getElementById("btnCancel").disabled = true;
         }
         Swal.fire({

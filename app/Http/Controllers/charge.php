@@ -41,6 +41,22 @@ class charge extends Controller
         return view('charge.show', ['data' => $data]);
     }
 
+    public function edit($id){
+        $data = DB::table('claim_list')
+                ->select('claim_list.id','vn','hn','pid','visit_date','icd10','drug','lab','proc','xray','service_charge','service_charge','with_ambulance',
+                'h_name','p_status','p_name','hospmain','ptname','patient','cancel_note','cancel_date',
+                DB::raw('total AS amount,
+                IF((total) > claim_paid.paid, claim_paid.paid, (total)) AS paid,
+                IF(with_ambulance = "Y", claim_refer.paid, with_ambulance) AS ambulance'))
+                ->join('hospital','hospital.h_code','claim_list.hospmain')
+                ->join('p_status','p_status.id','claim_list.p_status')
+                ->join('claim_paid','claim_paid.year','claim_list.p_year')
+                ->join('claim_refer','claim_refer.year','claim_list.p_year')
+                ->where('vn',base64_decode($id))
+                ->first();
+        return view('charge.edit', ['data' => $data]);
+    }
+
     // public function confirm(Request $request)
     // {
     //     $id = $request->recno;

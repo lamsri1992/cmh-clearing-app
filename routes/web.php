@@ -50,6 +50,8 @@ Route::prefix('charge')->group(function () {
     Route::get('/list/{id}', [charge::class, 'transaction'])->middleware(['auth', 'verified'])->name('charge.transaction');
     Route::get('/create', [charge::class, 'create'])->middleware(['auth', 'verified'])->name('charge.create');
     Route::get('/{id}', [charge::class, 'show'])->middleware(['auth', 'verified'])->name('charge.show');
+    Route::get('/edit/{id}', [charge::class, 'edit'])->middleware(['auth', 'verified'])->name('charge.edit');
+    Route::post('/update/{id}', [create::class, 'update'])->middleware(['auth', 'verified'])->name('charge.update');
 });
 
 Route::prefix('create')->group(function () {

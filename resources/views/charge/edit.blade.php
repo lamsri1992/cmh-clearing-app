@@ -17,11 +17,11 @@
             <div class="card-header pb-0 pt-3 bg-transparent">
                 <h6 class="text-capitalize">
                     <i class="fa-solid fa-edit"></i>
-                    บันทึกข้อมูลลูกหนี้
+                    แก้ไขข้อมูลลูกหนี้
                 </h6>
             </div>
             <div class="card-body">
-                <form action="{{ route('create.add') }}" method="POST">
+                <form action="{{ route('charge.update',$data->id) }}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
@@ -33,80 +33,73 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="" class="form-label">เรียกเก็บไปยัง</label>
-                                <select name="hospmain" class="basic-select2">
-                                    <option></option>
-                                    @foreach ($hmain as $res)
-                                    <option value="{{ $res->h_code }}">
-                                        {{ $res->h_code." : ".$res->h_name }}
-                                    </option>
-                                    @endforeach
-                                </select>
+                                <input type="text" class="form-control" value="{{ $data->h_name }}" disabled>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">หมายเลขบัตรประจำตัวประชาชน</label>
-                                <input type="text" name="pid" class="form-control" placeholder="ระบุหมายเลข 13 หลัก">
+                                <input type="text" name="pid" class="form-control" value="{{ $data->pid }}" disabled>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">ผู้รับบริการ</label>
-                                <input type="text" name="patient" class="form-control" placeholder="นายทดสอบ ระบบ">
+                                <input type="text" name="patient" class="form-control" value="{{ $data->patient }}" disabled>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">HN</label>
-                                <input type="text" name="hn" class="form-control" placeholder="ระบุ HN">
+                                <input type="text" name="hn" class="form-control" value="{{ $data->hn }}" disabled>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">VN</label>
-                                <input type="text" name="vn" class="form-control" placeholder="ระบุ VN">
+                                <input type="text" name="vn" class="form-control" value="{{ $data->vn }}" disabled>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">วันที่รับบริการ</label>
-                                <input type="text" name="vstdate" class="form-control datepicker" placeholder="เลือกวันที่รับบริการ">
+                                <input type="text" name="vstdate" class="form-control datepicker" value="{{ $data->visit_date }}" readonly>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">ICD10</label>
-                                <input type="text" name="icd10" class="form-control" placeholder="A99,J44,Z99">
+                                <input type="text" name="icd10" class="form-control" value="{{ $data->icd10 }}">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">ค่ายา</label>
-                                <input type="text" name="drug" class="form-control" placeholder="ถ้าไม่มีให้ใส่ 0">
+                                <input type="text" name="drug" class="form-control" value="{{ $data->drug }}">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">ค่าแลบ</label>
-                                <input type="text" name="lab" class="form-control" placeholder="ถ้าไม่มีให้ใส่ 0">
+                                <input type="text" name="lab" class="form-control" value="{{ $data->lab }}">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">ค่า X-Ray</label>
-                                <input type="text" name="xray" class="form-control" placeholder="ถ้าไม่มีให้ใส่ 0">
+                                <input type="text" name="xray" class="form-control" value="{{ $data->xray }}">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">ค่าหัตถการ</label>
-                                <input type="text" name="proc" class="form-control" placeholder="ถ้าไม่มีให้ใส่ 0">
+                                <input type="text" name="proc" class="form-control" value="{{ $data->proc }}">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="" class="form-label">ค่าบริการอื่น ๆ</label>
-                                <input type="text" name="service" class="form-control" placeholder="ถ้าไม่มีให้ใส่ 0">
+                                <input type="text" name="service" class="form-control" value="{{ $data->service_charge }}">
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -114,13 +107,19 @@
                                 <label for="" class="form-label">การใช้รถ Ambulance / Refer</label>
                                 <select name="with_ambulance" class="basic-select2">
                                     <option></option>
-                                    <option value="Y">ใช่</option>
-                                    <option value="N">ไม่ใช่</option>
+                                    <option value="Y"
+                                    {{ ($data->with_ambulance == 'Y') ? 'SELECTED' : '' }}>
+                                    ใช่
+                                    </option>
+                                    <option value="N"
+                                    {{ ($data->with_ambulance == NULL) ? 'SELECTED' : '' }}>
+                                    ไม่ใช่
+                                    </option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-12 text-end">
-                            <button type="button" class="btn btn-success"
+                            <button type="button" class="btn btn-warning"
                                 onclick="Swal.fire({
                                     icon: 'warning',
                                     title: 'ยืนยันการเพิ่มข้อมูลลูกหนี้ ?',
@@ -133,8 +132,8 @@
                                     }
                                 });"
                             >
-                                <i class="fa-solid fa-plus-circle"></i>
-                                เพิ่มข้อมูลลูกหนี้
+                                <i class="fa-solid fa-edit"></i>
+                                แก้ไขข้อมูลลูกหนี้
                             </button>
                         </div>
                     </div>
