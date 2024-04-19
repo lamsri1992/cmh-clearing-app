@@ -122,7 +122,7 @@
 <script>
     $(document).ready(function() {
         var pstatus = {{ $data->p_status }};
-        if(pstatus == 7) {
+        if(pstatus == 8) {
             Swal.fire({
                 title: "VN : " + {{ $data->vn }},
                 text: "รายการถูกยืนยันแล้ว",

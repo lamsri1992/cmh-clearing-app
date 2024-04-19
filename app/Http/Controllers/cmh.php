@@ -40,7 +40,7 @@ class cmh extends Controller
                 SUM(trans_total) AS total'))
                 ->join('hospital','h_code','transaction.trans_hcode')
                 ->join('p_status','p_status.id','transaction.trans_status')
-                // ->where('trans_status',2)
+                ->where('trans_status',2)
                 ->groupBy('h_code')
                 ->get();
         // echo $data;
@@ -86,8 +86,20 @@ class cmh extends Controller
         return back()->with('success','ประมวลผลข้อมูลประจำรอบสำเร็จ');
     }
 
-    public function report()
+    public function report(Request $request)
     {
-        dd('Hello World , Report');
+        $sql = "SELECT `transaction`.trans_hcode,hospital_a.h_name AS visit_hospital,
+                `transaction`.trans_hmain,hospital_b.h_name AS main_hospital,
+                COUNT(`transaction`.trans_code) AS cases,SUM(`transaction`.trans_total) AS total
+                FROM `transaction`
+                LEFT JOIN hospital as hospital_a ON hospital_a.h_code = `transaction`.trans_hcode
+                LEFT JOIN hospital as hospital_b ON hospital_b.h_code = `transaction`.trans_hmain
+                WHERE `transaction`.trans_status IN ('3')
+                AND MONTH(`transaction`.trans_process_date) = $request->month
+                GROUP BY `transaction`.trans_code,`transaction`.trans_hcode , `transaction`.trans_hmain
+                ORDER BY hospital_a.h_code ASC";
+        $data = DB::select($sql);
+        $month = $request->month;
+        return view('cmh.report',['data'=>$data,'month'=>$month]);
     }
 }

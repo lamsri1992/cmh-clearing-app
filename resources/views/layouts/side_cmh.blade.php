@@ -31,7 +31,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ (request()->is('cmh/report*')) ? 'active' : '' }}" href="{{ url('cmh/report') }}">
+                <a class="nav-link {{ (request()->is('cmh/report*')) ? 'active' : '' }}"
+                    data-bs-toggle="modal" data-bs-target="#reportModal" href="#">
                     <div
                         class="icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa-solid fa-print text-dark text-sm opacity-10"></i>

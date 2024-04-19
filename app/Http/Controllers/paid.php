@@ -141,12 +141,13 @@ class paid extends Controller
       
         $fileName = $request->transId.'.'.$request->file->extension();  
         $request->file->move(public_path('uploads'), $fileName);
+        $paid_date = date('Y-m-d', strtotime($request->paid_date));
 
         DB::table('paid')->insert([
             'trans_code'=>$request->transId,
             'balance'=>$request->balance,
             'balance_type'=>$request->balance_type,
-            'paid_date'=>$request->paid_date,
+            'paid_date'=>$paid_date,
             'paid_no'=>$request->paid_no,
             'create_date'=>$date,
             'file'=>$fileName,

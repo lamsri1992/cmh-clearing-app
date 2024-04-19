@@ -122,9 +122,9 @@
                             <button type="button" class="btn btn-warning"
                                 onclick="Swal.fire({
                                     icon: 'warning',
-                                    title: 'ยืนยันการเพิ่มข้อมูลลูกหนี้ ?',
+                                    title: 'ยืนยันการแก้ไขข้อมูลลูกหนี้ ?',
                                     showDenyButton: true,
-                                    confirmButtonText: 'เพิ่มข้อมูล',
+                                    confirmButtonText: 'แก้ไขข้อมูล',
                                     denyButtonText: 'ยกเลิก'
                                   }).then((result) => {
                                     if (result.isConfirmed) {

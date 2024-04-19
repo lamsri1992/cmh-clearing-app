@@ -65,30 +65,32 @@
                     </div>
                 </div>
                 @else
+                @if ($trans->trans_status != 8)
                 <p class="text-center">
                     <button class="btn btn-primary btn-lg"
-                        onclick="Swal.fire({
-                            icon: 'warning',
-                            title: 'ยืนยันการดำเนินการ',
-                            text: 'Transaction Code :: '+ {{ $id }},
-                            footer: '<small>หากยืนยันแล้ว จะไม่สามารถยกเลิกได้</small>'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'ดำเนินการเสร็จสิ้น',
-                                    showConfirmButton: false,
-                                    timer: 3000
-                                });
-                                window.setTimeout(function () {
-                                    location.replace('/paid/transaction/confirm/'+{{ $id }})
-                                }, 3500);
-                            } 
-                        });">
+                    onclick="Swal.fire({
+                        icon: 'warning',
+                        title: 'ยืนยันการดำเนินการ',
+                        text: 'Transaction Code :: '+ {{ $id }},
+                        footer: '<small>หากยืนยันแล้ว จะไม่สามารถยกเลิกได้</small>'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'ดำเนินการเสร็จสิ้น',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+                            window.setTimeout(function () {
+                                location.replace('/paid/transaction/confirm/'+{{ $id }})
+                            }, 3500);
+                        } 
+                    });">
                         <i class="fa-solid fa-clipboard-check"></i>
                         ดำเนินการ Transaction นี้
                     </button>
                 </p>
+                @endif
                 @endif
                 @endforeach
                 @endif

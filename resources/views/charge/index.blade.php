@@ -75,8 +75,8 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 font-weight-bold">ข้อมูลลูกหนี้เรียกเก็บ</p>
-                            <a href="#" class="font-weight-bolder">
+                            <p class="text-sm mb-0 font-weight-bold">ลูกหนี้ชำระแล้ว</p>
+                            <a href="{{ route('charge.summary') }}" class="font-weight-bolder">
                                 {{ number_format($depts) }} รายการ
                             </a>
                         </div>

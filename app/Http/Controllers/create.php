@@ -39,7 +39,8 @@ class create extends Controller
         }else{
             $ambulance = NULL;
         }
-        
+        $vstdate = date('Y-m-d', strtotime($request->vstdate));
+
         DB::table('claim_list')->insert([
             'hcode' => $hcode,
             'hospmain' => $request->hospmain,
@@ -47,7 +48,7 @@ class create extends Controller
             'patient' => $request->patient,
             'hn' => $request->hn,
             'vn' => $request->vn,
-            'visit_date' => $request->vstdate,
+            'visit_date' => $vstdate,
             'icd10' => $request->icd10,
             'drug' => $request->drug,
             'lab' => $request->lab,
@@ -70,8 +71,10 @@ class create extends Controller
             $ambulance = NULL;
         }
         
+        $vstdate = date('Y-m-d', strtotime($request->vstdate));
+
         DB::table('claim_list')->where('id',$id)->update([
-            'visit_date' => $request->vstdate,
+            'visit_date' => $vstdate,
             'icd10' => $request->icd10,
             'drug' => $request->drug,
             'lab' => $request->lab,

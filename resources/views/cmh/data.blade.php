@@ -13,7 +13,7 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 font-weight-bold">ข้อมูลเรียกเก็บ</p>
+                            <p class="text-sm mb-0 font-weight-bold">ข้อมูลเรียกเก็บทั้งหมด</p>
                             <a href="#" class="font-weight-bolder">{{ number_format($all) }} รายการ</a>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 font-weight-bold">ยอดเรียกเก็บ</p>
+                            <p class="text-sm mb-0 font-weight-bold">ยอดเรียกเก็บ / ตามรอบ</p>
                             <a href="#" class="font-weight-bolder">{{ number_format($total,2) }} บาท</a>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
                             <th class="text-center">รหัสหน่วยบริการ</th>
                             <th>ชื่อหน่วยบริการ</th>
                             <th class="text-center">จำนวน Transaction</th>
-                            <th class="text-end">ยอดเรียกเก็บ</th>
+                            {{-- <th class="text-end">ยอดเรียกเก็บ</th> --}}
                             <th class="text-center">สถานะ</th>
                             <th class="text-center"><i class="fa-solid fa-search"></i></th>
                         </tr>
@@ -127,8 +127,8 @@
                         <tr>
                             <td class="text-center">{{ $res->h_code }}</td>
                             <td>{{ $res->h_name }}</td>
-                            <td class="text-center">{{ $res->number }} รายการ</td>
-                            <td class="text-end fw-bold">{{ number_format($res->total,2) }}</td>
+                            <td class="text-center">{{ $res->number }}</td>
+                            {{-- <td class="text-end fw-bold">{{ number_format($res->total,2) }}</td> --}}
                             <td class="text-center">
                                 <span class="badge {{ $res->p_color }}">
                                     {{ $res->p_name }}

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use DateTime;
 
 class charge extends Controller
 {   
@@ -13,7 +14,7 @@ class charge extends Controller
         $query_count = "SELECT
         (SELECT COUNT(vn) FROM claim_list WHERE p_status = '1' AND hcode = $hcode) AS `wait`,
         (SELECT COUNT(vn) FROM claim_list WHERE p_status = '2' AND hcode = $hcode) AS charge,
-        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '3' AND hcode = $hcode) AS depts,
+        (SELECT COUNT(*) FROM `transaction` WHERE trans_status = '8' AND trans_hcode = $hcode) AS depts,
         (SELECT SUM(total) FROM claim_list WHERE hcode = $hcode) AS deptor";
 
         $count = DB::select($query_count);
@@ -125,11 +126,17 @@ class charge extends Controller
         $hcode = Auth::user()->hcode;
         $transCode = $hcode."".date('Ym').substr(rand(),1,5);
         foreach($data as $array){
+
+            $date = DateTime::createFromFormat('d/m/Y', $array['0']);
+            $formatted_date = $date->format('Y-m-d');
+
+            $total = $array['7'];
+            $new_total = str_replace(",", "", $total);
             $id = DB::table('transaction')->insertGetId(
                 [
                     'trans_vn' => $array['1'],
-                    'trans_vstdate' => date('Y-m-d', strtotime($array['0'])),
-                    'trans_total' => $array['7'],
+                    'trans_vstdate' => $formatted_date,
+                    'trans_total' => $new_total,
                     'trans_code' => $transCode,
                     'trans_hcode' => $hcode,
                     'trans_hmain' => $array['9'],
@@ -180,6 +187,19 @@ class charge extends Controller
                 ->get();
         $paid = DB::table('paid')->where('trans_code',$id)->first();
         return view('charge.detail', ['data' => $data,'id'=>$id,'paid'=>$paid]);
+    }
+
+    public function summary(){
+        $hcode = Auth::user()->hcode;
+        $data = DB::select("SELECT DISTINCT `transaction`.trans_code,SUM(trans_total) as total,
+                trans_hcode,h_name,`transaction`.create_date,trans_paiddate,paid.file,trans_status,paid.balance
+                FROM `transaction`
+                LEFT JOIN hospital ON hospital.H_CODE = trans_hmain
+                LEFT JOIN paid ON paid.trans_code = `transaction`.trans_code
+                WHERE trans_hcode = {$hcode}
+                AND trans_status IN('8')
+                GROUP BY `transaction`.trans_code,trans_hcode,`transaction`.create_date,trans_paiddate");
+        return view('charge.summary', ['data' => $data]);
     }
 
 }
