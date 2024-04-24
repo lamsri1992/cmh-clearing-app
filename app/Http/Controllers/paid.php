@@ -12,22 +12,24 @@ class paid extends Controller
     {
         $hcode = Auth::user()->hcode;
         $query_count = "SELECT
-        (SELECT COUNT(vn) FROM claim_list WHERE p_status = '1' AND hospmain = $hcode) AS charge,
+        (SELECT COUNT(vn) FROM claim_list WHERE hospmain = $hcode) AS charge,
         (SELECT COUNT(vn) FROM claim_list WHERE p_status = '7' AND hospmain = $hcode) AS `wait`,
         (SELECT COUNT(vn) FROM claim_list WHERE p_status = '4' AND hospmain = $hcode) AS confirm,
         (SELECT COUNT(vn) FROM claim_list WHERE p_status = '5' AND hospmain = $hcode) AS deny,
         (SELECT SUM(total) FROM claim_list WHERE hospmain = $hcode) AS creditor";
 
         $count = DB::select($query_count);
-        $data = DB::select("SELECT DISTINCT trans_code,SUM(trans_total) as total,trans_hcode,h_name,create_date
-                FROM `transaction`
-                LEFT JOIN hospital ON hospital.H_CODE = trans_hcode
-                WHERE trans_hmain = {$hcode}
-                AND trans_status = 3
-                GROUP BY trans_code,trans_hcode,create_date,trans_paiddate
-                ORDER BY trans_id DESC
-                LIMIT 10");
-        // dd($data);
+        $data = DB::table('transaction')
+                ->select('h_name','h_code','trans_code','create_date',
+                DB::raw('SUM(trans_total) AS total'))
+                ->join('hospital','h_code','transaction.trans_hcode')
+                ->join('p_status','p_status.id','transaction.trans_status')
+                ->where('trans_status',3)
+                ->where('trans_hmain',$hcode)
+                ->groupBy('h_code')
+                ->limit(10)
+                ->get();
+        // echo $data;
         return view('paid.index', ['data' => $data,'count'=>$count]);
 
     }
@@ -105,11 +107,11 @@ class paid extends Controller
     public function transConfirm(Request $request,$id)
     {
         $date = date('Y-m-d');
-        DB::table('claim_list')->where('trans_code',$id)->where('p_status',4)->update([
+        DB::table('claim_list')->where('trans_code',$id)->where('p_status',3)->update([
             'p_status' => 7
         ]);
 
-        DB::table('transaction')->where('trans_code',$id)->where('trans_status',4)->update([
+        DB::table('transaction')->where('trans_code',$id)->where('trans_status',3)->update([
             'trans_status' => 7,
             'trans_paiddate' => $date
         ]);

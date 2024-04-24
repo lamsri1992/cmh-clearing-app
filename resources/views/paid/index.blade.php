@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="numbers">
-                            <p class="text-sm mb-0 font-weight-bold">ยอดเจ้าหนี้ทั้งหมด</p>
+                            <p class="text-sm mb-0 font-weight-bold">รายการเจ้าหนี้ทั้งหมด</p>
                             <a href="#" class="font-weight-bolder">
                                 {{ number_format($charge) }} รายการ
                             </a>
@@ -102,20 +102,8 @@
                         <h6 class="text-capitalize">
                             <i class="fa-solid fa-circle-dollar-to-slot"></i>
                             Transaction - ใบแจ้งตามจ่าย 
-                            <span class="badge bg-danger">
-                                <i class="fa-regular fa-bell"></i>
-                                New
-                            </span>
                         </h6>
                     </div>
-                    {{-- <div class="col-md-6 text-end">
-                        <h6 class="text-capitalize">
-                            <a href="{{ route('paid.list') }}" class="btn btn-info btn-sm">
-                                <i class="fa-solid fa-clipboard-check"></i>
-                                รายการทั้งหมด
-                            </a>
-                        </h6>
-                    </div> --}}
                 </div>
             </div>
             <div class="card-body">
@@ -131,6 +119,10 @@
                             <div class="ms-2 me-auto">
                                 <div class="fw-bold">
                                     {{ $res->trans_code }}
+                                    <small class="badge bg-danger" style="font-size: 10px;">
+                                        <i class="fa-regular fa-bell"></i>
+                                        New
+                                    </small>
                                 </div>
                                     {{ "เรียกเก็บจาก ".$res->h_name }} <br>
                                 <small>
