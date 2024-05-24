@@ -53,7 +53,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('argon/assets/img/apple-icon.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
-    <title>CHIMS - Clearing House Information Management System</title>
+    <title>CMPHO - Medical Fee Compensation Information Management System</title>
     <!-- Fonts and icons -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300&display=swap" rel="stylesheet">
@@ -106,10 +106,10 @@
                                     <img src="{{ asset('img/logo_cmh.png') }}" alt="สำนักงานสาธารณสุข จังหวัดเชียงใหม่" width="60%">
                                 </div>
                                 <h4 class="mt-5 font-weight-bolder position-relative">
-                                    ระบบบริหารข้อมูลหนี้ระหว่างโรงพยาบาล
+                                    โปรแกรมการบริหารจัดการข้อมูลชดเชยค่าบริการทางการแพทย์ <br> ระหว่างหน่วยบริการในจังหวัดเชียงใหม่
                                 </h4>
                                 <p class="text-sm position-relative">
-                                    CHIMS - Clearing House Information Management System
+                                    CMPHO : Medical Fee Compensation Information Management System
                                 </p>
                             </div>
                         </div>
