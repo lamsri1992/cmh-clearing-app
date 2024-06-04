@@ -85,7 +85,7 @@
     <!-- Github buttons -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="{{ asset('argon/assets/js/argon-dashboard.min.js?v=2.0.4') }}"></script>
+    <script src="{{ asset('secure_argon/assets/js/argon-dashboard.min.js?v=2.0.4') }}"></script>
     <script type="text/javascript" charset="utf8" src="{{ asset('vendor/preload/preload.js') }}"></script>
     <script>
         $(document).ready(function() {
