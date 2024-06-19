@@ -85,7 +85,7 @@
     <!-- Github buttons -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="{{ asset('secure_argon/assets/js/argon-dashboard.min.js?v=2.0.4') }}"></script>
+    <script src="{{ asset('argon/assets/js/argon-dashboard.min.js?v=2.0.4') }}"></script>
     <script type="text/javascript" charset="utf8" src="{{ asset('vendor/preload/preload.js') }}"></script>
     <script>
         $(document).ready(function() {
@@ -143,7 +143,22 @@
             timer: 3000
         });
     </script>
-    @endif 
+    @endif
+    @if($errors->any())
+<script>
+    Swal.fire({
+        title: 'พบข้อผิดพลาด',
+        icon: 'warning',
+        html: '<div class="text-start">'+
+                '<ul>'+
+                    '@foreach ($errors->all() as $error)' +
+                        '<li>{{ $error }}</li>' +
+                        '@endforeach'+
+                    '</ul>'+
+                '</div>'
+            })
+</script>
+@endif
 </body>
 @section('script')
 @show

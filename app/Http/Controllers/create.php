@@ -32,7 +32,23 @@ class create extends Controller
             'proc' => 'required',
             'service' => 'required',
             'with_ambulance' => 'required',
-        ]);
+        ],
+        [
+            'hospmain.required' => 'กรุณาระบุ รพ. ที่เรียกเก็บ',
+            'pid.required' => 'กรุณาระ บุหมายเลข 13 หลัก',
+            'patient.required' => 'กรุณาระบุ ผู้รับบริการ',
+            'hn.required' => 'กรุณาระบุ HN',
+            'vn.required' => 'กรุณาระบุ VN',
+            'vstdate.required' => 'กรุณาระบุ วันที่เข้ารับบริการ',
+            'icd10.required' => 'กรุณาระบุ ICD10',
+            'drug.required' => 'กรุณาระบุ ค่ายา',
+            'lab.required' => 'กรุณาระบุ ค่าแลบ',
+            'xray.required' => 'กรุณาระบุ ค่า X-Ray',
+            'proc.required' => 'กรุณาระบุ ค่าหัตถการ',
+            'service.required' => 'กรุณาระบุ ค่าบริการอื่น ๆ',
+            'with_ambulance.required' => 'กรุณาระบุ การใช้รถ Ambulance / Refer',
+        ]
+        );
 
         if($request->with_ambulance == 'Y'){
             $ambulance = 'Y';
