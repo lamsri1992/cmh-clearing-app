@@ -15,7 +15,7 @@ class importController extends Controller
     {
         $hcode = Auth::user()->hcode;
         $this->validate($request, [
-            'select-file' => 'required|mimes:xls'
+            'select-file' => 'required|mimes:xls,xlsx'
         ]);
         
         Excel::import(new ClaimImport,request()->file('select-file'));
