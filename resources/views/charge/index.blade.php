@@ -215,7 +215,7 @@
                     <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">ปิดหน้าต่าง</button>
                 </div>
                 <div class="text-center" style="margin-bottom: 1rem;">
-                    <a href="{{ asset('dataset_template.xls') }}">
+                    <a href="{{ asset('dataset_template_example.xls') }}">
                         <i class="fa-solid fa-download text-primary"></i>
                         ดาวน์โหลด Template + Query
                     </a>
